@@ -267,3 +267,4 @@ CREATE OR REPLACE TRIGGER mp_user_date_modify
 BEFORE UPDATE ON `mp_user`
 
 
+  
