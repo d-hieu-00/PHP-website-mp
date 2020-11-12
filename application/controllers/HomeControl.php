@@ -1,9 +1,8 @@
 <?php
 
-class welcome{
+class HomeControl extends framework{
     public function __construct(){
-        echo "welcome";
-        
+        $this->view("Home","index");
     }
 
     public function index($Name = "NoName"){
@@ -11,4 +10,3 @@ class welcome{
         echo "<br> <strong>$Name</strong>";
     }
 }
-?>

@@ -1,24 +1,27 @@
 <?php
 
 class router{
-    //default controller, mothod, param
-    private $controller = "welcome";
+    //default folder controller, mothod, param
+    private $controller = "HomeControl";
     private $method = "index";
     private $params = [];
     public function __construct(){
         $url = $this->url();
+        print_r('<br>router.php<br>');
+        print_r($url);
+        print_r('<br>');
         if (!empty($url)) {
-            if (file_exists("../application/controllers/" . $url[0] . ".php")) {
-                $this->controller = $url[0];
+            if (file_exists("../application/controllers/" . $url[0] . "Control.php")) {
+                $this->controller = $url[0].'Control';
                 unset($url[0]);
             } else {
                 echo '<div class="alert alert-danger text-center">
-                <strong>Erorr: </strong> File not found: <em>' . $url[0] . '.php</em></div>';
+                <strong>Erorr: </strong> File not found: <em>' . $url[0] . 'Control.php</em></div>';
             }
         }
         //include controller
-        require_once "../application/controllers/" . $this->controller . ".php";
-        //instantiate controller 
+        require_once "../application/controllers/" . $this->controller .".php";
+        //instantiate controller
         $this->controller = new $this->controller();
         //get method
         if (isset($url[1]) && !empty($url[1])) {
