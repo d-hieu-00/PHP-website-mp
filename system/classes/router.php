@@ -2,14 +2,14 @@
 
 class router{
     //default folder controller, mothod, param
-    private $controller = "HomeControl";
+    private $controller = "homeControl";
     private $method = "index";
     private $params = [];
     public function __construct(){
         $url = $this->url();
-        print_r('<br>router.php<br>');
-        print_r($url);
-        print_r('<br>');
+        // print_r('<br>router.php<br>');
+        // print_r($url);
+        // print_r('<br>');
         if (!empty($url)) {
             if (file_exists("../application/controllers/" . $url[0] . "Control.php")) {
                 $this->controller = $url[0].'Control';

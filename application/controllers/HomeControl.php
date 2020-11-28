@@ -1,12 +1,8 @@
 <?php
 
-class HomeControl extends framework{
-    public function __construct(){
-        $this->view("Home","index");
-    }
+class HomeControl extends BaseController{
 
-    public function index($Name = "NoName"){
-        //require "../application/views/login.php";
-        echo "<br> <strong>$Name</strong>";
+    public function index(){
+        $this->view("home","index");
     }
 }
