@@ -1,6 +1,6 @@
 <div class="container text-center">
 <a href="<?php echo BASEURL ?>">
-<img src="<?php echo BASEURL; ?>/public/assets/img/logo.png" alt="banner">
+  <img src="<?php echo BASEURL; ?>/public/assets/img/logo.png" alt="banner">
 </a>
 </div>
 

@@ -6,7 +6,7 @@
   </a>
 
   <a href="mailto:info@gmail.com" class="p-2">
-  <i class="fa fa-envelope-o"></i> info@gmail.com
+    <i class="fas fa-envelope"></i> info@gmail.com
   </a>
 
   <a action="" class="p-2">
@@ -26,15 +26,15 @@
     <?php
       if($this->getSession('Account')){
         echo '<a class="dropdown-item" href="'.BASEURL."/user/profile".'">';
-        echo '<i class="fa fa-address-card" aria-hidden="true"></i>';
+        echo '<i class="far fa-id-card"></i>';
         echo '  Thông tin tài khoản';
         echo '</a>';
         echo '<div class="dropdown-divider"></div>';
         echo '<a class="dropdown-item" href="'.BASEURL."/user/logout".'">';
-        echo '<i class="fa fa-sign-out" aria-hidden="true"></i> Đăng xuất</a>';
+        echo '<i class="fas fa-sign-out-alt"></i> Đăng xuất</a>';
       } else {
         echo '<a class="dropdown-item" href="'.BASEURL."/user/login".'">';
-        echo '<i class="fa fa-sign-in" aria-hidden="true"></i> Đăng nhập</a>';
+        echo '<i class="fas fa-sign-in-alt"></i> Đăng nhập</a>';
       }
     ?>
     <div class="dropdown-divider"></div>

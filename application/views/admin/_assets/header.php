@@ -1,105 +1,114 @@
+
+<div id="wrapper">
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-        <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-laugh-wink"></i>
-        </div>
-        <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+    <div class="d-flex align-items-center justify-content-center">
+    <a class="mt-2 mb-2" href="<?php echo BASEURL?>">
+        <img height="100px" src="<?php echo BASEURL; ?>/public/assets/img/favicon.png" alt="banner">
     </a>
+    </div>
 
-    <!-- Divider -->
+    <!-- Home - Admin -->
     <hr class="sidebar-divider my-0">
-
-    <!-- Nav Item - Dashboard -->
-    <li class="nav-item active">
-        <a class="nav-link" href="index.html">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span></a>
+    <li id="homePage" class="nav-item active">
+        <a class="nav-link  text-center" href="<?php echo BASEURL?>/admin" aria-expanded="true">
+            <i class="fas fa-home"></i>
+            <span>Trang chủ Admin</span>
+        </a>
     </li>
 
-    <!-- Divider -->
     <hr class="sidebar-divider">
-
     <!-- Heading -->
     <div class="sidebar-heading">
-        Interface
+        Quản lý dữ liệu
     </div>
 
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Components</span>
+    <!-- Khach hàng -->
+    <li id="userPage" class="nav-item">
+        <a class="nav-link" href="<?php echo BASEURL?>/admin/info_user">
+            <i class="fas fa-users"></i>
+            <span>Khách hàng</span>
         </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+    </li>
+
+    <!-- Nhà kho -->
+    <li id="warehousePage" class="nav-item">
+        <a class="nav-link collapsed" href="" data-toggle="collapse" data-target="#kho">
+            <i class="fas fa-warehouse"></i>
+            <span>Nhà kho</span>
+        </a>
+        <div id="kho" class="collapse">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Custom Components:</h6>
-                <a class="collapse-item" href="buttons.html">Buttons</a>
-                <a class="collapse-item" href="cards.html">Cards</a>
+                <h6 class="collapse-header">Chỉnh sửa kho:</h6>
+                <a class="collapse-item" href="<?php echo BASEURL?>/admin/info_warehouse">Thông tin kho</a>
+                <a class="collapse-item" href="<?php echo BASEURL?>/admin/insert_warehouse">Thêm kho</a>
             </div>
         </div>
     </li>
 
-    <!-- Nav Item - Utilities Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-            <i class="fas fa-fw fa-wrench"></i>
-            <span>Utilities</span>
+    <!-- Sản phẩm -->
+    <li id="productPage" class="nav-item">
+        <a class="nav-link collapsed" href="" data-toggle="collapse" data-target="#sp">
+            <i class="fas fa-boxes"></i>
+            <span>Sản phẩm</span>
         </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+        <div id="sp" class="collapse">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Custom Utilities:</h6>
-                <a class="collapse-item" href="utilities-color.html">Colors</a>
-                <a class="collapse-item" href="utilities-border.html">Borders</a>
-                <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                <a class="collapse-item" href="utilities-other.html">Other</a>
-            </div>
-        </div>
-    </li>
-
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Addons
-    </div>
-
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Pages</span>
-        </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Login Screens:</h6>
-                <a class="collapse-item" href="login.html">Login</a>
-                <a class="collapse-item" href="register.html">Register</a>
-                <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
+                <h6 class="collapse-header">Chỉnh sửa loại sản phẩm:</h6>
+                <a class="collapse-item" href="<?php echo BASEURL?>/admin/info_type_product">Thông tin loại sản phẩm</a>
+                <a class="collapse-item" href="<?php echo BASEURL?>/admin/insert_type_product">Thêm loại sản phẩm</a>
                 <div class="collapse-divider"></div>
-                <h6 class="collapse-header">Other Pages:</h6>
-                <a class="collapse-item" href="404.html">404 Page</a>
-                <a class="collapse-item" href="blank.html">Blank Page</a>
+                <h6 class="collapse-header">Chỉnh sửa sản phẩm:</h6>
+                <a class="collapse-item" href="<?php echo BASEURL?>/admin/info_product">Thông tin sản phẩm</a>
+                <a class="collapse-item" href="<?php echo BASEURL?>/admin/insert_product">Thêm sản phẩm</a>
             </div>
         </div>
     </li>
 
-    <!-- Nav Item - Charts -->
-    <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Charts</span></a>
+
+    <!-- Khuyến mãi -->
+    <li id="discountPage" class="nav-item">
+        <a class="nav-link collapsed" href="" data-toggle="collapse" data-target="#km">
+            <i class="fas fa-tags"></i>
+            <span>Khuyến mãi</span>
+        </a>
+        <div id="km" class="collapse">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Chỉnh sửa khuyến mãi:</h6>
+                <a class="collapse-item" href="<?php echo BASEURL?>/admin/info_discount">Thông tin khuyến mãi</a>
+                <a class="collapse-item" href="<?php echo BASEURL?>/admin/insert_discount">Thêm khuyến mãi</a>
+            </div>
+        </div>
     </li>
 
-    <!-- Nav Item - Tables -->
-    <li class="nav-item">
-        <a class="nav-link" href="tables.html">
-            <i class="fas fa-fw fa-table"></i>
-            <span>Tables</span></a>
+
+    <!-- Đơn đặt hàng -->
+    <li id="orderPage" class="nav-item">
+        <a class="nav-link collapsed" href="" data-toggle="collapse" data-target="#hd">
+            <i class="fas fa-file-invoice-dollar"></i>
+            <span>Đơn đặt hàng</span>
+        </a>
+        <div id="hd" class="collapse">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Chỉnh sửa đơn đặt hàng:</h6>
+                <a class="collapse-item" href="<?php echo BASEURL?>/admin/info_order">Thông tin đơn đặt hàng</a>
+                <div class="collapse-divider"></div>
+                <h6 class="collapse-header">Xem hóa đơn:</h6>
+                <a class="collapse-item" href="<?php echo BASEURL?>/admin/info_invoice">Thông tin hóa đơn</a>
+            </div>
+        </div>
     </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
+    <li class="nav-item">
+        <a class="nav-link" href="<?php echo BASEURL?>/admin/logout">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Thoát</span></a>
+    </li>
 </ul>
+
+
+<div id="content-wrapper" class="d-flex flex-column">
+<div id="content">

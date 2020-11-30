@@ -13,7 +13,7 @@
 <form action="<?php echo BASEURL; ?>/admin/login" method="POST">
     <div class="col-12 col-md text-center">
         <a href="<?php echo BASEURL ?>">
-            <img class="img-logo" src="<?php echo BASEURL; ?>/public/assets/img/favicon.png" alt="banner">
+            <img class="img-fluid pt-2" src="<?php echo BASEURL; ?>/public/assets/img/favicon.png" alt="banner">
         </a>
         <small class="d-block mb-3 text-muted">IS207.L12</small>
     </div>

@@ -36,12 +36,12 @@
       Chưa nhập mật khẩu!!
     </div>
   </div>
-  <div class="float-right">
+  <p class="text-center">Không phải là thành viên? <a href="<?php echo BASEURL?>/user/signup">Đăng ký</a></p>
+  <div class="text-center">
   <button type="button" id="login" class="btn btn-primary ">Đăng nhập</button>
   </div>
   </div>
 </form>
-<p class="text-center">Không phải là thành viên? <a href="<?php echo BASEURL?>/user/signup">Đăng ký</a></p>
 </div>
 </div>
 <?php include "../application/views/_shared/footer.php" ?>
