@@ -1,4 +1,8 @@
-
+.my-bg-gradient-primary{
+    background-color:#03506f;
+    background-image:linear-gradient(180deg,#03506f 10%,#0a043c 100%);
+    background-size:cover
+}
 .container-login{
     height: 100%;
     background-color: #EEEEEE;

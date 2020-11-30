@@ -142,7 +142,7 @@ $(document).ready(function() {
                         s = '<div class="alert alert-danger text-center" role="alert">'
                         s += 'Đăng nhập không thành công!!'
                         s += '</div>'
-                        $(".container_s").before(s)
+                        $("header").after(s)
                         if(response.AccountError != null) {
                             $(".Account").addClass("is-invalid")
                             $(".AccountError").html(response.AccountError)
@@ -232,7 +232,7 @@ $(document).ready(function() {
                         s = '<div class="alert alert-success text-center" role="alert">'
                         s += 'Lưu thông tin tài khoản thành công!!'
                         s += '</div>'
-                        $(".container_s").before(s)
+                        $("header").after(s)
                         $("#ltt").attr('hidden','true')
                         $(".FullName").attr('readonly','true')
                         $(".Email").attr('readonly','true')
@@ -243,7 +243,7 @@ $(document).ready(function() {
                         s = '<div class="alert alert-danger text-center" role="alert">'
                         s += 'Lưu thông tin tài khoản không thành công!!'
                         s += '</div>'
-                        $(".container_s").before(s)
+                        $("header").after(s)
                     }
                 },
                 // reject/failure callback

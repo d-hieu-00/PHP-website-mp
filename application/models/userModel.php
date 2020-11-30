@@ -43,6 +43,15 @@ class userModel{
         $this->db->Query("select * from view_user where account=? and password=?", array($this->account, $this->password));
         return $this->db->rowCount();
     }
+
+    public function updateLastAccess(){
+        $this->db->Query("update mp_customer set 
+                        date_last_access=SYSDATE() 
+                        where id_user=?", 
+            array($this->getIdUser($this->account)));
+        return $this->db->rowCount();
+    }
+    
     //return User as object
     public function getUser($Account){
         $this->db->Query("select * from view_user where account=?", array($Account));
@@ -88,6 +97,15 @@ class userModel{
         $this->db->Query("update mp_customer set status='DISABLE' where id_user=?", 
             array($this->getIdUser($this->account)));
         return $this->db->rowCount();
+    }
+    public function activeAccount(){
+        $this->db->Query("update mp_customer set status='ACTIVE' where id_user=?", 
+            array($this->getIdUser($this->account)));
+        return $this->db->rowCount();
+    }
+    public function getAll(){
+        $this->db->Query("select * from view_user");
+        return $this->db->fetchAll();
     }
     public function toArray(){
         return array(

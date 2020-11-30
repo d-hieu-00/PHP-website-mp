@@ -109,8 +109,12 @@ class userControl extends BaseController{
                 $response['PasswordError'] = "Sai mật khẩu";
                 $response['status'] = false;
             } else {
-                $response['status'] = true;
-                $this->setSession('Account', $userData['Account']);
+                if($this->userModel->updateLastAccess() > 0){
+                    $response['status'] = true;
+                    $this->setSession('Account', $userData['Account']);
+                } else {
+                    $response['status'] = false;
+                }
             }
         }
         echo json_encode($response);
@@ -236,6 +240,9 @@ class userControl extends BaseController{
             //$this->logout("Xóa tài khoản thành công");
         }
         echo json_encode($response);
+    }
+    public function getAll(){
+        return $this->userModel->getAll();
     }
 }
 

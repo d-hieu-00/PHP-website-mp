@@ -1,11 +1,11 @@
 
 <div id="wrapper">
-<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<ul class="navbar-nav my-bg-gradient-primary sidebar sidebar-dark accordion">
 
     <!-- Sidebar - Brand -->
     <div class="d-flex align-items-center justify-content-center">
     <a class="mt-2 mb-2" href="<?php echo BASEURL?>">
-        <img height="100px" src="<?php echo BASEURL; ?>/public/assets/img/favicon.png" alt="banner">
+        <img id="logo" class="img-fluid pr-5 pl-5" src="<?php echo BASEURL; ?>/public/assets/img/favicon.png" alt="banner">
     </a>
     </div>
 
@@ -107,6 +107,9 @@
             <i class="fas fa-sign-out-alt"></i>
             <span>Thoát</span></a>
     </li>
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
 </ul>
 
 

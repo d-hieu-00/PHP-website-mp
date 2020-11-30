@@ -8,3 +8,6 @@
 </footer>
 </div>
 </div>
+
+<?php require_once "../application/views/_shared/js.php"; ?>
+<script src="<?php echo BASEURL ?>/public/assets/js/admin.js"></script>
