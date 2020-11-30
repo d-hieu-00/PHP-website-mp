@@ -1,6 +1,6 @@
 <?php
 
-class HomeControl extends BaseController{
+class homeControl extends BaseController{
 
     public function index(){
         $this->view("home","index");

@@ -5,7 +5,8 @@
     <?php require_once "../application/views/_shared/css.php"; ?>
 </head>
 <body>
-<a href="<?php echo BASEURL ?>" class="d-block px-3 py-1 text-center text-bold text-white old-bv">Đồ án bán mỹ phẩm</a>
+<?php include "../application/views/_shared/header.php" ?>
+
 <?php 
   if(isset($data['msg'])){
     echo '<div class="alert alert-success text-center" role="alert">';
@@ -14,7 +15,8 @@
 
   }
 ?>
-<div class="container card mt-3 pt-4 col-3">
+<div class="d-flex align-items-center">
+<div class="container container_s card mt-3 pt-4 col-3">
 
 <form class="row" action="" method="POST">
   <div class="col-12">
@@ -41,8 +43,9 @@
 </form>
 <p class="text-center">Không phải là thành viên? <a href="<?php echo BASEURL?>/user/signup">Đăng ký</a></p>
 </div>
-
+</div>
+<?php include "../application/views/_shared/footer.php" ?>
 <?php require_once "../application/views/_shared/js.php"; ?>
-<?php require_once "../public/assets/js/user.php" ?>
+<script src="../public/assets/js/user.js"></script>
 </body>
 </html>

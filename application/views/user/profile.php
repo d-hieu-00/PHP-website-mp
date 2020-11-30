@@ -5,20 +5,103 @@
     <?php require_once "../application/views/_shared/css.php"; ?>
 </head>
 <body>
-<a href="<?php echo BASEURL ?>" class="d-block px-3 py-1 text-center text-bold text-white old-bv">Đồ án bán mỹ phẩm</a>
+<?php include "../application/views/_shared/header.php" ?>
 
 <!--  -->
-<div class="container card col-8 mt-3 pt-4 ">
-<form class="row">
+<div class="container container_s card col-8 mt-3 pt-4 ">
+<form class="row" method="POST" enctype="multipart/form-data">
 <div class="col-4 border-right ">
-
-  <img src="../public/assets/img/user.jpg" class="img img-fluid">
-
+  <div class="hovereffect">
+    <?php
+      $img = $this->getImg();
+      if($img != null){
+        echo '<img id="img" class="img-fluid" src = "' . $img . '"/>';
+      } else {
+        echo '<img id="img" class="img-fluid" src="../public/assets/img/user.png">';
+      }
+    ?>
+    <div class="overlay">
+      <!-- <input id="Img" type="file" class="form-control Img info" name="Img" accept="image/*">  -->
+      <h2>Đổi ảnh đại diện</h2>
+      <label for="Img" class="info">Chọn file ảnh</label>
+      <input id="Img" type="file" class="form-control Img" name="Img" accept="image/*" hidden> 
+    </div>
+  </div>
+  
+  <!-- <div class="form-group custom-file">
+    <div>
+      <label for="Img" class="custom-file-label"></label>
+      <input id="Img" type="file" class="form-control Img" name="Img" accept="image/*" hidden> 
+    </div>
+  </div> -->
 
   <div class="form-group row pt-2">
     <label class="col-sm-7 col-form-label"><strong>Tên tài khoản:</strong></label>
     <div class="col-sm-5">
-      <p readonly class="form-control-plaintext"><?php echo $this->getSession('Account')?></p>
+      <p  readonly id="Account" class="form-control-plaintext"><?php echo $this->getSession('Account')?></p>
+    </div>
+  </div>
+
+  <!-- Button trigger modal -->
+  <div class="d-flex justify-content-around">
+  <button id="dmk" type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#doimatkhau">
+    Đổi mật khẩu
+  </button>
+  <button id="luu" type="button" class="btn btn-outline-success" hidden>
+    Lưu ảnh
+  </button>
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="doimatkhau" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalLabel">Đổi mật khẩu</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        <div class="form-group row">
+          <label for="oldPassword" class="col-sm-4 col-form-label"><strong>Mật khẩu cũ:</strong></label>
+          <div class="col-sm-8">
+            <input id="oldPassword" type="password" class="form-control oldPassword" name="oldPassword" 
+            placeholder="Nhập mật khẩu cũ">
+            <div class="oldPasswordError invalid-feedback">
+              Chưa nhập mật khẩu!!
+            </div>
+          </div>
+        </div>
+
+
+        <div class="form-group row">
+          <label for="Password" class="col-sm-4 col-form-label"><strong>Mật khẩu mới:</strong></label>
+          <div class="col-sm-8">
+            <input id="Password" type="password" class="form-control Password" name="Password" 
+            placeholder="Nhập mật khẩu mới">
+            <div class="PasswordError invalid-feedback">
+              Mật khẩu mới không thể trống!!
+            </div>
+          </div>
+        </div>
+
+
+        <div class="form-group row">
+          <label for="conPassword" class="col-sm-4 col-form-label"><strong>Xác nhận mật khẩu:</strong></label>
+          <div class="col-sm-8">
+            <input id="conPassword" type="password" class="form-control conPassword" name="conPassword" 
+            placeholder="Nhập lại mật khẩu">
+            <div class="conPasswordError invalid-feedback">
+              Mật khẩu xác nhận không thể trống!!
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="modal-footer lmk">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>
+          <button id="lmk" type="button" class="btn btn-primary">Lưu mật khẩu</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -27,22 +110,22 @@
   <div class="form-group row">
     <label for="FullName" class="col-sm-4 col-form-label"><strong>Họ và tên:</strong></label>
     <div class="col-sm-8">
-      <input type="text" readonly class="form-control-plaintext FullName" name="FullName" 
+      <input id="FullName" type="text" readonly class="form-control FullName" name="FullName" 
       value="<?php echo $data['FullName']?>">
-    </div>
-    <div class="FullNameError invalid-feedback">
-      Tên tài khoản không được trống!!
+      <div class="FullNameError invalid-feedback">
+        Tên tài khoản không được trống!!
+      </div>
     </div>
   </div>
 
   <div class="form-group row">
     <label for="Email" class="col-sm-4 col-form-label"><strong>Địa chỉ email:</strong></label>
     <div class="col-sm-8">
-      <input type="text" readonly class="form-control-plaintext Email" name="Email" 
+      <input id="Email" type="text" readonly class="form-control Email" name="Email" 
       value="<?php echo $data['Email']?>">
-    </div>
-    <div class="EmailError invalid-feedback">
-      Email không được trống!!
+      <div class="EmailError invalid-feedback">
+        Email không được trống!!
+      </div>
     </div>
   </div>
 
@@ -50,19 +133,92 @@
   <div class="form-group row">
     <label for="Phone" class="col-sm-4 col-form-label"><strong>Số điện thoại:</strong></label>
     <div class="col-sm-8">
-      <input type="text" readonly class="form-control-plaintext Phone" name="Phone" 
+      <input id="Phone" type="text" readonly class="form-control Phone" name="Phone" 
       value="<?php echo $data['Phone']?>">
-    </div>
-    <div class="PhoneError invalid-feedback">
-       không được trống!!
+      <div class="PhoneError invalid-feedback">
+        Số điện thoại không thể sửa!!
+      </div>
     </div>
   </div>
 
 
+  <div class="form-group row">
+    <label for="Address" class="col-sm-4 col-form-label"><strong>Địa chỉ:</strong></label>
+    <div class="col-sm-8">
+      <input id="Address" type="text" readonly class="form-control Address" name="Address" 
+      value="<?php echo $data['Address']?>">
+      <div class="AddressError invalid-feedback">
+        Địa chỉ không thể trống!!
+      </div>
+    </div>
+  </div>
+
+
+  <div class="form-group row">
+    <label for="City" class="col-sm-4 col-form-label"><strong>Thành phố:</strong></label>
+    <div class="col-sm-8">
+      <input id="City" type="text" readonly class="form-control City" name="City" 
+      value="<?php echo $data['City']?>">
+      <div class="CityError invalid-feedback">
+        Thành phố không thể trống!!
+      </div>
+    </div>
+  </div>
+
+
+  <div class="form-group row">
+    <label for="Province" class="col-sm-4 col-form-label"><strong>Tỉnh:</strong></label>
+    <div class="col-sm-8">
+      <input id="Province" type="text" readonly class="form-control Province" name="Province" 
+      value="<?php echo $data['Province']?>">
+      <div class="ProvinceError invalid-feedback">
+        Tỉnh không thể trống!!
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="col-4 d-flex justify-content-around">
+  <button id="stt" type="button" class="btn btn-primary">Sửa thông tin cá nhân</button>
+</div>
+<div class="col-8 d-flex justify-content-around mt-3">
+  <button id="ltt" type="button" class="btn btn-success" hidden>Lưu thông tin cá nhân</button>
+  <!-- Button trigger modal -->
+<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#con">
+  Xóa tài khoản
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="con" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Xác nhận xóa tài khoản</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Tài khoản sẽ bị vô hiệu hóa và không đăng nhập được ở bất kỳ đâu !!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>
+        <button id="xtk" type="button" class="btn btn-primary">Xác nhận xóa</button>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 </form>
 </div>
-<!--  -->
-</body>
+
+
+
+
+
+<?php include "../application/views/_shared/footer.php" ?>
 <?php require_once "../application/views/_shared/js.php"; ?>
+<script src="../public/assets/js/user.js"></script>
+</body>
+
 </html>

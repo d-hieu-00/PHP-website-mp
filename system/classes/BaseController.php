@@ -5,7 +5,9 @@ class BaseController{
         if(file_exists("../application/views/".$folder."/".$viewName.".php")){
             require_once "../application/views/".$folder."/".$viewName.".php";
         } else {
-            echo "file not found: ".$viewName.".php";
+            echo '<div class="alert alert-danger text-center">
+                <strong>Erorr: </strong> File not found: <em>' . "file not found: ".$viewName.".php"
+                 . 'Control.php</em></div>';
         }
     }
 
@@ -14,7 +16,9 @@ class BaseController{
             require_once "../application/models/".$modelName.".php";
             return new $modelName;
         } else {
-            echo "file not found: ".$modelName.".php";
+            echo '<div class="alert alert-danger text-center">
+                <strong>Erorr: </strong> File not found: <em>' . "file not found: ".$modelName.".php"
+                 . 'Control.php</em></div>';
         }
     }
     public function input($inputName){
@@ -47,23 +51,16 @@ class BaseController{
     public function destroy(){
         session_destroy();
     }
-    // Set flash message
-    public function setFlash($sessionName, $msg){
-        if(!empty($sessionName) && !empty($msg)){
-            $_SESSION[$sessionName] = $msg;
-        }
-    }
-
-    //Show flash message
-    public function flash($sessionName, $className){
-        if(!empty($sessionName) && !empty($className) && isset($_SESSION[$sessionName])){
-            $msg = $_SESSION[$sessionName];
-            echo "<div class='". $className ."'>".$msg."</div>";
-            unset($_SESSION[$sessionName]);
-        }
-    }
-
+    
     public function redirect($path){
         header("location:" . BASEURL . "/".$path);
+    }
+
+    public function getImg(){
+        $userModel = $this->model('userModel');
+        if($this->getSession('Account')){
+            return $userModel->getImg($this->getSession('Account'))->img;
+        }
+        return null;
     }
 }

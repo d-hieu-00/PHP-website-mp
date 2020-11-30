@@ -1,30 +1,48 @@
 
+<header>
+<div class="container d-flex">
+  <a href="tel:0965690984" class="p-2">
+    <i class="fa fa-phone"></i> 0965 690 984
+  </a>
 
-<a href="<?php echo BASEURL ?>" class="d-block px-3 py-1 text-center text-bold text-white old-bv">Đồ án bán mỹ phẩm</a>
-<header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
+  <a href="mailto:info@gmail.com" class="p-2">
+  <i class="fa fa-envelope-o"></i> info@gmail.com
+  </a>
 
-  <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
-    <li class="nav-item">
-      <a class="nav-link" href="<?php echo BASEURL; ?>" aria-label="Giỏ hàng">Giỏ hàng</a>
-    </li>
+  <a action="" class="p-2">
+    <i class="fa fa-map-marker"></i> Khu phố 6, P.Linh Trung, Q.Thủ Đức, Tp.Hồ Chí Minh 
+  </a>
 
-    <li class="nav-item dropdown">
-      <a class="nav-item nav-link dropdown-toggle mr-md-1" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Tài khoản
-      </a>
-      <div class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions">
-        <a class="dropdown-item" href="<?php echo BASEURL."/user/profile" ?>">Thông tin tài khoản <strong><?php if($this->getSession('Account'))echo $this->getSession('Account') ?></strong></a>
-        <div class="dropdown-divider"></div>
-        <?php
-          if($this->getSession('Account')){
-            echo '<a class="dropdown-item" href="'.BASEURL."/user/logout".'">Đăng xuất</a>';
-          } else {
-            echo '<a class="dropdown-item" href="'.BASEURL."/user/login".'">Đăng nhập</a>';
-          }
-        ?>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="<?php echo BASEURL."/user/signup" ?>">Tạo tài khoản</a>
-      </div>
-    </li>
-  </ul>
+  <a class=" nav-link dropdown-toggle ml-auto p-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fa fa-user" aria-hidden="true"></i>
+    <?php 
+    if($this->getSession('Account'))
+      echo "<strong>".$this->getSession('Account')."</strong>";
+    else echo "Tài khoản"; ?>
+  </a>
+
+  <div class="dropdown-menu dropdown-menu-md-right">
+    
+    <?php
+      if($this->getSession('Account')){
+        echo '<a class="dropdown-item" href="'.BASEURL."/user/profile".'">';
+        echo '<i class="fa fa-address-card" aria-hidden="true"></i>';
+        echo '  Thông tin tài khoản';
+        echo '</a>';
+        echo '<div class="dropdown-divider"></div>';
+        echo '<a class="dropdown-item" href="'.BASEURL."/user/logout".'">';
+        echo '<i class="fa fa-sign-out" aria-hidden="true"></i> Đăng xuất</a>';
+      } else {
+        echo '<a class="dropdown-item" href="'.BASEURL."/user/login".'">';
+        echo '<i class="fa fa-sign-in" aria-hidden="true"></i> Đăng nhập</a>';
+      }
+    ?>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="<?php echo BASEURL."/user/signup" ?>">
+    <i class="fa fa-plus-square" aria-hidden="true"></i> Tạo tài khoản</a>
+  </div>
+</div>
+
+
 </header>
+

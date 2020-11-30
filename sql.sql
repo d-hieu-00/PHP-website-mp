@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS `mp_user`(
     `id` INT NOT NULL AUTO_INCREMENT,
     `account` VARCHAR(100) NOT NULL UNIQUE,
     `password` VARCHAR(100) NOT NULL,
+    `img` LONGBLOB NULL,
     `date_created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `date_modify` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(`id`)
@@ -404,7 +405,7 @@ CREATE
     ALGORITHM = UNDEFINED 
     DEFINER = `root`@`localhost` 
     SQL SECURITY DEFINER
-VIEW `view_user` (`id` , `account` , `password` , `fullName` , `email` , `Phone` , `address` , `city` , `province` , `status` , `userCreatedDate` , `passwordModifyDate` , `userModifyDate` , `userLastAccessDate`) AS
+VIEW `view_user` (`id` , `account` , `password` , `fullName` , `email` , `phone` , `address` , `city` , `province` , `status` , `userCreatedDate` , `passwordModifyDate` , `userModifyDate` , `userLastAccessDate`) AS
     SELECT 
         `u`.`id` AS `id`,
         `u`.`account` AS `account`,
