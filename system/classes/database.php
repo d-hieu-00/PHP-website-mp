@@ -13,7 +13,7 @@ class database{
                 $e->getMessage() . 'Control.php</em></div>';
         }
     }
- 
+
     public function Query($query, $pargams = []){
         
         try {

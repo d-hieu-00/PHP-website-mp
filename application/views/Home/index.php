@@ -15,5 +15,10 @@
 
 <?php include "../application/views/_shared/footer.php" ?>
 <?php require_once "../application/views/_shared/js.php"; ?>
+<script>
+    $(document).ready(function(){
+        loadCategory()
+    })
+</script>
 </body>
 </html>

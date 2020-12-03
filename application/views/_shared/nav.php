@@ -1,78 +1,61 @@
-<div class="container text-center">
+<div class="container-md text-center">
 <a href="<?php echo BASEURL ?>">
-  <img src="<?php echo BASEURL; ?>/public/assets/img/logo.png" alt="banner">
+  <img class="img-fluid" src="<?php echo BASEURL; ?>/public/assets/img/logo.png" alt="banner">
 </a>
 </div>
 
 
 <nav class="navbar navbar-expand-md site-nav sticky-top">
-  <div class="container">
+  <div class="container pt-2 pb-2">
   <a class="navbar-brand pl-2 pr-4 border-right" href="<?php echo BASEURL ?>">
     <i class="fa fa-home" aria-hidden="true"></i> <strong>Trang chủ</strong>
   </a>
 
   
-  <div class="collapse navbar-collapse">
-    <ul class="navbar-nav mr-auto mt-1">
+  <div class="navbar-collapse">
+    <ul class="navbar-nav mr-auto">
 
-      <li class="nav-item dropdown">
-        <a class="nav-link" href="#" data-toggle="dropdown">Trang điểm
-          <i class="fa fa-angle-down hidden-xs hidden-sm" aria-hidden="true"></i>
+      <li class="nav-item dropdown pl-2">
+        <a class="nav-link" href="#" data-toggle="dropdown" id_ca='1'>Trang điểm
+          <i class="fa fa-angle-down d-inline" aria-hidden="true"></i>
         </a>
-        <ul class="dropdown-menu dropdown-menu-left">
-          <li><a class="dropdown-item" href="#"> Submenu item 1</a></li>
-          <li><a class="dropdown-item" href="#"> Submenu item 2 </a></li>
-        </ul>
       </li>
 
-      <li class="nav-item dropdown">
-        <a class="nav-link" href="#" data-toggle="dropdown">Chăm sóc da
-          <i class="fa fa-angle-down hidden-xs hidden-sm" aria-hidden="true"></i>
+      <li class="nav-item dropdown pl-2">
+        <a class="nav-link" href="#" data-toggle="dropdown" id_ca='2'>Chăm sóc da
+          <i class="fa fa-angle-down d-inline" aria-hidden="true"></i>
         </a>
-        <ul class="dropdown-menu dropdown-menu-left">
-          <li><a class="dropdown-item" href="#"> Submenu item 1</a></li>
-          <li><a class="dropdown-item" href="#"> Submenu item 2 </a></li>
-        </ul>
       </li>
 
-      <li class="nav-item dropdown">
-        <a class="nav-link" href="#">Chăm sóc tóc
-          <i class="fa fa-angle-down hidden-xs hidden-sm" aria-hidden="true"></i>
+      <li class="nav-item dropdown pl-2">
+        <a class="nav-link" href="#" data-toggle="dropdown" id_ca='3'>Chăm sóc tóc
+          <i class="fa fa-angle-down d-inline" aria-hidden="true"></i>
         </a>
-        <ul class="dropdown-menu dropdown-menu-left">
-          <li><a class="dropdown-item" href="#"> Submenu item 1</a></li>
-          <li><a class="dropdown-item" href="#"> Submenu item 2 </a></li>
-        </ul>
       </li>
 
-      <li class="nav-item dropdown">
-        <a class="nav-link" href="#">Nước hoa
-          <i class="fa fa-angle-down hidden-xs hidden-sm" aria-hidden="true"></i>
+      <li class="nav-item dropdown pl-2">
+        <a class="nav-link" href="#" data-toggle="dropdown" id_ca='4'>Nước hoa
+          <i class="fa fa-angle-down d-inline" aria-hidden="true"></i>
         </a>
-        <ul class="dropdown-menu dropdown-menu-left">
-          <li><a class="dropdown-item" href="#"> Submenu item 1</a></li>
-          <li><a class="dropdown-item" href="#"> Submenu item 2 </a></li>
-        </ul>
       </li>
     </ul>
 
 
-    <form class="form-inline">
+    <form class="form-inline pl-2">
       <input class="form-control mr-1" type="text" placeholder="Nhập tên sản phẩm" aria-label="Tìm kiếm">
       <button id="sreach" class="btn btn-outline-secondary p-2" type="button">
         <i class="fa fa-search" aria-hidden="true"></i>
       </button>
     </form>
 
-    <a class="nav-link " href="<?php echo BASEURL; ?>" aria-label="Giỏ hàng">
-      <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-      Giỏ hàng
+    <a class="nav-link pl-2" href="<?php echo BASEURL; ?>" aria-label="Giỏ hàng">
+      <i class="fa fa-shopping-cart d-inline" aria-hidden="true"></i>Giỏ hàng
     </a>
   </div>
   </div>
 </nav>
 
-<div class="container slideshow">
+<div class="container slideshow p-0">
 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
   <?php
     function getDirContents($dir, &$results = array()) {

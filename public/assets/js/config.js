@@ -1,0 +1,1 @@
+const BASEURL = "/-website-mp"

@@ -1,17 +1,16 @@
-<html>
-
-<head>
-    <title>Home mate - Admin</title>
-    <?php require_once "../application/views/admin/_assets/css.php"; ?>
-</head>
-
-<body>
-    <?php include "../application/views/admin/_assets/header.php" ?>
+<?php include "../application/views/admin/_assets/header.php" ?>
     <!-- Topbar -->
     <div class="container-fluid bg-white mb-4 text-center shadow">
-        <a>
-            <img class="img-fluid" src="<?php echo BASEURL; ?>/public/assets/img/logo.png" alt="banner">
-        </a>
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4">
+            <!-- Sidebar Toggle (Topbar) -->
+            <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                <i class="fa fa-bars"></i>
+            </button>
+            <!-- Topbar info -->
+            <div class="sidebar-heading">
+                Home Page Admin
+            </div>
+        </nav>
     </div>
     <!-- Begin Page Content -->
     <div class="container-fluid">
@@ -22,7 +21,4 @@
 
     </div>
     <!-- /.container-fluid -->
-    <?php include "../application/views/admin/_assets/footer.php" ?>
-</body>
-
-</html>
+<?php include "../application/views/admin/_assets/footer.php" ?>

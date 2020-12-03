@@ -20,20 +20,12 @@
         echo '<img id="img" class="img-fluid" src="../public/assets/img/user.png">';
       }
     ?>
-    <div class="overlay">
-      <!-- <input id="Img" type="file" class="form-control Img info" name="Img" accept="image/*">  -->
+    <div class="overlay">  -->
       <h2>Đổi ảnh đại diện</h2>
       <label for="Img" class="info">Chọn file ảnh</label>
       <input id="Img" type="file" class="form-control Img" name="Img" accept="image/*" hidden> 
     </div>
   </div>
-  
-  <!-- <div class="form-group custom-file">
-    <div>
-      <label for="Img" class="custom-file-label"></label>
-      <input id="Img" type="file" class="form-control Img" name="Img" accept="image/*" hidden> 
-    </div>
-  </div> -->
 
   <div class="form-group row pt-2">
     <label class="col-sm-7 col-form-label"><strong>Tên tài khoản:</strong></label>
@@ -178,7 +170,7 @@
   </div>
 
 </div>
-<div class="col-4 d-flex justify-content-around">
+<div class="col-4 d-flex justify-content-around mt-3">
   <button id="stt" type="button" class="btn btn-primary">Sửa thông tin cá nhân</button>
 </div>
 <div class="col-8 d-flex justify-content-around mt-3">

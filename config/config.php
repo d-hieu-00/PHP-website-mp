@@ -12,6 +12,6 @@ define("PASSWORDADMIN","ss");
 
 // Base URL
 
-define("BASEURL", "http://localhost/-website-mp");
+define("BASEURL", "/-website-mp");
 
 ?>

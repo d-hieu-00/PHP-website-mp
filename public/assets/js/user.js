@@ -1,5 +1,4 @@
 //signup page
-const BASEURL = "http://localhost/-website-mp"
 $(document).ready(function() {
     $(".Password, .conPassword").keyup(function(){
         Password = $("#Password").val()

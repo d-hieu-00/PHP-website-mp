@@ -1,138 +1,171 @@
-<html>
-
-<head>
-    <title>Home mate - Admin</title>
-    <?php require_once "../application/views/admin/_assets/css.php"; ?>
-</head>
-
-<body>
-    <?php include "../application/views/admin/_assets/header.php" ?>
-    <!-- Begin Page Content -->
-    <div class="container-fluid mt-4">
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Thông tin kho</h6>
-            </div>
-            <div class="card-body">
-
-                <table id="warehouse_table" class="display compact hover collapsed">
-                    <thead>
-                        <tr>
-                            <th>STT</th>
-                            <th>Tên kho</th>
-                            <th>Tỉnh/ thành phố</th>
-                            <th>Huyện</th>
-                            <th>Địa chỉ chi tiết</th>
-                            <th>Trạng thái</th>
-                            <th>Action</th>
-                            <th>Ngày tạo kho</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        function load($a)
-                        {
-                            $allWarehouse = $a->getAllWarehouse();
-                            $i = 1;
-                            foreach ($allWarehouse as $val) {
-                                echo '<tr>';
-                                echo '<td>' . $i++ . '</td>';
-                                echo '<td>' . $val->name . '</td>';
-                                echo '<td>' . $val->city . '</td>';
-                                echo '<td>' . $val->province . '</td>';
-                                echo '<td>' . $val->address . '</td>';
-                                echo '<td><button class="btn status" id_w="' . $val->id . '">' . $val->status . '</button></td>';
-                                echo '<td><button class="btn modify" id_w="' . $val->id . '"
-                        data-toggle="modal" data-target="#modify-warehouse">Sửa thông tin kho</button></td>';
-                                echo '<td>' . $val->date_created . '</td>';
-                                echo '</tr>';
-                            }
-                        }
-                        load($this);
-                        ?>
-                    </tbody>
-                </table>
-            </div>
+<?php include "../application/views/admin/_assets/header.php" ?>
+<!-- Topbar -->
+<div class="container-fluid bg-white mb-4 text-center shadow">
+    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4">
+        <!-- Sidebar Toggle (Topbar) -->
+        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+        </button>
+        <!-- Topbar info -->
+        <div class="sidebar-heading">
+            Thông tin kho hàng
         </div>
-    </div>
-    <!-- /.container-fluid -->
+    </nav>
+</div>
+<!-- Begin Page Content -->
+<div class="container-fluid mt-4">
 
-    <!-- Modal -->
-    <div class="modal fade" id="modify-warehouse" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Sửa thông tin kho</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="Password">
-                            <i class="fa fa-key" aria-hidden="true"></i>
-                            <strong>Mật khẩu</strong>
-                        </label>
-                        <input type="password" id="Password" name="Password" class="form-control Password" placeholder="Nhập mật khẩu" required>
-                    </div>
+    <div class="card shadow mb-4">
+        <div class="card-header">
+            <div class="row">
+                <h6 class="col-md-6 d-flex align-items-center font-weight-bold text-primary">
+                    Tất cả kho hàng</h6>
+                <!-- Table Search -->
+                <div class="col-md-6 d-flex justify-content-end form-inline find-input">
+                    <input type="text" class="form-control find" placeholder="Tìm kiếm theo cột..." tb_id="warehouse_table">
 
-                    <div class="form-group">
-                        <label for="Password">
-                            <i class="fa fa-key" aria-hidden="true"></i>
-                            <strong>Mật khẩu</strong>
-                        </label>
-                        <input type="password" id="Password" name="Password" class="form-control Password" placeholder="Nhập mật khẩu" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="Password">
-                            <i class="fa fa-key" aria-hidden="true"></i>
-                            <strong>Mật khẩu</strong>
-                        </label>
-                        <input type="password" id="Password" name="Password" class="form-control Password" placeholder="Nhập mật khẩu" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="Password">
-                            <i class="fa fa-key" aria-hidden="true"></i>
-                            <strong>Mật khẩu</strong>
-                        </label>
-                        <input type="password" id="Password" name="Password" class="form-control Password" placeholder="Nhập mật khẩu" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>
-                    <button id="xtk" type="button" class="btn btn-primary">Lưu thông tin</button>
+                    <select class="form-control ml-2">
+                        <option selected value="1">Tên kho</option>
+                        <option value="2">Họ và tên</option>
+                        <option value="3">Tỉnh/ thành phố</option>
+                        <option value="4">Huyện</option>
+                        <option value="5">Địa chỉ chi tiết</option>
+                    </select>
                 </div>
             </div>
         </div>
+        <div class="card-body">
+
+            <table id="warehouse_table" class="display w-100">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên kho</th>
+                        <th>Tỉnh/ thành phố</th>
+                        <th>Huyện</th>
+                        <th>Địa chỉ chi tiết</th>
+                        <th>Trạng thái</th>
+                        <th>Sửa</th>
+                        <th>Chi tiết</th>
+                        <th>Ngày tạo kho</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <?php include "../application/views/admin/_assets/footer.php" ?>
-    <script>
-        $(document).ready(function() {
-            a = $(".navbar-nav li.active")
-            for (i = 0; i < a.length; i++) a.eq(i).removeClass('active')
-            $("#warehousePage").addClass('active')
+</div>
+<!-- /.container-fluid -->
 
-            a = $("#warehouse_table button")
-            for (i = 0; i < a.length; i++) {
-                if (a.eq(i).text() == "ACTIVE") {
-                    a.eq(i).addClass('btn-success');
-                } else if (a.eq(i).text() == "DISABLE") {
-                    a.eq(i).addClass('btn-danger')
-                    a.eq(i).parents('tr').find('button.modify').attr('disabled', 'true')
-                } else {
-                    a.eq(i).addClass('btn-info');
-                }
-            }
+<!-- Modal modify warehouse -->
+<div class="modal fade" id="modify-warehouse" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sửa thông tin kho</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="Name">
+                        <i class="fas fa-file-signature"></i>
+                        <strong>Tên kho</strong>
+                    </label>
+                    <input type="text" id="Name" name="Name" class="form-control Name" placeholder="Tên kho" required>
+                </div>
 
-            $('#warehouse_table')
-                .addClass('nowrap')
-                .dataTable({
-                    responsive: true
-                });
-        })
-    </script>
-</body>
+                <div class="form-group">
+                    <label for="city">
+                        <i class="fas fa-city"></i>
+                        <strong>Tỉnh/ thành phố</strong>
+                    </label>
+                    <input type="text" id="City" name="City" class="form-control City" placeholder="Tỉnh/ thành phố" required>
+                </div>
 
-</html>
+                <div class="form-group">
+                    <label for="Province">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <strong>Huyện</strong>
+                    </label>
+                    <input type="text" id="Province" name="Province" class="form-control Province" placeholder="Huyện" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="Address">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>Địa chỉ chi tiết</strong>
+                    </label>
+                    <input type="text" id="Address" name="Address" class="form-control Address" placeholder="Địa chỉ chi tiết" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>
+                <button id="w-save" type="button" class="btn btn-success">Lưu thông tin</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal detail warehouse -->
+<div class="modal fade" id="detail-warehouse" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông tin chi tiết kho</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card shadow mb-4">
+                    <div class="card-header">
+                        <div class="row">
+                            <h6 class="col-md-4 d-flex align-items-center font-weight-bold text-primary">
+                                Chi tiết kho</h6>
+                            <!-- Table Search -->
+                            <div class="col-md-8 d-flex justify-content-end form-inline find-input">
+                                <input type="text" class="form-control find" 
+                                placeholder="Tìm kiếm theo cột..." tb_id="warehouse_detail_table">
+
+                                <select class="form-control ml-2">
+                                    <option selected value="1">Tên sản phẩm</option>
+                                    <option value="2">Thương hiệu</option>
+                                    <option value="3">Số lượng</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+
+                        <table id="warehouse_detail_table" class="display w-100">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Thương hiệu</th>
+                                    <th>Số lượng</th>
+                                    <th>Ngày nhập mới</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>
+            </div>
+        </div>
+    </div>
+</div>
+<?php include "../application/views/admin/_assets/footer.php" ?>
+<script>
+    $(document).ready(function() {
+        loadPage("#warehousePage")
+        initTable("#warehouse_table", "/admin/getAllWarehouse")
+    })
+</script>

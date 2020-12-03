@@ -2,12 +2,12 @@
 
 <head>
   <title>Home mate - Login admin</title>
-  <?php require_once "../application/views/admin/_assets/css.php"; ?>
+  <?php require_once "../application/views/_shared/css.php"; ?>
 </head>
 
 <body>
-  <div class="d-flex align-items-center container-login">
-    <div class="container container_s card pd-2 col-3">
+  <div class="d-flex align-items-center container-login pt-md-5 pb-md-5">
+    <div class="container container_s card pd-2 col-md-3">
       <form action="<?php echo BASEURL; ?>/admin/login" method="POST">
         <div class="col-12 col-md text-center">
           <a href="<?php echo BASEURL ?>">
@@ -37,6 +37,3 @@
   </div>
   </div>
   <?php include "../application/views/admin/_assets/footer.php" ?>
-</body>
-
-</html>
