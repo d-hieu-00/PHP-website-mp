@@ -79,23 +79,6 @@
                 </div>
             </li>
 
-
-            <!-- Khuyến mãi -->
-            <li id="discountPage" class="nav-item">
-                <a class="nav-link collapsed" href="" data-toggle="collapse" data-target="#km">
-                    <i class="fas fa-tags"></i>
-                    <span>Khuyến mãi</span>
-                </a>
-                <div id="km" class="collapse">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Chỉnh sửa khuyến mãi:</h6>
-                        <a class="collapse-item" href="<?php echo BASEURL ?>/admin/info_discount">Thông tin khuyến mãi</a>
-                        <a class="collapse-item" href="<?php echo BASEURL ?>/admin/insert_discount">Thêm khuyến mãi</a>
-                    </div>
-                </div>
-            </li>
-
-
             <!-- Đơn đặt hàng -->
             <li id="orderPage" class="nav-item">
                 <a class="nav-link collapsed" href="" data-toggle="collapse" data-target="#hd">

@@ -29,7 +29,7 @@ initTable = function (tableID, dataLink) {
     $(tableID).addClass('nowrap')
     $(tableID).DataTable({
         responsive: true,
-        "destroy" : true,
+        "destroy": true,
         "ajax": {
             "url": BASEURL + dataLink,
             "type": "POST",
@@ -40,6 +40,55 @@ initTable = function (tableID, dataLink) {
         }
     });
 
+}
+loadInsertP = function () {
+    $.ajax({
+        type: "POST",
+        url: BASEURL + "/admin/getTypeProductForTagSelect",
+        dataType: 'JSON'
+    }).then(
+        // resolve/success callback
+        function (response) {
+            if (response.status) {
+                $("select.Type-product option").remove()
+                s = ""
+                for (i = 0; i < response.data.length; i++) {
+                    s += '<option value="' + response.data[i][0] + '">' + response.data[i][1] + '</option>'
+                }
+                $("select.Type-product").append(s)
+            }
+        },
+        // reject/failure callback
+        function () {
+            alert('There was some error tp!');
+        }
+    )
+
+    $.ajax({
+        type: "POST",
+        url: BASEURL + "/admin/getWarehouseForTagSelect",
+        dataType: 'JSON'
+    }).then(
+        // resolve/success callback
+        function (response) {
+            if (response.status) {
+                p = $("div.form-row")
+                $("button.AddWarehouse").removeAttr('disabled')
+                for (i = 1; i < p.length; i++) p.eq(i).remove()
+
+                $("select.Warehouse option").remove()
+                s = ""
+                for (i = 0; i < response.data.length; i++) {
+                    s += '<option value="' + response.data[i][0] + '">' + response.data[i][1] + '</option>'
+                }
+                $("select.Warehouse").append(s)
+            }
+        },
+        // reject/failure callback
+        function () {
+            alert('There was some error whd!');
+        }
+    )
 }
 /**
  * 
@@ -58,19 +107,19 @@ $(document).ready(function () {
         tb_id = "#" + $(this).attr('tb_id')
 
         $(tb_id).DataTable().column(col).search(val).draw()
-        console.log(col+" "+val)
+        console.log(col + " " + val)
     })
     /**
      * 
      * select change
      */
-    $("div.find-input select").change(function(){
+    $("div.find-input select").change(function () {
         $(tb_id).DataTable().column(col).search('').draw()
         col = $(this).find("option:selected").val()
         val = $("input.find").val()
-        
+
         $(tb_id).DataTable().column(col).search(val).draw()
-        console.log(col+" "+val)
+        console.log(col + " " + val)
     })
 })
 
@@ -235,8 +284,8 @@ $(document).ready(function () {
      * warehouse detail
      */
     $(document).on('click', '#warehouse_table .detail', function () {
-        id =  $(this).attr('id_w')
-        initTable("#warehouse_detail_table", "/admin/detailsWarehouse/"+id)
+        id = $(this).attr('id_w')
+        initTable("#warehouse_detail_table", "/admin/detailsWarehouse/" + id)
     })
 
     /**
@@ -288,13 +337,13 @@ $(document).ready(function () {
                         s += '</div>'
                         $("#admin-navbar").after(s)
                     } else {
-                        if(response.NameError != null) {
+                        if (response.NameError != null) {
                             $("input.Name").addClass("is-invalid")
                             $(".NameError").html(response.NameError)
                         }
                         s = '<div class="alert alert-danger text-center" role="alert">'
                         s += 'Thêm kho hàng không thành công!!'
-                        if (response.msg != null) s+= response.msg
+                        if (response.msg != null) s += response.msg
                         s += '</div>'
                         $("#admin-navbar").after(s)
                     }
@@ -348,10 +397,8 @@ $(document).ready(function () {
                     a.eq(i).toggleClass('btn-danger')
                     if (a.eq(i).text() == "ACTIVE") {
                         a.eq(i).parents('tr').find('button.modify').removeAttr('disabled')
-                        a.eq(i).parents('tr').find('button.detail').removeAttr('disabled')
                     } else {
                         a.eq(i).parents('tr').find('button.modify').attr('disabled', 'true')
-                        a.eq(i).parents('tr').find('button.detail').attr('disabled', 'true')
                     }
                 }
             }
@@ -375,7 +422,7 @@ $(document).ready(function () {
         }
         console.log(data)
         $("#modify-type-product .modal-body input.Name").val(data.name)
-        $("#modify-type-product .modal-body select.Category option[value='"+data.category+"']").attr('selected','true')
+        $("#modify-type-product .modal-body select.Category option[value='" + data.category + "']").attr('selected', 'true')
     })
 
     $(document).on('click', '#tp-save', function () {
@@ -406,7 +453,7 @@ $(document).ready(function () {
             }
         )
     })
-    
+
     /**
      * 
      * insert type product
@@ -416,7 +463,7 @@ $(document).ready(function () {
         const data = {
             'name': $("input.Name").val(),
             'status': $("select.Status option:selected").val(),
-            'id_category' : $("select.Category option:selected").val()
+            'id_category': $("select.Category option:selected").val()
         }
         if (data.name == "")
             $("input.Name").addClass("is-invalid")
@@ -438,13 +485,13 @@ $(document).ready(function () {
                         s += '</div>'
                         $("#admin-navbar").after(s)
                     } else {
-                        if(response.NameError != null) {
+                        if (response.NameError != null) {
                             $("input.Name").addClass("is-invalid")
                             $(".NameError").html(response.NameError)
                         }
                         s = '<div class="alert alert-danger text-center" role="alert">'
                         s += 'Thêm loại sản phẩm không thành công!!'
-                        if (response.msg != null) s+= response.msg
+                        if (response.msg != null) s += response.msg
                         s += '</div>'
                         $("#admin-navbar").after(s)
                     }
@@ -464,7 +511,6 @@ $(document).ready(function () {
      * 
      * product active/disable
      */
-    w_modify = null
     $(document).on('click', '#product_table .status', function () {
         if ($(this).text() == "ACTIVE") {
             link = "/admin/disableProduct"
@@ -498,10 +544,8 @@ $(document).ready(function () {
                     a.eq(i).toggleClass('btn-danger')
                     if (a.eq(i).text() == "ACTIVE") {
                         a.eq(i).parents('tr').find('button.modify').removeAttr('disabled')
-                        a.eq(i).parents('tr').find('button.detail').removeAttr('disabled')
                     } else {
                         a.eq(i).parents('tr').find('button.modify').attr('disabled', 'true')
-                        a.eq(i).parents('tr').find('button.detail').attr('disabled', 'true')
                     }
                 }
             }
@@ -512,62 +556,334 @@ $(document).ready(function () {
      * 
      * product .modify
      */
-    $(document).on('click', '#product_table .modify', function () {
-        w_id = $(this).attr('id_w')
-        w_modify = $(this).parents('tbody').find('button.modify:hidden[id_w="' + w_id + '"]')
-        if (w_modify.length < 1) {
-            w_modify = $(this)
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            reader = new FileReader();
+            reader.onload = function (e) {
+                $('img#img-product').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
         }
-
-        const data = {
-            'name': w_modify.parents('tr').find('span.w-name').text(),
-            'city': w_modify.parents('tr').find('span.w-city').text(),
-            'province': w_modify.parents('tr').find('span.w-province').text(),
-            'address': w_modify.parents('tr').find('span.w-address').text(),
+    }
+    $("input#Img").change(function () {
+        readURL(this);
+    });
+    p_modify = null
+    $(document).on('click', 'button.AddWarehouse', function () {
+        p = $(this).parents('.form-row')
+        s = p.html()
+        len = $(".form-row").length
+        len_o = $("select#Warehouse:first option").length
+        if (len <= len_o) {
+            s = s.replace('<button class="AddWarehouse btn btn-success" type="button"><i class="fas fa-plus"></i></button>',
+                '<button class="RemoveWarehouse btn btn-danger" type="button"><i class="fas fa-times"></i></button>')
+            s = '<div class="form-row form-group">' + s + '</div>'
+            p.after(s)
         }
-
-        $("#modify-product .modal-body input.Name").val(data.name)
-        $("#modify-product .modal-body input.City").val(data.city)
-        $("#modify-product .modal-body input.Province").val(data.province)
-        $("#modify-product .modal-body input.Address").val(data.address)
+        if (len + 1 == len_o) {
+            $(this).attr('disabled', 'true')
+        }
     })
-
-    $(document).on('click', '#w-save', function () {
+    $(document).on('click', 'button.RemoveWarehouse', function () {
+        p = $(this)
+        wd = [p_modify.attr('id_p'),
+        $(this).parents('.form-row').find("option:selected").val()]
         const data = {
-            'id': w_modify.attr('id_w'),
-            'name': $(".modal-body input.Name").val(),
-            'city': $(".modal-body input.City").val(),
-            'province': $(".modal-body input.Province").val(),
-            'address': $(".modal-body input.Address").val(),
+            'warehouse': wd
         }
+        $.ajax({
+            type: "POST",
+            url: BASEURL + "/admin/deleteWarehouseDetail",
+            data: data,
+            dataType: 'JSON'
+        }).then(
+            // resolve/success callback
+            function (response) {
+                if (response.status == true) {
+                    p.parents('.form-row').remove()
+                    $("button.AddWarehouse").removeAttr('disabled')
+                }
+            },
+            // reject/failure callback
+            function () {
+                alert('Không thể xóa kho!');
+            }
+        )
+    })
+    $(document).on('focus', 'select.Warehouse', function () {
+        $(this).data('lastValue', $(this).val());
+    });
+    $(document).on('change', 'select.Warehouse', function () {
+        var lastRole = $(this).data('lastValue');
+        p = $("div.form-row")
+        w = []
+        for (i = 0; i < p.length; i++) {
+            w.push(p.eq(i).find("option:selected").val())
+            if (i != 0) {
+                if (w[i - 1] == w[i]) {
+                    alert("Lỗi: kho đã tồn tại")
+                    $(this).val(lastRole);
+                    return false;
+                }
+            }
+        }
+
+    })
+    $(document).on('click', '#product_table .modify', function () {
+        p_id = $(this).attr('id_p')
+        p_modify = $(this)
+        const data = {
+            'id': p_id
+        }
+        $("input#Img").val('')
+        TypeProduct = null
+        /**
+         * 
+         * get product
+         */
+        $.ajax({
+            type: "POST",
+            url: BASEURL + "/admin/getOneProduct",
+            data: data,
+            dataType: 'JSON'
+        }).then(
+            // resolve/success callback
+            function (response) {
+                $("input#Name").val(response.data['name'])
+                $("input#Brand").val(response.data['brand'])
+                $("input#Color").val(response.data['color'])
+                $("input#Price").val(response.data['price'])
+                if (response.data['img'] != null) {
+                    $("img#img-product").attr('src', response.data['img'])
+                }
+                $("input#Short-Description").val(response.data['short_discription'])
+                $("textarea#Description").val(response.data['discription'])
+                TypeProduct = response.data['id_type']
+            },
+            // reject/failure callback
+            function () {
+                alert('There was some error p!');
+            }
+        )
 
         $.ajax({
             type: "POST",
-            url: BASEURL + "/admin/saveWarehouse",
+            url: BASEURL + "/admin/getTypeProductForTagSelect",
+            dataType: 'JSON'
+        }).then(
+            // resolve/success callback
+            function (response) {
+                if (response.status) {
+                    $("select.Type-product option").remove()
+                    s = ""
+                    for (i = 0; i < response.data.length; i++) {
+                        s += '<option value="' + response.data[i][0] + '">' + response.data[i][1] + '</option>'
+                    }
+                    $("select.Type-product").append(s)
+                    $("select.Type-product option[value='" + TypeProduct + "'").attr('selected', 'true')
+                }
+            },
+            // reject/failure callback
+            function () {
+                alert('There was some error tp!');
+            }
+        )
+        Warehouse = null
+        $.ajax({
+            type: "POST",
+            url: BASEURL + "/admin/getWarehouseByIdProduct",
             data: data,
             dataType: 'JSON'
         }).then(
             // resolve/success callback
             function (response) {
                 if (response.status) {
-                    $("#warehouse_table").DataTable().ajax.reload()
-                    $('#modify-warehouse').modal('toggle')
+                    Warehouse = response.data
+                    $("input.Quantity").val(0)
+                    $.ajax({
+                        type: "POST",
+                        url: BASEURL + "/admin/getWarehouseForTagSelect",
+                        dataType: 'JSON'
+                    }).then(
+                        // resolve/success callback
+                        function (response) {
+                            if (response.status) {
+                                p = $("div.form-row")
+                                $("button.AddWarehouse").removeAttr('disabled')
+                                for (i = 1; i < p.length; i++) p.eq(i).remove()
+
+                                $("select.Warehouse option").remove()
+                                s = ""
+                                for (i = 0; i < response.data.length; i++) {
+                                    s += '<option value="' + response.data[i][0] + '">' + response.data[i][1] + '</option>'
+                                }
+                                $("select.Warehouse").append(s)
+
+                                p = $("div.form-row")
+                                s = p.html()
+                                s = s.replace('<button class="AddWarehouse btn btn-success" type="button"><i class="fas fa-plus"></i></button>',
+                                    '<button class="RemoveWarehouse btn btn-danger" type="button"><i class="fas fa-times"></i></button>')
+                                len_o = $("select#Warehouse:first option").length
+                                if (len_o == Warehouse.length) $("button.AddWarehouse").attr('disabled', 'true')
+                                for (i = 0; i < Warehouse.length; i++) {
+                                    if (i == 0) {
+                                        p.find("option[value='" + Warehouse[0].id_warehouse + "'").attr('selected', 'true')
+                                        p.find("input#Quantity").val(Warehouse[0].quantity)
+                                    } else {
+                                        a = '<div class="form-row form-group" r_wh="' + i + '">' + s + '</div>'
+                                        p.after(a)
+                                        $("div.form-row[r_wh='" + i + "']").find("option[value='" + Warehouse[i].id_warehouse + "'").attr('selected', 'true')
+                                        $("div.form-row[r_wh='" + i + "']").find("input#Quantity").val(Warehouse[i].quantity)
+                                    }
+                                }
+                            }
+                        },
+                        // reject/failure callback
+                        function () {
+                            alert('There was some error whd!');
+                        }
+                    )
                 }
             },
             // reject/failure callback
             function () {
-                alert('There was some error!');
+                alert('There was some error wh!');
             }
         )
     })
 
+    $(document).on('click', '#p-save', function () {
+        id = p_modify.attr('id_p')
+        p = $("div.form-row")
+        w = []
+        for (i = 0; i < p.length; i++) {
+            w.push([p.eq(i).find("input#Quantity").val(), id,
+            p.eq(i).find("option:selected").val()])
+            if (i > 0) {
+                if (w[i][2] == w[i - 1][2]) {
+                    alert('Kho ko được trùng')
+                    return
+                }
+            }
+        }
+        const data = {
+            'id': id,
+            'name': $(".modal-body input#Name").val(),
+            'brand': $(".modal-body input#Brand").val(),
+            'color': $(".modal-body input#Color").val(),
+            'price': $(".modal-body input#Price").val(),
+            'img': $("img#img-product").attr('src'),
+            'short_discription': $("input#Short-Description").val(),
+            'discription': $("textarea#Description").val(),
+            'id_type': $("select.Type-product option:selected").val(),
+            'warehouse': w
+        }
+        $.ajax({
+            type: "POST",
+            url: BASEURL + "/admin/saveProduct",
+            data: data,
+            dataType: 'JSON'
+        }).then(
+            // resolve/success callback
+            function (response) {
+                if (response.status) {
+                    $("#product_table").DataTable().ajax.reload()
+                    $('#modify-product').modal('toggle')
+                    p_modify = null
+                }
+            },
+            // reject/failure callback
+            function () {
+                alert('There was some error sp!');
+            }
+        )
+    })
     /**
      * 
-     * product detail
+     * insert p
      */
-    $(document).on('click', '#warehouse_table .detail', function () {
-        id =  $(this).attr('id_w')
-        initTable("#warehouse_detail_table", "/admin/detailsWarehouse/"+id)
+    $(document).on('click', '#p-insert', function () {
+        p = $("div.form-row")
+        w = []
+        check = true
+        for (i = 0; i < p.length; i++) {
+            w.push([p.eq(i).find("input#Quantity").val(),
+            p.eq(i).find("option:selected").val()])
+            if (w[i][0] == "") {
+                p.eq(i).find("input.Quantity").addClass("is-invalid")
+                check = false
+            }
+            else
+                p.eq(i).find("input.Quantity").removeClass("is-invalid")
+            if (i > 0) {
+                if (w[i][1] == w[i - 1][1]) {
+                    alert('Kho ko được trùng')
+                    return
+                }
+            }
+        }
+        const data = {
+            'name': $("input#Name").val(),
+            'brand': $("input#Brand").val(),
+            'color': $("input#Color").val(),
+            'price': $("input#Price").val(),
+            'img': $("img#img-product").attr('src'),
+            'short_discription': $("input#Short-Description").val(),
+            'discription': $("textarea#Description").val(),
+            'id_type': $("select.Type-product option:selected").val(),
+            'warehouse': w
+        }
+        console.log(w);
+        if (data.name == "") {
+            $("input.Name").addClass("is-invalid")
+            check = false
+        }
+        else
+            $("input.Name").removeClass("is-invalid")
+
+        if (data.brand == "") {
+            $("input.Brand").addClass("is-invalid")
+            check = false
+        }
+        else
+            $("input.Brand").removeClass("is-invalid")
+
+        if (data.price == "") {
+            $("input.Price").addClass("is-invalid")
+            check = false
+        }
+        else
+            $("input.Price").removeClass("is-invalid")
+
+        if (data.short_discription == "") {
+            $("input.Short-Description").addClass("is-invalid")
+            check = false
+        }
+        else
+            $("input.Short-Description").removeClass("is-invalid")
+
+        if (check) {
+            $.ajax({
+                type: "POST",
+                url: BASEURL + "/admin/insertProduct",
+                data: data,
+                dataType: 'JSON'
+            }).then(
+                // resolve/success callback
+                function (response) {
+                    if (response.status) {
+                        s = '<div class="alert alert-success text-center" role="alert">'
+                        s += 'Thêm loại sản phẩm thành công thành công!!'
+                        s += '</div>'
+                        $("#admin-navbar").after(s)
+                    }
+                },
+                // reject/failure callback
+                function () {
+                    alert('There was some error ip!');
+                }
+            )
+        }
     })
 })
 

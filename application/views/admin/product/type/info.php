@@ -76,7 +76,7 @@
 
                 <div class="form-group">
                     <label for="Category"><strong>Danh mục</strong></label>
-                    <select class="form-control Category">
+                    <select class="form-control Category" name="Category">
                         <option selected value="1">Trang điểm</option>
                         <option value="2">Chăm sóc da</option>
                         <option value="3">Chăm sóc tóc</option>

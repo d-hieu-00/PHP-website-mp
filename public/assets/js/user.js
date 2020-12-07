@@ -1,3 +1,9 @@
+
+
+
+
+
+
 //signup page
 $(document).ready(function() {
     $(".Password, .conPassword").keyup(function(){

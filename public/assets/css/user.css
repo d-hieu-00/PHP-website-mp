@@ -124,7 +124,7 @@ input::-webkit-inner-spin-button {
     transform:translatey(-100px);
     -webkit-transition:all .2s ease-in-out;
     transition:all .2s ease-in-out;
-    padding:10px;
+    /* padding:10px; */
 }
 
 .hovereffect .info {
@@ -138,8 +138,8 @@ input::-webkit-inner-spin-button {
     filter:alpha(opacity=0);
     -webkit-transition:all .2s ease-in-out;
     transition:all .2s ease-in-out;
-    margin:50px 0 0;
-    padding:7px 14px;
+    margin:30px 0 0;
+    padding:5px 10px;
 }
 
 .hovereffect .info:hover {
@@ -170,79 +170,13 @@ input::-webkit-inner-spin-button {
     transition-delay:.2s;
 }
 /*  */
-/*  */
-.pickr {
-    position: relative;
-    overflow: visible
+.name-product{
+    color: #666;
 }
-
-.pickr * {
-    box-sizing: border-box
+.name-product:hover{
+    color: #07B0B0;
 }
-
-.pickr .pcr-button {
-    position: relative;
-    height: 2em;
-    width: 2em;
-    padding: .5em;
-    border-radius: .15em;
-    cursor: pointer;
-    background: transparent;
-    transition: background-color .3s;
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif
-}
-
-.pickr .pcr-button:before {
-    background: url('data:image/svg+xml;utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2"><path fill="white" d="M1,0H2V1H1V0ZM0,1H1V2H0V1Z"/><path fill="gray" d="M0,0H1V1H0V0ZM1,1H2V2H1V1Z"/></svg>');
-    background-size: .5em;
-    border-radius: .15em;
-    z-index: -1
-}
-
-.pickr .pcr-button:after,
-.pickr .pcr-button:before {
-    position: absolute;
-    content: "";
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%
-}
-
-.pickr .pcr-button:after {
-    background: url('data:image/svg+xml;utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" stroke="%2342445A" stroke-width="5px" stroke-linecap="round"><path d="M45,45L5,5"></path><path d="M45,5L5,45"></path></svg>') no-repeat 50%;
-    background-size: 70%;
-    opacity: 0
-}
-
-.pickr .pcr-button.clear:after {
-    opacity: 1
-}
-
-.pickr .pcr-button.disabled {
-    cursor: not-allowed
-}
-
-.pcr-app {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    z-index: 10000;
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;
-    box-shadow: 0 .2em 1.5em 0 rgba(0, 0, 0, .1), 0 0 1em 0 rgba(0, 0, 0, .02);
-    top: 5px;
-    height: 15em;
-    width: 28em;
-    max-width: 95vw;
-    padding: .8em;
-    border-radius: .1em;
-    background: #fff;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity .3s
-}
-
-.pcr-app.visible {
-    visibility: visible;
-    opacity: 1
+.price-product{
+    color: #199427;
+    font-weight: 700;
 }
