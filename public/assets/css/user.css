@@ -67,12 +67,12 @@ header{
     position: sticky;
     z-index: 10000;
 }
-
+/* 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
-}
+} */
 
 /*
     footer
@@ -179,4 +179,9 @@ input::-webkit-inner-spin-button {
 .price-product{
     color: #199427;
     font-weight: 700;
+}
+.head-info{
+    color: #1F601F;
+    font-weight: 700;
+    background: whitesmoke;
 }

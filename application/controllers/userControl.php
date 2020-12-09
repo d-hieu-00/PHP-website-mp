@@ -2,10 +2,6 @@
 
 class userControl extends BaseController{
     public function __construct(){
-
-        // if($this->getSession('userId')){
-        //     $this->redirect("profile");
-        // }
         $this->userModel = $this->model('userModel');
     }
     public function signup(){
@@ -218,9 +214,6 @@ class userControl extends BaseController{
     }
     public function deleteAccount(){
         $response = array();
-        // $Data = [
-        //     'Confirm' => $this->input('Confirm')
-        // ];
         $this->userModel->setData(
             $this->getSession('Account'),
             "",
@@ -232,12 +225,8 @@ class userControl extends BaseController{
             ""
         );
         $response['status'] = false;
-
-        //if(!$Data['Confirm']) return;
-
         if($this->userModel->deleteAccount() > 0){
             $response['status'] = true;
-            //$this->logout("Xóa tài khoản thành công");
         }
         echo json_encode($response);
     }

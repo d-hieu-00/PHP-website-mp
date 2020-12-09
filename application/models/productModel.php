@@ -37,6 +37,19 @@ class productModel
         FROM ((mp_product mp join mp_type_product tp on mp.id_type=tp.id) left join mp_warehouse_detail wd 
         on mp.id = wd.id_product) left join (select id from mp_warehouse where status ='ACTIVE') w 
         on w.id=wd.id_warehouse group by wd.id_product, mp.id having mp.id=?",array($id));
+        return $this->db->fetch();
+    }
+    /**
+     * 
+     * get products by id_type
+     */
+    public function getByType($id)
+    {
+        $this->db->Query("select mp.id, mp.name, mp.brand, mp.color, mp.price, mp.img, mp.short_discription, mp.discription,
+        tp.id type_id, tp.name type_name, sum(wd.quantity) quantity, mp.status, mp.date_created, mp.date_modify
+        FROM ((mp_product mp join mp_type_product tp on mp.id_type=tp.id) left join mp_warehouse_detail wd 
+        on mp.id = wd.id_product) left join (select id from mp_warehouse where status ='ACTIVE') w 
+        on w.id=wd.id_warehouse where tp.id=? group by wd.id_product, mp.id",array($id));
         return $this->db->fetchAll();
     }
     /**
@@ -106,10 +119,23 @@ class productModel
     }
     /**
      * 
-     * check name unique
+     * add cart detail
      */
-    public function checkName($name){
-        $this->db->Query("select * from mp_type_product where name=?", array($name));
-        return $this->db->rowCount();
+    public function addCart($acc, $id_p, $quan){
+        $this->db->Query("select c.id from mp_cart c join mp_user u on c.id_user = u.id 
+                where u.account=?", array($acc));
+        $u = $this->db->fetch();
+        
+        $this->db->Query("insert into mp_cart_detail(id_cart,id_product,quantity) values(?,?,?)", 
+                array($u->id,$id_p,$quan));
+        $ck = false;
+        if(!$this->db->rowCount()){
+            $this->db->Query("update mp_cart_detail set quantity=quantity+? where id_cart=? and id_product=?", 
+                array($quan,$u->id,$id_p));
+            $ck = true;
+        } else {
+            $ck = true;
+        }
+        return $ck;
     }
 }

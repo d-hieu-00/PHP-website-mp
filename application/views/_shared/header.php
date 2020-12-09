@@ -17,7 +17,7 @@
     <i class="fa fa-user" aria-hidden="true"></i>
     <?php 
     if($this->getSession('Account'))
-      echo "<strong>".$this->getSession('Account')."</strong>";
+      echo "<strong class='account_user'>".$this->getSession('Account')."</strong>";
     else echo "Tài khoản"; ?>
   </a>
 
