@@ -30,7 +30,7 @@
         }
         ?>
         <div class="text-center">
-          <button type="submit" id="login" class="btn btn-primary ">Đăng nhập</button>
+          <button type="submit" class="btn btn-primary ">Đăng nhập</button>
         </div>
     </div>
     </form>

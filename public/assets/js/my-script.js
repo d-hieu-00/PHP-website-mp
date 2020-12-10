@@ -1,9 +1,76 @@
-
+const BASEURL = "/-website-mp" //GLOBAL VAR
 test = null
+
 /**
  * 
- * load page
+ * 
+ * Handle for HOME SITE
+ * add ro cart, 
+ * 
+ * 
+ * 
  */
+
+loadProduct = function(){
+    $.ajax({
+        type: "POST",
+        url: BASEURL + "/product/getAllProduct",
+        dataType: 'JSON'
+    }).then(
+        // resolve/success callback
+        function (response) {
+            for(i=0; i<response.length; i++){
+                $("#bodyy").append(response[i])
+            }
+            console.log(response)
+        },
+        // reject/failure callback
+        function () {
+            alert('There was some error!');
+        }
+    )
+
+}
+loadCategory = function(){
+    $.ajax({
+        type: "POST",
+        url: BASEURL + "/home/getCategory",
+        dataType: 'JSON'
+    }).then(
+        // resolve/success callback
+        function (response) {
+            for(i=0; i<response.length; i++){
+                s = '<ul class="dropdown-menu dropdown-menu-left">'
+                for(j=0; j<response[i].length; j++){
+                    id_Ca = response[i][j].id
+                    name_Ca = response[i][j].name
+                    s += '<li><a class="dropdown-item" href="'+
+                        BASEURL+'/product/getByType/'+id_Ca+'">'+name_Ca+'</a></li>'
+                }
+                s += '</ul>'
+                $("a.nav-link[id_ca='"+(i+1)+"']").after(s)
+            }
+        },
+        // reject/failure callback
+        function () {
+            alert('There was some error!');
+        }
+    )
+}
+//-------------------------------------END OF HOME SITE
+
+
+/**
+ * 
+ * 
+ * 
+ * Handle for ADMIN SITE 
+ * -----------------------------------START ADMIN JS
+ * loadPage, modifyTable, initTable, loadInsertP
+ * 
+ * 
+ */
+
 loadPage = function (pageID) {
     a = $(".navbar-nav li.active")
     for (i = 0; i < a.length; i++) a.eq(i).removeClass('active')
@@ -887,13 +954,590 @@ $(document).ready(function () {
     })
 })
 
-
-
-
 /*!
  * Start Bootstrap - SB Admin 2 v4.1.3 (https://startbootstrap.com/theme/sb-admin-2)
  * Copyright 2013-2020 Start Bootstrap
  * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-sb-admin-2/blob/master/LICENSE)
  */
 
-!function (s) { "use strict"; s("#sidebarToggle, #sidebarToggleTop").on("click", function (e) { s("body").toggleClass("sidebar-toggled"), s(".sidebar").toggleClass("toggled"), s(".sidebar").hasClass("toggled") && s(".sidebar .collapse").collapse("hide") }), s(window).resize(function () { s(window).width() < 768 && s(".sidebar .collapse").collapse("hide"), s(window).width() < 480 && !s(".sidebar").hasClass("toggled") && (s("body").addClass("sidebar-toggled"), s(".sidebar").addClass("toggled"), s(".sidebar .collapse").collapse("hide")) }), s("body.fixed-nav .sidebar").on("mousewheel DOMMouseScroll wheel", function (e) { if (768 < s(window).width()) { var o = e.originalEvent, l = o.wheelDelta || -o.detail; this.scrollTop += 30 * (l < 0 ? 1 : -1), e.preventDefault() } }), s(document).on("scroll", function () { 100 < s(this).scrollTop() ? s(".scroll-to-top").fadeIn() : s(".scroll-to-top").fadeOut() }), s(document).on("click", "a.scroll-to-top", function (e) { var o = s(this); s("html, body").stop().animate({ scrollTop: s(o.attr("href")).offset().top }, 1e3, "easeInOutExpo"), e.preventDefault() }) }(jQuery);
+!function($) {
+    "use strict"; // Start of use strict
+  
+    // Toggle the side navigation
+    $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
+      $("body").toggleClass("sidebar-toggled");
+      $(".sidebar").toggleClass("toggled");
+      if ($(".sidebar").hasClass("toggled")) {
+        $('.sidebar .collapse').collapse('hide');
+      };
+    });
+  
+    // Close any open menu accordions when window is resized below 768px
+    $(window).resize(function() {
+      if ($(window).width() < 768) {
+        $('.sidebar .collapse').collapse('hide');
+      };
+      
+      // Toggle the side navigation when window is resized below 480px
+      if ($(window).width() < 480 && !$(".sidebar").hasClass("toggled")) {
+        $("body").addClass("sidebar-toggled");
+        $(".sidebar").addClass("toggled");
+        $('.sidebar .collapse').collapse('hide');
+      };
+    });
+  
+    // Prevent the content wrapper from scrolling when the fixed side navigation hovered over
+    $('body.fixed-nav .sidebar').on('mousewheel DOMMouseScroll wheel', function(e) {
+      if ($(window).width() > 768) {
+        var e0 = e.originalEvent,
+          delta = e0.wheelDelta || -e0.detail;
+        this.scrollTop += (delta < 0 ? 1 : -1) * 30;
+        e.preventDefault();
+      }
+    });
+  
+    // Scroll to top button appear
+    $(document).on('scroll', function() {
+      var scrollDistance = $(this).scrollTop();
+      if (scrollDistance > 100) {
+        $('.scroll-to-top').fadeIn();
+      } else {
+        $('.scroll-to-top').fadeOut();
+      }
+    });
+  
+    // Smooth scrolling using jQuery easing
+    $(document).on('click', 'a.scroll-to-top', function(e) {
+      var $anchor = $(this);
+      $('html, body').stop().animate({
+        scrollTop: ($($anchor.attr('href')).offset().top)
+      }, 1000, 'easeInOutExpo');
+      e.preventDefault();
+    });
+  
+  }(jQuery); 
+  
+//---------------------------------------------End of ADMIN SITE
+
+
+
+/**
+ * 
+ * 
+ * Handle for CART 
+ * load, order, modify
+ * 
+ * 
+ * 
+ */
+loadCart = function(acc=""){
+    if(acc==""){
+        cart = JSON.parse(localStorage.getItem('cart'))
+        if(cart == null){
+            $("#content").empty()
+            s = '<img src="'+BASEURL+'/public/assets/img/cart-empty.png" class="img-fluid">'
+            s += '<p class="text-secondary mt-3"><i>Chưa có sản phẩm nào</i></p>'
+            $("#content").append(s)
+            $("#content").addClass("bg-light text-center p-4")
+            $("#content").removeClass("row")
+        } else {
+            $("#quantity_sp").text(cart.length)
+            for(i=0; i<cart.length; i++){
+                const data = {
+                    'id_p' : cart[i].id
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: BASEURL+'/cart/getInfoByIdProduct',
+                    data: data,
+                    dataType: 'JSON'
+                }).then(
+                    function(res){
+                    //     <div class="col-lg-6 col-md-6 col-12" style="padding-left:0; height:31px">
+                    //     <strong class="cart_index">Giỏ hàng (<span id="quantity_sp"></span> sản phẩm)</strong>
+                    // </div>
+                    // <div class="col-lg-2 col-md-2 hidden-xs">
+                    //     <h6 class="text-secondary"> Giá mua</h6>
+                    // </div>
+                    // <div class="col-lg-2 col-md-2 hidden-xs">
+                    //     <h6 class="text-secondary"> Số lượng</h6>
+                    // </div>
+                    // <div class="col-lg-2 col-md-2 hidden-xs">
+                    //     <h6 class="text-secondary"> Thành tiền</h6>
+                    // </div>
+                        test=res
+                        console.log(res)
+                    },
+                    function(){
+                        alert('error display')
+                    }
+                )
+            }
+        }
+    }
+}
+//-------------------------------------END OF CART HANDLE
+
+
+
+/**
+ * 
+ * 
+ * Handle for PRODUCT view
+ * add ro cart, 
+ * 
+ * 
+ * 
+ */
+$(document).ready(function(){
+    $(".addToCart").click(function(){
+        const data = {
+            'account' : $(".account_user").text(),
+            'id_p' : $(this).parents('div.row').attr('id_p'),
+            'quan' : $("input.quantity").val()
+        }
+        if($(".account_user").text() != ""){
+            $.ajax({
+                type: 'POST',
+                url: BASEURL+'/product/addCart',
+                data: data,
+                dataType: 'JSON'
+            }).then(
+                function(res){
+                    if(res.status == true){
+                        s = '<div class="container mt-3 alert alert-success alert-dismissible fade show" role="alert">'
+                        s += 'Thêm vào giỏ thành công'
+                        s += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
+                        s += '<span aria-hidden="true">&times;</span></button>'
+                        s += '</div>'
+                        $("nav").after(s)
+                    } else {
+                        alert('error')
+                    }
+                },
+                function(){
+                    alert("error addCart")
+                }
+            )
+        } else {
+            cart = JSON.parse(localStorage.getItem('cart'))
+            r = {
+                'id' : data['id_p'], 
+                'quan' : data['quan']
+            }
+            if(cart == null){
+                cart = []
+                cart.push(r)
+            } else {
+                ck = false
+                for(i=0; i<cart.length; i++){
+                    console.log(cart[i])
+                    if(cart[i].id == r.id){
+                        cart[i].quan = parseInt(cart[i].quan)+1
+                        ck = true
+                        break
+                    }
+                }
+                if(!ck){
+                    cart.push(r)
+                }
+            }
+            console.log(cart)
+            localStorage.setItem('cart',JSON.stringify(cart))
+        }
+    })
+})
+//-------------------------------------END OF PRODUCT HANDLE
+
+
+
+/**
+ * 
+ * 
+ * Handle for USER
+ * signup, login, logout, create new user 
+ * 
+ * 
+ * 
+ */
+//signup page
+$(document).ready(function() {
+    $(".Password, .conPassword").keyup(function(){
+        Password = $("#Password").val()
+        conPassword = $("#conPassword").val()
+        if(Password!=conPassword){
+            $(".conPasswordError").html("Mật khẩu xác nhận sai!!")
+            $(".conPassword").addClass("is-invalid")
+        } else {
+            $(".conPassword").removeClass("is-invalid")
+        }
+    })
+    $("input").keydown(function(){
+        val = $(this).val()
+        $(this).removeClass("is-invalid")
+    })
+    $('#signup').click(function() {
+        $(".alert").remove()
+        const userData = {
+            'Account' : $("#Account").val(),
+            'Password' : $("#Password").val(),
+            'FullName' : $("#FullName").val(),
+            'Email' : $("#Email").val(),
+            'Phone' : $("#Phone").val(),
+            'Address' : $("#Address").val(),
+            'City' : $("#City").val(),
+            'Province' : $("#Province").val(),
+        }
+        conPassword = $("#conPassword").val()
+        if(userData.Account == "")
+            $(".Account").addClass("is-invalid")
+        else
+            $(".Account").removeClass("is-invalid")
+
+        if(userData.Password == "")
+            $(".Password").addClass("is-invalid")
+        else
+            $(".Password").removeClass("is-invalid")
+        
+        if(userData.FullName == "")
+            $(".FullName").addClass("is-invalid")
+        else
+            $(".FullName").removeClass("is-invalid")
+        
+        if(userData.Email == "")
+            $(".Email").addClass("is-invalid")
+        else
+            $(".Email").removeClass("is-invalid")
+        
+        if(userData.Phone == "")
+            $(".Phone").addClass("is-invalid")
+        else
+            $(".Phone").removeClass("is-invalid")
+            
+        if(userData.Address == "")
+            $(".Address").addClass("is-invalid")
+        else
+            $(".Address").removeClass("is-invalid")
+            
+        if(userData.City == "")
+            $(".City").addClass("is-invalid")
+        else
+            $(".City").removeClass("is-invalid")
+        
+        if(userData.Province == "")
+            $(".Province").addClass("is-invalid")
+        else
+            $(".Province").removeClass("is-invalid")
+
+        if(userData.Account != "" && userData.Password != "" && userData.FullName != "" && userData.Address != ""
+        && userData.Phone != "" && userData.City != "" && userData.Province != "" 
+        && userData.Password==conPassword) {
+            $.ajax({
+                type: "POST",
+                url: BASEURL+'/user/createAccount',
+                data: userData,
+                dataType : 'JSON'
+            }).then(
+                // resolve/success callback
+                function(response) {
+                    if(response.status == true){
+                        s = '<div class="alert alert-success text-center" role="alert">'
+                        s += 'Tạo tài khoản thành công!! <a href="'+BASEURL+'/user/login/" class="alert-link">Nhấn để đăng nhập</a>'
+                        s += '</div>'
+                        $(".container_s").before(s)
+                    } else {
+                        s = '<div class="alert alert-danger text-center" role="alert">'
+                        s += 'Tạo tài khoản không thành công!!'
+                        s += '</div>'
+                        $(".container_s").before(s)
+                        if(response.AccountError != null) {
+                            $(".Account").addClass("is-invalid")
+                            $(".AccountError").html(response.AccountError)
+                        } else {
+                            $(".Account").removeClass("is-invalid")
+                        }
+                        if(response.PhoneError != null) {
+                            $(".Phone").addClass("is-invalid")
+                            $(".PhoneError").html(response.PhoneError)
+                        } else {
+                            $(".Phone").removeClass("is-invalid")
+                        }
+                    }
+                },
+                // reject/failure callback
+                function() {
+                    alert('There was some error!');
+                }
+            )
+        }
+    })
+    // Login
+    $('#login').click(function() {
+        $(".alert").remove()
+        const userData = {
+            'Account' : $("#Account").val(),
+            'Password' : $("#Password").val()
+        }
+        if(userData.Account == "")
+            $(".Account").addClass("is-invalid")
+        else
+            $(".Account").removeClass("is-invalid")
+
+        if(userData.Password == "")
+            $(".Password").addClass("is-invalid")
+        else
+            $(".Password").removeClass("is-invalid")
+        
+        if(userData.Account != "" && userData.Password != "") {
+            $.ajax({
+                type: "POST",
+                url: BASEURL+'/user/loginAccount',
+                data: userData,
+                dataType : 'JSON'
+            }).then(
+                // resolve/success callback
+                function(response) {
+                    if(response.status == true){
+                        location.href = BASEURL;
+                    } else {
+                        s = '<div class="alert alert-danger text-center" role="alert">'
+                        s += 'Đăng nhập không thành công!!'
+                        s += '</div>'
+                        $("header").after(s)
+                        if(response.AccountError != null) {
+                            $(".Account").addClass("is-invalid")
+                            $(".AccountError").html(response.AccountError)
+                        } else {
+                            $(".Account").removeClass("is-invalid")
+                        }
+                        if(response.PasswordError != null) {
+                            $(".Password").addClass("is-invalid")
+                            $(".PasswordError").html(response.PasswordError)
+                        } else {
+                            $(".Password").removeClass("is-invalid")
+                        }
+                    }
+                },
+                // reject/failure callback
+                function() {
+                    alert('There was some error!');
+                }
+            )
+        }
+    })
+
+    //Profile
+    $("#stt").click(function(){
+        $("#ltt").removeAttr('hidden')
+        $(".FullName").removeAttr('readonly')
+        $(".Email").removeAttr('readonly')
+        $(".Address").removeAttr('readonly')
+        $(".City").removeAttr('readonly')
+        $(".Province").removeAttr('readonly')
+    })
+
+    $("#ltt").click(function(){
+        $(".alert").remove()
+        const userData = {
+            'Account' : $("#Account").text(),
+            'Password' : "",
+            'FullName' : $("#FullName").val(),
+            'Email' : $("#Email").val(),
+            'Phone' : $("#Phone").val(),
+            'Address' : $("#Address").val(),
+            'City' : $("#City").val(),
+            'Province' : $("#Province").val(),
+        }
+
+        if(userData.FullName == "")
+            $(".FullName").addClass("is-invalid")
+        else
+            $(".FullName").removeClass("is-invalid")
+        
+        if(userData.Email == "")
+            $(".Email").addClass("is-invalid")
+        else
+            $(".Email").removeClass("is-invalid")
+        
+        if(userData.Phone == "")
+            $(".Phone").addClass("is-invalid")
+        else
+            $(".Phone").removeClass("is-invalid")
+            
+        if(userData.Address == "")
+            $(".Address").addClass("is-invalid")
+        else
+            $(".Address").removeClass("is-invalid")
+            
+        if(userData.City == "")
+            $(".City").addClass("is-invalid")
+        else
+            $(".City").removeClass("is-invalid")
+        
+        if(userData.Province == "")
+            $(".Province").addClass("is-invalid")
+        else
+            $(".Province").removeClass("is-invalid")
+
+        if(userData.Account != "" && userData.FullName != "" && userData.Address != ""
+        && userData.Phone != "" && userData.City != "" && userData.Province != "" ) {
+            $.ajax({
+                type: "POST",
+                url: BASEURL+'/user/updateUser',
+                data: userData,
+                dataType : 'JSON'
+            }).then(
+                // resolve/success callback
+                function(response) {
+                    if(response.status == true){
+                        s = '<div class="alert alert-success text-center" role="alert">'
+                        s += 'Lưu thông tin tài khoản thành công!!'
+                        s += '</div>'
+                        $("header").after(s)
+                        $("#ltt").attr('hidden','true')
+                        $(".FullName").attr('readonly','true')
+                        $(".Email").attr('readonly','true')
+                        $(".Address").attr('readonly','true')
+                        $(".City").attr('readonly','true')
+                        $(".Province").attr('readonly','true')
+                    } else {
+                        s = '<div class="alert alert-danger text-center" role="alert">'
+                        s += 'Lưu thông tin tài khoản không thành công!!'
+                        s += '</div>'
+                        $("header").after(s)
+                    }
+                },
+                // reject/failure callback
+                function() {
+                    alert('There was some error!');
+                }
+            )
+        }
+    })
+    $('#lmk').click(function() {
+        $(".alert").remove()
+        const userData = {
+            'Account' : $("#Account").text(),
+            'Password' : $("#oldPassword").val(),
+            'FullName' : $("#FullName").val(),
+            'Email' : $("#Email").val(),
+            'Phone' : $("#Phone").val(),
+            'Address' : $("#Address").val(),
+            'City' : $("#City").val(),
+            'Province' : $("#Province").val(),
+        }
+        newPassword = $("#Password").val()
+        conPassword = $("#conPassword").val()
+
+        if(conPassword == "")
+            $(".conPassword").addClass("is-invalid")
+        else
+            $(".conPassword").removeClass("is-invalid")
+        
+        if(newPassword == "")
+            $(".Password").addClass("is-invalid")
+        else
+            $(".Password").removeClass("is-invalid")
+
+        if(userData.Password == "")
+            $(".oldPassword").addClass("is-invalid")
+        else
+            $(".oldPassword").removeClass("is-invalid")
+        
+        if(userData.Password != "" && conPassword != "" && newPassword != ""
+        && newPassword == conPassword) {
+            $.ajax({
+                type: "POST",
+                url: BASEURL+'/user/updatePassword/'+newPassword,
+                data: userData,
+                dataType : 'JSON'
+            }).then(
+                // resolve/success callback
+                function(response) {
+                    console.log(response)
+                    if(response.status == true){
+                        s = '<div class="alert alert-success text-center" role="alert">'
+                        s += 'Lưu mật khẩu mới thành công!!'
+                        s += '</div>'
+                        $(".lmk").before(s)
+                    } else {
+                        s = '<div class="alert alert-danger text-center" role="alert">'
+                        s += 'Lưu mật khẩu mới không thành công!!'
+                        s += '</div>'
+                        $(".lmk").before(s)
+                        if(response.PasswordError != null) {
+                            $(".oldPasswordError").html(response.PasswordError)
+                            $(".oldPassword").addClass("is-invalid")
+                        } else {
+                            $(".oldPassword").removeClass("is-invalid")
+                        }
+                    }
+                },
+                // reject/failure callback
+                function() {
+                    alert('There was some error!');
+                }
+            )
+        }
+    })
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            reader = new FileReader();
+            reader.onload = function (e) {
+                $('#img').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $("#Img").change(function(){
+        readURL(this);
+        $("#luu").removeAttr('hidden')
+    });
+    $("#luu").click(function(){
+        const userData = {
+            'Account' : $("#Account").text(),
+            'Password' : "",
+            'FullName' : "",
+            'Email' : "",
+            'Phone' : "",
+            'Address' : "",
+            'City' : "",
+            'Province' : "",
+            'Img' : $('#img').attr('src')
+        }
+        //console.log(userData)
+        $.ajax({
+            type: "POST",
+            url: BASEURL+'/user/setImg',
+            data: userData,
+            dataType : 'JSON'
+        }).then(
+            // resolve/success callback
+            function(response) {
+                if(response.status) {
+                    $("#luu").attr('hidden','true')
+                }
+            },
+            // reject/failure callback
+            function() {
+                alert('There was some error!');
+            }
+        )
+    })
+    $("#xtk").click(function(){
+        $.ajax({
+            type: "POST",
+            url: BASEURL+'/user/deleteAccount'
+        }).then(
+            // resolve/success callback
+            function(response) {
+                console.log(response)
+                location.href = BASEURL+'/user/logout_s'
+            },
+            // reject/failure callback
+            function() {
+                alert('There was some error!');
+            }
+        )
+    })
+})

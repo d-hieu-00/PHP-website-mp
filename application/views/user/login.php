@@ -46,7 +46,7 @@
   </div>
   <?php include "../application/views/_shared/footer.php" ?>
   <?php require_once "../application/views/_shared/js.php"; ?>
-  <script src= "<?php echo BASEURL ?>/public/assets/js/user.js"></script>
+  <!-- <script src= "<?php echo BASEURL ?>/public/assets/js/user.js"></script> -->
 </body>
 
 </html>

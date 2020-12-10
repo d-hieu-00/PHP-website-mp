@@ -51,7 +51,7 @@
     </div>
     <?php include "../application/views/_shared/footer.php" ?>
     <?php require_once "../application/views/_shared/js.php"; ?>
-    <script src="<?php echo BASEURL ?>/public/assets/js/product.js"></script>
+    <!-- <script src="<?php echo BASEURL ?>/public/assets/js/product.js"></script> -->
     <script>
         $(document).ready(function() {
             loadCategory()
