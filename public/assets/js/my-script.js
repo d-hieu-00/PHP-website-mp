@@ -109,6 +109,7 @@ initTable = function (tableID, dataLink) {
 
 }
 loadInsertP = function () {
+    
     $.ajax({
         type: "POST",
         url: BASEURL + "/admin/getTypeProductForTagSelect",
@@ -130,7 +131,6 @@ loadInsertP = function () {
             alert('There was some error tp!');
         }
     )
-
     $.ajax({
         type: "POST",
         url: BASEURL + "/admin/getWarehouseForTagSelect",
@@ -149,6 +149,11 @@ loadInsertP = function () {
                     s += '<option value="' + response.data[i][0] + '">' + response.data[i][1] + '</option>'
                 }
                 $("select.Warehouse").append(s)
+
+                len_o = $("select#Warehouse:first option").length
+                len = $(".form-row").length
+                console.log(len_o + "  " +len)
+                if (len_o == len) $("button.AddWarehouse").attr('disabled', 'true')
             }
         },
         // reject/failure callback
@@ -653,29 +658,8 @@ $(document).ready(function () {
     })
     $(document).on('click', 'button.RemoveWarehouse', function () {
         p = $(this)
-        wd = [p_modify.attr('id_p'),
-        $(this).parents('.form-row').find("option:selected").val()]
-        const data = {
-            'warehouse': wd
-        }
-        $.ajax({
-            type: "POST",
-            url: BASEURL + "/admin/deleteWarehouseDetail",
-            data: data,
-            dataType: 'JSON'
-        }).then(
-            // resolve/success callback
-            function (response) {
-                if (response.status == true) {
-                    p.parents('.form-row').remove()
-                    $("button.AddWarehouse").removeAttr('disabled')
-                }
-            },
-            // reject/failure callback
-            function () {
-                alert('Không thể xóa kho!');
-            }
-        )
+        p.parents('.form-row').remove()
+        $("button.AddWarehouse").removeAttr('disabled')
     })
     $(document).on('focus', 'select.Warehouse', function () {
         $(this).data('lastValue', $(this).val());

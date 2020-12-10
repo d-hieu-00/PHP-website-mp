@@ -138,4 +138,12 @@ class productModel
         }
         return $ck;
     }
+    /**
+     * 
+     * delete all warehouse details
+     */
+    public function deleteAllWarehouseDetails($id_p){
+        $this->db->Query("delete from mp_warehouse_detail where id_product=?",array($id_p));
+        return $this->db->rowCount();
+    }
 }

@@ -2,7 +2,7 @@
 
 <head>
     <title>Home mate - Admin</title>
-    <?php require_once "../application/views/admin/_assets/css.php"; ?>
+    <!-- <?php require_once "../application/views/admin/_assets/css.php"; ?> -->
 </head>
 <body>
 <?php include "../application/views/admin/_assets/header.php" ?>

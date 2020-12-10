@@ -567,28 +567,18 @@ class adminControl extends BaseController
             $this->input('id_type'),
             $this->input('id')
         ];
+        //quantity, id_pro, id_ware
+        $id_pro = $this->input('id');
         $data_w = $this->input('warehouse');
         $productModel = $this->model('productModel');
         $response['status'] = false;
         if ($productModel->save($data_p)) {
+            $productModel->deleteAllWarehouseDetails($id_pro);
             foreach ($data_w as $val) {
-                if ($productModel->updateWarehouseDetail($val) < 1) {
-                    $productModel->insertWarehouseDetail($val);
-                }
+                $productModel->insertWarehouseDetail($val);
             }
             $response['status'] = true;
         }
-        echo json_encode($response);
-    }
-    public function deleteWarehouseDetail()
-    {
-        $data_w = $this->input('warehouse');
-        $productModel = $this->model('productModel');
-        $response['status'] = false;
-        if ($productModel->deleteWarehouseDetail($data_w)) {
-            $response['status'] = true;
-        }
-
         echo json_encode($response);
     }
     /**
