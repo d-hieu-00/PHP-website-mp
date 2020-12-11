@@ -147,24 +147,24 @@
 
 
   <div class="form-group row">
-    <label for="City" class="col-sm-4 col-form-label"><strong>Thành phố:</strong></label>
+    <label for="City" class="col-sm-4 col-form-label"><strong>Tỉnh/ thành phố:</strong></label>
     <div class="col-sm-8">
       <input id="City" type="text" readonly class="form-control City" name="City" 
       value="<?php echo $data['City']?>">
       <div class="CityError invalid-feedback">
-        Thành phố không thể trống!!
+        Tỉnh/ thành phố không thể trống!!
       </div>
     </div>
   </div>
 
 
   <div class="form-group row">
-    <label for="Province" class="col-sm-4 col-form-label"><strong>Tỉnh:</strong></label>
+    <label for="Province" class="col-sm-4 col-form-label"><strong>Quận/ huyện/ thành phố:</strong></label>
     <div class="col-sm-8">
       <input id="Province" type="text" readonly class="form-control Province" name="Province" 
       value="<?php echo $data['Province']?>">
       <div class="ProvinceError invalid-feedback">
-        Tỉnh không thể trống!!
+        Quận/ huyện không thể trống!!
       </div>
     </div>
   </div>

@@ -30,7 +30,7 @@
                         <option value="3">Địa chỉ mail</option>
                         <option value="4">Số điện thoại</option>
                         <option value="5">Tỉnh/ thành phố</option>
-                        <option value="7">Huyện</option>
+                        <option value="7">Quận/ huyện</option>
                         <option value="8">Địa chỉ chi tiết</option>
                     </select>
                 </div>
@@ -48,7 +48,7 @@
                         <th>Số điện thoại</th>
                         <th>Tỉnh/ thành phố</th>
                         <th>Trạng thái</th>
-                        <th>Huyện</th>
+                        <th>Quận/ huyện</th>
                         <th>Địa chỉ chi tiết: </th>
                         <th>Ngày tạo tài khoản: </th>
                         <th>Lần truy cập cuối: </th>

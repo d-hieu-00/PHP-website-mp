@@ -28,7 +28,7 @@
                         <option selected value="1">Tên kho</option>
                         <option value="2">Họ và tên</option>
                         <option value="3">Tỉnh/ thành phố</option>
-                        <option value="4">Huyện</option>
+                        <option value="4">Quận/ huyện</option>
                         <option value="5">Địa chỉ chi tiết</option>
                     </select>
                 </div>
@@ -42,7 +42,7 @@
                         <th>STT</th>
                         <th>Tên kho</th>
                         <th>Tỉnh/ thành phố</th>
-                        <th>Huyện</th>
+                        <th>Quận/ huyện</th>
                         <th>Địa chỉ chi tiết</th>
                         <th>Trạng thái</th>
                         <th>Sửa</th>

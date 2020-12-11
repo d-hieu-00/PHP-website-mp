@@ -56,19 +56,19 @@
 
 
                     <div class="form-group">
-                        <label for="City"><strong>Thành phố</strong></label>
-                        <input type="text" id="City" class="form-control City" placeholder="Nhập thành phố">
+                        <label for="City"><strong>Tỉnh/ thành phố</strong></label>
+                        <input type="text" id="City" class="form-control City" placeholder="Nhập tỉnh/ thành phố">
                         <div class="CityError invalid-feedback">
-                            Chưa nhập thành phố!!
+                            Chưa nhập tỉnh/ thành phố!!
                         </div>
                     </div>
 
 
                     <div class="form-group">
-                        <label for="Province"><strong>Tỉnh</strong></label>
-                        <input type="text" id="Province" class="form-control Province" placeholder="Nhập tỉnh thành">
+                        <label for="Province"><strong>Quận/ huyện</strong></label>
+                        <input type="text" id="Province" class="form-control Province" placeholder="Nhập quận/ huyện">
                         <div class="ProvinceError invalid-feedback">
-                            Chưa nhập tỉnh!!
+                            Chưa nhập quận/ huyện!!
                         </div>
                     </div>
 

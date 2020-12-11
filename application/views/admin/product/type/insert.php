@@ -29,7 +29,7 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label for="Name"><strong>Tên loại sản phẩm</strong></label>
-                        <input type="text" id="Name" class="form-control Name" placeholder="Nhập tên kho hàng">
+                        <input type="text" id="Name" class="form-control Name" placeholder="Nhập tên loại sản phẩm">
                         <div class="NameError invalid-feedback">
                             Chưa nhập tên loại sản phẩm!!
                         </div>
