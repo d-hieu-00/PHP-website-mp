@@ -21,7 +21,7 @@ class productControl extends BaseController
             $row.=$val->name;
             $row.='</a><p class="price-product m-1">';
             $row.=$val->price;
-            $row.='</p></div></div>';
+            $row.=' ₫</p></div></div>';
             $data[] = $row;
         }
 

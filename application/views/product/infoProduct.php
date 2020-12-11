@@ -17,7 +17,7 @@
 
             <div class="col-md-5">
                 <p class="text-secondary m-1"><?php echo $data[0]->name?></p>
-                <p class="price-product m-1"><?php echo $data[0]->price?></p>
+                <p class="price-product m-1"><?php echo $data[0]->price?> ₫</p>
                 <p class="m-1">Thương hiệu: <span><?php echo $data[0]->brand?></span></p>
                 <?php 
                     if($data[0]->color != "#000000"){
