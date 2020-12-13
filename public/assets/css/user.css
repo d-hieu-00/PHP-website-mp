@@ -177,8 +177,14 @@ input::-webkit-inner-spin-button {
     color: #07B0B0;
 }
 .price-product{
-    color: #199427;
+    color: #16697a;
     font-weight: 700;
+}
+.border-hover{
+    border: 1px solid #dee2e6!important;
+}
+.border-hover:hover{
+    border: 1px solid #17A2B8!important;
 }
 .head-info{
     color: #1F601F;

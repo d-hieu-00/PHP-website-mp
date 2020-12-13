@@ -42,8 +42,8 @@
 
 
     <form class="form-inline pl-2">
-      <input class="form-control mr-1" type="text" placeholder="Nhập tên sản phẩm" aria-label="Tìm kiếm">
-      <button id="sreach" class="btn btn-outline-secondary p-2" type="button">
+      <input class="form-control mr-1" id="sreach" type="text" placeholder="Nhập tên sản phẩm" aria-label="Tìm kiếm">
+      <button id="sreach-product" class="btn btn-outline-secondary p-2" type="button">
         <i class="fa fa-search" aria-hidden="true"></i>
       </button>
     </form>

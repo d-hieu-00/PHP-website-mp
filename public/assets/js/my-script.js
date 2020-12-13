@@ -10,7 +10,83 @@ test = null
  * 
  * 
  */
+$(document).ready(function(){
+    $(document).on("click", "a.page-link", function(e){
+        e.preventDefault()
+    })
+    $(document).on("click", "button#sreach-product", function(){
+        arr = $(".product")
+        arr.attr("show","show")
+        arr.removeAttr("hidden")
+        s = $("input#sreach").val().toLowerCase();
+        
+        for(i=0; i<arr.length; i++){
+            n = arr.eq(i).find("a.name-product").text().toLowerCase();
+            console.log(s + "  " + n)
+            if(n.search(s)==-1){
+                arr.eq(i).attr("hidden","true")
+                arr.eq(i).attr("show","hide")
+            }
+        }
+        $("#pagination").remove()
+        paging()
+    })
+})
 
+paging = function(pa=1){
+    bd = $("#bodyy")
+    arr = $(".product[show='show']")
+    pag = $("#pagination")
+    l = arr.length
+    ck = false
+    if(pa == 0) {
+        pa = parseInt(pag.find("li.page-item.active").text())-1
+        if(pa == 0) pa=1
+    }
+    if(pa == -1){
+        pa = parseInt(pag.find("li.page-item.active").text())+1
+        if(pa == parseInt(l/15) + 2) pa = parseInt(l/15)+1
+    }
+    s = 15*(pa-1)
+    e = 15*(pa)
+    for(i=0; i<l; i++){
+        if(i>=s && i<e){
+            ck=true
+            arr.eq(i).removeAttr("hidden")
+        } else {
+            arr.eq(i).attr("hidden","true")
+        }
+    }
+    if(ck){
+        if(pag.length == 0){
+            p = '<div class="mt-2 p-0 col-12 d-flex flex-row-reverse" id="pagination">'
+            p += '<ul class="pagination">'
+            p += '<li class="page-item"><a class="page-link" onclick="paging(0)" href="">Trước</a></li>'
+            for(i=0; i<l/15; i++){
+                if(i==pa-1){
+                    p += '<li class="page-item active"><a class="page-link" onclick="paging('+(i+1)+')" href="">'+(i+1)
+                    p += '</a></li>'
+                } else {
+                    p += '<li class="page-item"><a class="page-link" onclick="paging('+(i+1)+')" href="">'+(i+1)
+                    p += '</a></li>'
+                }
+            }
+            p += '<li class="page-item"><a class="page-link" onclick="paging(-1)" href="">Sau</a></li>'
+            p += '</ul>'
+            p += '</div>'
+            bd.after(p)
+        } else {
+            ar = pag.find("li.page-item")
+            for(i=0; i<ar.length; i++){
+                if(i==pa){
+                    ar.eq(i).addClass("active")
+                } else {
+                    ar.eq(i).removeClass("active")
+                }
+            }
+        }
+    }
+}
 loadProduct = function(){
     $.ajax({
         type: "POST",
@@ -22,7 +98,7 @@ loadProduct = function(){
             for(i=0; i<response.length; i++){
                 $("#bodyy").append(response[i])
             }
-            console.log(response)
+            paging()
         },
         // reject/failure callback
         function () {
@@ -923,6 +999,7 @@ $(document).ready(function () {
                 // resolve/success callback
                 function (response) {
                     if (response.status) {
+                        $('.alert').remove()
                         s = '<div class="alert alert-success text-center" role="alert">'
                         s += 'Thêm loại sản phẩm thành công thành công!!'
                         s += '</div>'
@@ -1014,50 +1091,210 @@ $(document).ready(function () {
  * 
  * 
  */
+
+formatPrice = function(price){
+    r = "";
+    c=0;
+    for(i=price.length-1; i>=0; i--){
+        if(c%3==0 && c!=0){
+            r +=",";
+        }
+        r += price[i];
+        c++
+    }
+    return r.split("").reverse().join("");
+}
+$(document).ready(function(){
+    updateCD = function(input){
+        val = input.val()
+        total_p = formatPrice((parseInt(price)*parseInt(val)).toString())+" ₫"
+        input.parents('.cart_product').find('.total_price').text(total_p)
+        input.parents('.cart_product').find('.total_price').attr('total_p',(parseInt(price)*parseInt(val)))
+        total = 0
+        arr = $(".total_price")
+        for(i=0; i<arr.length; i++){
+            total += parseInt(arr.eq(i).attr('total_p'))
+        }
+        $("#tamtinh_c").text(formatPrice(total.toString()))
+        $("#thanhtien_c").text(formatPrice(total.toString()))
+        $("#tamtinh_c").attr('tien',total)
+        $("#thanhtien_c").attr('tien',total)
+    }
+    $(document).on('change','input.quantity-p',function(){
+        val = $(this).val()
+        price = $(this).parents('.cart_product').find('.price_p').attr('price_p')
+        id = $(this).attr('id_p')
+        account = $("strong.account_user").text()
+        cart = JSON.parse(localStorage.getItem('cart'))
+        if(account == ""){
+            for(i=0; i<cart.length; i++){
+                if(cart[i].id == id){
+                    cart[i].quan = val
+                    break
+                }
+            }
+            localStorage.setItem('cart', JSON.stringify(cart))
+            updateCD($(this))
+        } else {
+            input = $(this)
+            const data = {
+                'id_p' : id,
+                'quan' : val
+            }
+            $.ajax({
+                type: 'POST',
+                url: BASEURL+'/cart/updateQuantity',
+                data: data,
+                dataType: 'JSON'
+            }).then(
+                function(res){
+                    console.log(res)
+                    if(res.status){
+                        updateCD(input)
+                    } else {
+                        alert('error updatecd')
+                    }
+                },
+                function(){
+                    alert('some error')
+                }
+            )
+        }
+    })
+    removeCD = function(CD){
+        CD.parents('.cart_product').remove()
+        total = 0
+        arr = $(".total_price")
+        for(i=0; i<arr.length; i++){
+            total += parseInt(arr.eq(i).attr('total_p'))
+        }
+        $("#tamtinh_c").text(formatPrice(total.toString()))
+        $("#thanhtien_c").text(formatPrice(total.toString()))
+        $("#tamtinh_c").attr('tien',total)
+        $("#thanhtien_c").attr('tien',total)
+    }
+    $(document).on('click', '.xoa_cart_p', function(e){
+        e.preventDefault()
+        id = $(this).attr('id_p')
+        account = $("strong.account_user").text()
+        cart = JSON.parse(localStorage.getItem('cart'))
+        if(account == ""){
+            for(i=0; i<cart.length; i++){
+                if(cart[i].id == id){
+                    cart.splice(i,1)
+                    break
+                }
+            }
+            localStorage.setItem('cart', JSON.stringify(cart))
+            removeCD($(this))
+        } else {
+            //remove cart detail
+            cd = $(this)
+            const data = {
+                'id_p' : id
+            }
+            $.ajax({
+                type: 'POST',
+                url: BASEURL+'/cart/removeCartDetail',
+                data: data,
+                dataType: 'JSON'
+            }).then(
+                function(res){
+                    console.log(res)
+                    if(res.status){
+                        removeCD(cd)
+                    } else {
+                        alert('error removecd')
+                    }
+                },
+                function(){
+                    alert('some error')
+                }
+            )
+        }
+        // $(this).parents('.cart_product').remove()
+        // total = 0
+        // arr = $(".total_price")
+        // for(i=0; i<arr.length; i++){
+        //     total += parseInt(arr.eq(i).attr('total_p'))
+        // }
+        // $("#tamtinh_c").text(formatPrice(total.toString()))
+        // $("#thanhtien_c").text(formatPrice(total.toString()))
+        // $("#tamtinh_c").attr('tien',total)
+        // $("#thanhtien_c").attr('tien',total)
+    })
+})
+displayCart = function(cart){
+    if(cart == null){
+        $("#content").empty()
+        s = '<img src="'+BASEURL+'/public/assets/img/cart-empty.png" class="img-fluid">'
+        s += '<p class="text-secondary mt-3"><i>Chưa có sản phẩm nào</i></p>'
+        $("#content").append(s)
+        $("#content").addClass("bg-light text-center p-4")
+        $("#content").removeClass("row")
+    } else {
+        $("#quantity_sp").text(cart.length)
+        total = 0
+        for(i=0; i<cart.length; i++){
+            const data = {
+                'id_p' : cart[i].id,
+                'quan' : cart[i].quan
+            }
+            $.ajax({
+                type: 'POST',
+                url: BASEURL+'/cart/getInfoByIdProduct',
+                data: data,
+                dataType: 'JSON'
+            }).then(
+                function(res){
+                    ct = '<hr>'
+                    ct += '<div class="row mt-1 cart_product"><div class="col-lg-6 col-md-6"><div class="row ml-2">'
+                    ct += '<div class="col-4 p-0"><a href="'+BASEURL+'/product/infoProduct/'+res.p.id+'">'
+                    ct += '<img class="img-fluid border" src="'+res.p.img+'"></a></div>'
+                    ct += '<div class="col-8 p-0 pl-3 d-flex align-items-start flex-column"><a class="name-product" href="'+BASEURL+'/product/infoProduct/'+res.p.id+'">'
+                    ct += res.p.name+'</a>'+'<div class="mt-auto"><a class="xoa_cart_p" href="" id_p="'+res.p.id+'">Xóa</a></div>'
+                    ct += '</div></div></div><div class="col-lg-2 col-md-2">'
+                    ct += '<p class="price-product mt-2 mb-2 price_p" price_p="'+res.p.price+'">'+formatPrice(res.p.price)+' ₫</p></div>'
+                    ct += '<div class="col-lg-2 col-md-2">'
+                    ct += '<input type="number" class="form-control quantity-p" id_p="'+res.p.id+'"'
+                    ct += 'value="'+parseInt(res.quan)+'" min="1"></div>'
+                    ct += '<div class="col-lg-2 col-md-2">'
+                    ct += '<p class="price-product mt-2 mb-2 total_price" total_p="'
+                    ct += (parseInt(res.quan)*parseInt(res.p.price))+'">'
+                    ct += formatPrice((parseInt(res.quan)*parseInt(res.p.price)).toString())
+                    ct += ' ₫</p></div></div>'
+                    $("#body_cart").append(ct)
+                    total += parseInt(res.quan)*parseInt(res.p.price)
+                    $("#tamtinh_c").text(formatPrice(total.toString()))
+                    $("#thanhtien_c").text(formatPrice(total.toString()))
+                    $("#tamtinh_c").attr('tien',total)
+                    $("#thanhtien_c").attr('tien',total)
+                },
+                function(){
+                    alert('error display')
+                }
+            )
+        }
+    }
+}
 loadCart = function(acc=""){
     if(acc==""){
         cart = JSON.parse(localStorage.getItem('cart'))
-        if(cart == null){
-            $("#content").empty()
-            s = '<img src="'+BASEURL+'/public/assets/img/cart-empty.png" class="img-fluid">'
-            s += '<p class="text-secondary mt-3"><i>Chưa có sản phẩm nào</i></p>'
-            $("#content").append(s)
-            $("#content").addClass("bg-light text-center p-4")
-            $("#content").removeClass("row")
-        } else {
-            $("#quantity_sp").text(cart.length)
-            for(i=0; i<cart.length; i++){
-                const data = {
-                    'id_p' : cart[i].id
-                }
-                $.ajax({
-                    type: 'POST',
-                    url: BASEURL+'/cart/getInfoByIdProduct',
-                    data: data,
-                    dataType: 'JSON'
-                }).then(
-                    function(res){
-                    //     <div class="col-lg-6 col-md-6 col-12" style="padding-left:0; height:31px">
-                    //     <strong class="cart_index">Giỏ hàng (<span id="quantity_sp"></span> sản phẩm)</strong>
-                    // </div>
-                    // <div class="col-lg-2 col-md-2 hidden-xs">
-                    //     <h6 class="text-secondary"> Giá mua</h6>
-                    // </div>
-                    // <div class="col-lg-2 col-md-2 hidden-xs">
-                    //     <h6 class="text-secondary"> Số lượng</h6>
-                    // </div>
-                    // <div class="col-lg-2 col-md-2 hidden-xs">
-                    //     <h6 class="text-secondary"> Thành tiền</h6>
-                    // </div>
-                        test=res
-                        console.log(res)
-                    },
-                    function(){
-                        alert('error display')
-                    }
-                )
+        displayCart(cart)
+    } else {
+        $.ajax({
+            type: 'POST',
+            url: BASEURL+'/cart/getCartInfo',
+            dataType: 'JSON'
+        }).then(
+            function(res){
+                console.log(res)
+                displayCart(res)
+            },
+            function(){
+                alert('error load cart info')
             }
-        }
+        )
     }
 }
 //-------------------------------------END OF CART HANDLE
@@ -1089,6 +1326,7 @@ $(document).ready(function(){
             }).then(
                 function(res){
                     if(res.status == true){
+                        $('.alert').remove()
                         s = '<div class="container mt-3 alert alert-success alert-dismissible fade show" role="alert">'
                         s += 'Thêm vào giỏ thành công'
                         s += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
@@ -1126,8 +1364,14 @@ $(document).ready(function(){
                     cart.push(r)
                 }
             }
-            console.log(cart)
+            $('.alert').remove()
             localStorage.setItem('cart',JSON.stringify(cart))
+            s = '<div class="container mt-3 alert alert-success alert-dismissible fade show" role="alert">'
+            s += 'Thêm vào giỏ thành công'
+            s += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
+            s += '<span aria-hidden="true">&times;</span></button>'
+            s += '</div>'
+            $("nav").after(s)
         }
     })
 })
@@ -1500,6 +1744,8 @@ $(document).ready(function() {
             function(response) {
                 if(response.status) {
                     $("#luu").attr('hidden','true')
+                } else {
+                    alert("error pic")
                 }
             },
             // reject/failure callback

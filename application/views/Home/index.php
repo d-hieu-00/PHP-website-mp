@@ -10,7 +10,7 @@
     <?php include "../application/views/_shared/nav.php" ?>
     <?php include "../application/views/_shared/slide.php" ?>
     <div class="container" >
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4" id="bodyy">
+        <div class="row row-cols-1 row-cols-sm-3 row-cols-md-5" id="bodyy">
             
         </div>
     </div>

@@ -12,16 +12,19 @@ class productControl extends BaseController
         $allProduct = $productModel->getAll();
         $data = [];
         foreach ($allProduct as $val) {
-            $row = '<div class="col p-0"><div class="border m-1">';
+            if($val->quantity <= 0) continue;
+            $row = '<div class="product col pb-2 pl-0 pr-0" show="show">';
+            $row.='<div class="border-hover d-flex align-items-end flex-column m-1 h-100">';
             $row.='<div class="hovereffect">';
             $row.='<a href="'.BASEURL.'/product/infoProduct/'.$val->id.'">';
             $row.='<img id="img" class="img-fluid" src="'.$val->img.'">';
             $row.='</a></div>';
-            $row.='<a class="name-product m-1" href="'.BASEURL.'/product/infoProduct/'.$val->id.'">';
+            $row.='<div class="mt-auto"><p class="m-2"><a class="name-product" href="';
+            $row.=BASEURL.'/product/infoProduct/'.$val->id.'">';
             $row.=$val->name;
-            $row.='</a><p class="price-product m-1">';
-            $row.=$val->price;
-            $row.=' ₫</p></div></div>';
+            $row.='</a></p><p class="price-product m-2">';
+            $row.=$this->formatPrice($val->price);
+            $row.=' ₫</p></div></div></div>';
             $data[] = $row;
         }
 
@@ -39,16 +42,18 @@ class productControl extends BaseController
         $ProductsByType = $productModel->getByType($id);
         $data = [];
         foreach ($ProductsByType as $val) {
-            $row = '<div class="col p-0"><div class="border m-1">';
+            $row = '<div class="product col pb-2 pl-0 pr-0" show="show">';
+            $row.='<div class="border-hover d-flex align-items-end flex-column m-1 h-100">';
             $row.='<div class="hovereffect">';
             $row.='<a href="'.BASEURL.'/product/infoProduct/'.$val->id.'">';
             $row.='<img id="img" class="img-fluid" src="'.$val->img.'">';
             $row.='</a></div>';
-            $row.='<a class="name-product m-1" href="'.BASEURL.'/product/infoProduct/'.$val->id.'">';
+            $row.='<div class="mt-auto"><p class="m-2"><a class="name-product" href="';
+            $row.=BASEURL.'/product/infoProduct/'.$val->id.'">';
             $row.=$val->name;
-            $row.='</a><p class="price-product m-1">';
-            $row.=$val->price;
-            $row.='</p></div></div>';
+            $row.='</a></p><p class="price-product m-2">';
+            $row.=$this->formatPrice($val->price);
+            $row.=' ₫</p></div></div></div>';
             $data[] = $row;
         }
         
