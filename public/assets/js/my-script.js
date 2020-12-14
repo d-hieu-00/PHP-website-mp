@@ -10,22 +10,22 @@ test = null
  * 
  * 
  */
-$(document).ready(function(){
-    $(document).on("click", "a.page-link", function(e){
+$(document).ready(function () {
+    $(document).on("click", "a.page-link", function (e) {
         e.preventDefault()
     })
-    $(document).on("click", "button#sreach-product", function(){
+    $(document).on("click", "button#sreach-product", function () {
         arr = $(".product")
-        arr.attr("show","show")
+        arr.attr("show", "show")
         arr.removeAttr("hidden")
         s = $("input#sreach").val().toLowerCase();
-        
-        for(i=0; i<arr.length; i++){
+
+        for (i = 0; i < arr.length; i++) {
             n = arr.eq(i).find("a.name-product").text().toLowerCase();
             console.log(s + "  " + n)
-            if(n.search(s)==-1){
-                arr.eq(i).attr("hidden","true")
-                arr.eq(i).attr("show","hide")
+            if (n.search(s) == -1) {
+                arr.eq(i).attr("hidden", "true")
+                arr.eq(i).attr("show", "hide")
             }
         }
         $("#pagination").remove()
@@ -33,41 +33,41 @@ $(document).ready(function(){
     })
 })
 
-paging = function(pa=1){
+paging = function (pa = 1) {
     bd = $("#bodyy")
     arr = $(".product[show='show']")
     pag = $("#pagination")
     l = arr.length
     ck = false
-    if(pa == 0) {
-        pa = parseInt(pag.find("li.page-item.active").text())-1
-        if(pa == 0) pa=1
+    if (pa == 0) {
+        pa = parseInt(pag.find("li.page-item.active").text()) - 1
+        if (pa == 0) pa = 1
     }
-    if(pa == -1){
-        pa = parseInt(pag.find("li.page-item.active").text())+1
-        if(pa == parseInt(l/15) + 2) pa = parseInt(l/15)+1
+    if (pa == -1) {
+        pa = parseInt(pag.find("li.page-item.active").text()) + 1
+        if (pa == parseInt(l / 15) + 2) pa = parseInt(l / 15) + 1
     }
-    s = 15*(pa-1)
-    e = 15*(pa)
-    for(i=0; i<l; i++){
-        if(i>=s && i<e){
-            ck=true
+    s = 15 * (pa - 1)
+    e = 15 * (pa)
+    for (i = 0; i < l; i++) {
+        if (i >= s && i < e) {
+            ck = true
             arr.eq(i).removeAttr("hidden")
         } else {
-            arr.eq(i).attr("hidden","true")
+            arr.eq(i).attr("hidden", "true")
         }
     }
-    if(ck){
-        if(pag.length == 0){
+    if (ck) {
+        if (pag.length == 0) {
             p = '<div class="mt-2 p-0 col-12 d-flex flex-row-reverse" id="pagination">'
             p += '<ul class="pagination">'
             p += '<li class="page-item"><a class="page-link" onclick="paging(0)" href="">Trước</a></li>'
-            for(i=0; i<l/15; i++){
-                if(i==pa-1){
-                    p += '<li class="page-item active"><a class="page-link" onclick="paging('+(i+1)+')" href="">'+(i+1)
+            for (i = 0; i < l / 15; i++) {
+                if (i == pa - 1) {
+                    p += '<li class="page-item active"><a class="page-link" onclick="paging(' + (i + 1) + ')" href="">' + (i + 1)
                     p += '</a></li>'
                 } else {
-                    p += '<li class="page-item"><a class="page-link" onclick="paging('+(i+1)+')" href="">'+(i+1)
+                    p += '<li class="page-item"><a class="page-link" onclick="paging(' + (i + 1) + ')" href="">' + (i + 1)
                     p += '</a></li>'
                 }
             }
@@ -77,8 +77,8 @@ paging = function(pa=1){
             bd.after(p)
         } else {
             ar = pag.find("li.page-item")
-            for(i=0; i<ar.length; i++){
-                if(i==pa){
+            for (i = 0; i < ar.length; i++) {
+                if (i == pa) {
                     ar.eq(i).addClass("active")
                 } else {
                     ar.eq(i).removeClass("active")
@@ -87,7 +87,7 @@ paging = function(pa=1){
         }
     }
 }
-loadProduct = function(){
+loadProduct = function () {
     $.ajax({
         type: "POST",
         url: BASEURL + "/product/getAllProduct",
@@ -95,7 +95,7 @@ loadProduct = function(){
     }).then(
         // resolve/success callback
         function (response) {
-            for(i=0; i<response.length; i++){
+            for (i = 0; i < response.length; i++) {
                 $("#bodyy").append(response[i])
             }
             paging()
@@ -107,7 +107,7 @@ loadProduct = function(){
     )
 
 }
-loadCategory = function(){
+loadCategory = function () {
     $.ajax({
         type: "POST",
         url: BASEURL + "/home/getCategory",
@@ -115,16 +115,16 @@ loadCategory = function(){
     }).then(
         // resolve/success callback
         function (response) {
-            for(i=0; i<response.length; i++){
+            for (i = 0; i < response.length; i++) {
                 s = '<ul class="dropdown-menu dropdown-menu-left">'
-                for(j=0; j<response[i].length; j++){
+                for (j = 0; j < response[i].length; j++) {
                     id_Ca = response[i][j].id
                     name_Ca = response[i][j].name
-                    s += '<li><a class="dropdown-item" href="'+
-                        BASEURL+'/product/getByType/'+id_Ca+'">'+name_Ca+'</a></li>'
+                    s += '<li><a class="dropdown-item" href="' +
+                        BASEURL + '/product/getByType/' + id_Ca + '">' + name_Ca + '</a></li>'
                 }
                 s += '</ul>'
-                $("a.nav-link[id_ca='"+(i+1)+"']").after(s)
+                $("a.nav-link[id_ca='" + (i + 1) + "']").after(s)
             }
         },
         // reject/failure callback
@@ -185,7 +185,7 @@ initTable = function (tableID, dataLink) {
 
 }
 loadInsertP = function () {
-    
+
     $.ajax({
         type: "POST",
         url: BASEURL + "/admin/getTypeProductForTagSelect",
@@ -228,7 +228,7 @@ loadInsertP = function () {
 
                 len_o = $("select#Warehouse:first option").length
                 len = $(".form-row").length
-                console.log(len_o + "  " +len)
+                console.log(len_o + "  " + len)
                 if (len_o == len) $("button.AddWarehouse").attr('disabled', 'true')
             }
         },
@@ -1021,63 +1021,63 @@ $(document).ready(function () {
  * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-sb-admin-2/blob/master/LICENSE)
  */
 
-!function($) {
+!function ($) {
     "use strict"; // Start of use strict
-  
+
     // Toggle the side navigation
-    $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
-      $("body").toggleClass("sidebar-toggled");
-      $(".sidebar").toggleClass("toggled");
-      if ($(".sidebar").hasClass("toggled")) {
-        $('.sidebar .collapse').collapse('hide');
-      };
+    $("#sidebarToggle, #sidebarToggleTop").on('click', function (e) {
+        $("body").toggleClass("sidebar-toggled");
+        $(".sidebar").toggleClass("toggled");
+        if ($(".sidebar").hasClass("toggled")) {
+            $('.sidebar .collapse').collapse('hide');
+        };
     });
-  
+
     // Close any open menu accordions when window is resized below 768px
-    $(window).resize(function() {
-      if ($(window).width() < 768) {
-        $('.sidebar .collapse').collapse('hide');
-      };
-      
-      // Toggle the side navigation when window is resized below 480px
-      if ($(window).width() < 480 && !$(".sidebar").hasClass("toggled")) {
-        $("body").addClass("sidebar-toggled");
-        $(".sidebar").addClass("toggled");
-        $('.sidebar .collapse').collapse('hide');
-      };
+    $(window).resize(function () {
+        if ($(window).width() < 768) {
+            $('.sidebar .collapse').collapse('hide');
+        };
+
+        // Toggle the side navigation when window is resized below 480px
+        if ($(window).width() < 480 && !$(".sidebar").hasClass("toggled")) {
+            $("body").addClass("sidebar-toggled");
+            $(".sidebar").addClass("toggled");
+            $('.sidebar .collapse').collapse('hide');
+        };
     });
-  
+
     // Prevent the content wrapper from scrolling when the fixed side navigation hovered over
-    $('body.fixed-nav .sidebar').on('mousewheel DOMMouseScroll wheel', function(e) {
-      if ($(window).width() > 768) {
-        var e0 = e.originalEvent,
-          delta = e0.wheelDelta || -e0.detail;
-        this.scrollTop += (delta < 0 ? 1 : -1) * 30;
-        e.preventDefault();
-      }
+    $('body.fixed-nav .sidebar').on('mousewheel DOMMouseScroll wheel', function (e) {
+        if ($(window).width() > 768) {
+            var e0 = e.originalEvent,
+                delta = e0.wheelDelta || -e0.detail;
+            this.scrollTop += (delta < 0 ? 1 : -1) * 30;
+            e.preventDefault();
+        }
     });
-  
+
     // Scroll to top button appear
-    $(document).on('scroll', function() {
-      var scrollDistance = $(this).scrollTop();
-      if (scrollDistance > 100) {
-        $('.scroll-to-top').fadeIn();
-      } else {
-        $('.scroll-to-top').fadeOut();
-      }
+    $(document).on('scroll', function () {
+        var scrollDistance = $(this).scrollTop();
+        if (scrollDistance > 100) {
+            $('.scroll-to-top').fadeIn();
+        } else {
+            $('.scroll-to-top').fadeOut();
+        }
     });
-  
+
     // Smooth scrolling using jQuery easing
-    $(document).on('click', 'a.scroll-to-top', function(e) {
-      var $anchor = $(this);
-      $('html, body').stop().animate({
-        scrollTop: ($($anchor.attr('href')).offset().top)
-      }, 1000, 'easeInOutExpo');
-      e.preventDefault();
+    $(document).on('click', 'a.scroll-to-top', function (e) {
+        var $anchor = $(this);
+        $('html, body').stop().animate({
+            scrollTop: ($($anchor.attr('href')).offset().top)
+        }, 1000, 'easeInOutExpo');
+        e.preventDefault();
     });
-  
-  }(jQuery); 
-  
+
+}(jQuery);
+
 //---------------------------------------------End of ADMIN SITE
 
 
@@ -1085,50 +1085,50 @@ $(document).ready(function () {
 /**
  * 
  * 
- * Handle for CART 
+ * Handle for CART
  * load, order, modify
  * 
  * 
  * 
  */
 
-formatPrice = function(price){
+formatPrice = function (price) {
     r = "";
-    c=0;
-    for(i=price.length-1; i>=0; i--){
-        if(c%3==0 && c!=0){
-            r +=",";
+    c = 0;
+    for (i = price.length - 1; i >= 0; i--) {
+        if (c % 3 == 0 && c != 0) {
+            r += ",";
         }
         r += price[i];
         c++
     }
     return r.split("").reverse().join("");
 }
-$(document).ready(function(){
-    updateCD = function(input){
+$(document).ready(function () {
+    updateCD = function (input) {
         val = input.val()
-        total_p = formatPrice((parseInt(price)*parseInt(val)).toString())+" ₫"
+        total_p = formatPrice((parseInt(price) * parseInt(val)).toString()) + " ₫"
         input.parents('.cart_product').find('.total_price').text(total_p)
-        input.parents('.cart_product').find('.total_price').attr('total_p',(parseInt(price)*parseInt(val)))
+        input.parents('.cart_product').find('.total_price').attr('total_p', (parseInt(price) * parseInt(val)))
         total = 0
         arr = $(".total_price")
-        for(i=0; i<arr.length; i++){
+        for (i = 0; i < arr.length; i++) {
             total += parseInt(arr.eq(i).attr('total_p'))
         }
         $("#tamtinh_c").text(formatPrice(total.toString()))
         $("#thanhtien_c").text(formatPrice(total.toString()))
-        $("#tamtinh_c").attr('tien',total)
-        $("#thanhtien_c").attr('tien',total)
+        $("#tamtinh_c").attr('tien', total)
+        $("#thanhtien_c").attr('tien', total)
     }
-    $(document).on('change','input.quantity-p',function(){
+    $(document).on('change', 'input.quantity-p', function () {
         val = $(this).val()
         price = $(this).parents('.cart_product').find('.price_p').attr('price_p')
         id = $(this).attr('id_p')
         account = $("strong.account_user").text()
         cart = JSON.parse(localStorage.getItem('cart'))
-        if(account == ""){
-            for(i=0; i<cart.length; i++){
-                if(cart[i].id == id){
+        if (account == "") {
+            for (i = 0; i < cart.length; i++) {
+                if (cart[i].id == id) {
                     cart[i].quan = val
                     break
                 }
@@ -1138,50 +1138,50 @@ $(document).ready(function(){
         } else {
             input = $(this)
             const data = {
-                'id_p' : id,
-                'quan' : val
+                'id_p': id,
+                'quan': val
             }
             $.ajax({
                 type: 'POST',
-                url: BASEURL+'/cart/updateQuantity',
+                url: BASEURL + '/cart/updateQuantity',
                 data: data,
                 dataType: 'JSON'
             }).then(
-                function(res){
+                function (res) {
                     console.log(res)
-                    if(res.status){
+                    if (res.status) {
                         updateCD(input)
                     } else {
                         alert('error updatecd')
                     }
                 },
-                function(){
+                function () {
                     alert('some error')
                 }
             )
         }
     })
-    removeCD = function(CD){
+    removeCD = function (CD) {
         CD.parents('.cart_product').remove()
         total = 0
         arr = $(".total_price")
-        for(i=0; i<arr.length; i++){
+        for (i = 0; i < arr.length; i++) {
             total += parseInt(arr.eq(i).attr('total_p'))
         }
         $("#tamtinh_c").text(formatPrice(total.toString()))
         $("#thanhtien_c").text(formatPrice(total.toString()))
-        $("#tamtinh_c").attr('tien',total)
-        $("#thanhtien_c").attr('tien',total)
+        $("#tamtinh_c").attr('tien', total)
+        $("#thanhtien_c").attr('tien', total)
     }
-    $(document).on('click', '.xoa_cart_p', function(e){
+    $(document).on('click', '.xoa_cart_p', function (e) {
         e.preventDefault()
         id = $(this).attr('id_p')
         account = $("strong.account_user").text()
         cart = JSON.parse(localStorage.getItem('cart'))
-        if(account == ""){
-            for(i=0; i<cart.length; i++){
-                if(cart[i].id == id){
-                    cart.splice(i,1)
+        if (account == "") {
+            for (i = 0; i < cart.length; i++) {
+                if (cart[i].id == id) {
+                    cart.splice(i, 1)
                     break
                 }
             }
@@ -1191,43 +1191,33 @@ $(document).ready(function(){
             //remove cart detail
             cd = $(this)
             const data = {
-                'id_p' : id
+                'id_p': id
             }
             $.ajax({
                 type: 'POST',
-                url: BASEURL+'/cart/removeCartDetail',
+                url: BASEURL + '/cart/removeCartDetail',
                 data: data,
                 dataType: 'JSON'
             }).then(
-                function(res){
+                function (res) {
                     console.log(res)
-                    if(res.status){
+                    if (res.status) {
                         removeCD(cd)
                     } else {
                         alert('error removecd')
                     }
                 },
-                function(){
+                function () {
                     alert('some error')
                 }
             )
         }
-        // $(this).parents('.cart_product').remove()
-        // total = 0
-        // arr = $(".total_price")
-        // for(i=0; i<arr.length; i++){
-        //     total += parseInt(arr.eq(i).attr('total_p'))
-        // }
-        // $("#tamtinh_c").text(formatPrice(total.toString()))
-        // $("#thanhtien_c").text(formatPrice(total.toString()))
-        // $("#tamtinh_c").attr('tien',total)
-        // $("#thanhtien_c").attr('tien',total)
     })
 })
-displayCart = function(cart){
-    if(cart == null){
+displayCart = function (cart) {
+    if (cart == null || cart.length == 0) {
         $("#content").empty()
-        s = '<img src="'+BASEURL+'/public/assets/img/cart-empty.png" class="img-fluid">'
+        s = '<img src="' + BASEURL + '/public/assets/img/cart-empty.png" class="img-fluid">'
         s += '<p class="text-secondary mt-3"><i>Chưa có sản phẩm nào</i></p>'
         $("#content").append(s)
         $("#content").addClass("bg-light text-center p-4")
@@ -1235,69 +1225,267 @@ displayCart = function(cart){
     } else {
         $("#quantity_sp").text(cart.length)
         total = 0
-        for(i=0; i<cart.length; i++){
+        for (i = 0; i < cart.length; i++) {
             const data = {
-                'id_p' : cart[i].id,
-                'quan' : cart[i].quan
+                'id_p': cart[i].id,
+                'quan': cart[i].quan
             }
             $.ajax({
                 type: 'POST',
-                url: BASEURL+'/cart/getInfoByIdProduct',
+                url: BASEURL + '/cart/getInfoByIdProduct',
                 data: data,
                 dataType: 'JSON'
             }).then(
-                function(res){
+                function (res) {
                     ct = '<hr>'
                     ct += '<div class="row mt-1 cart_product"><div class="col-lg-6 col-md-6"><div class="row ml-2">'
-                    ct += '<div class="col-4 p-0"><a href="'+BASEURL+'/product/infoProduct/'+res.p.id+'">'
-                    ct += '<img class="img-fluid border" src="'+res.p.img+'"></a></div>'
-                    ct += '<div class="col-8 p-0 pl-3 d-flex align-items-start flex-column"><a class="name-product" href="'+BASEURL+'/product/infoProduct/'+res.p.id+'">'
-                    ct += res.p.name+'</a>'+'<div class="mt-auto"><a class="xoa_cart_p" href="" id_p="'+res.p.id+'">Xóa</a></div>'
+                    ct += '<div class="col-4 p-0"><a href="' + BASEURL + '/product/infoProduct/' + res.p.id + '">'
+                    ct += '<img class="img-fluid border" src="' + res.p.img + '"></a></div>'
+                    ct += '<div class="col-8 p-0 pl-3 d-flex align-items-start flex-column"><a class="name-product" href="' + BASEURL + '/product/infoProduct/' + res.p.id + '">'
+                    ct += res.p.name + '</a>' + '<div class="mt-auto"><a class="xoa_cart_p" href="" id_p="' + res.p.id + '">Xóa</a></div>'
                     ct += '</div></div></div><div class="col-lg-2 col-md-2">'
-                    ct += '<p class="price-product mt-2 mb-2 price_p" price_p="'+res.p.price+'">'+formatPrice(res.p.price)+' ₫</p></div>'
+                    ct += '<p class="price-product mt-2 mb-2 price_p" price_p="' + res.p.price + '">' + formatPrice(res.p.price) + ' ₫</p></div>'
                     ct += '<div class="col-lg-2 col-md-2">'
-                    ct += '<input type="number" class="form-control quantity-p" id_p="'+res.p.id+'"'
-                    ct += 'value="'+parseInt(res.quan)+'" min="1"></div>'
+                    ct += '<input type="number" class="form-control quantity-p" id_p="' + res.p.id + '"'
+                    ct += 'value="' + parseInt(res.quan) + '" min="1"></div>'
                     ct += '<div class="col-lg-2 col-md-2">'
                     ct += '<p class="price-product mt-2 mb-2 total_price" total_p="'
-                    ct += (parseInt(res.quan)*parseInt(res.p.price))+'">'
-                    ct += formatPrice((parseInt(res.quan)*parseInt(res.p.price)).toString())
+                    ct += (parseInt(res.quan) * parseInt(res.p.price)) + '">'
+                    ct += formatPrice((parseInt(res.quan) * parseInt(res.p.price)).toString())
                     ct += ' ₫</p></div></div>'
                     $("#body_cart").append(ct)
-                    total += parseInt(res.quan)*parseInt(res.p.price)
+                    total += parseInt(res.quan) * parseInt(res.p.price)
                     $("#tamtinh_c").text(formatPrice(total.toString()))
                     $("#thanhtien_c").text(formatPrice(total.toString()))
-                    $("#tamtinh_c").attr('tien',total)
-                    $("#thanhtien_c").attr('tien',total)
+                    $("#tamtinh_c").attr('tien', total)
+                    $("#thanhtien_c").attr('tien', total)
                 },
-                function(){
+                function () {
                     alert('error display')
                 }
             )
         }
     }
 }
-loadCart = function(acc=""){
-    if(acc==""){
+loadCart = function (acc = "") {
+    if (acc == "") {
         cart = JSON.parse(localStorage.getItem('cart'))
         displayCart(cart)
     } else {
         $.ajax({
             type: 'POST',
-            url: BASEURL+'/cart/getCartInfo',
+            url: BASEURL + '/cart/getCartInfo',
             dataType: 'JSON'
         }).then(
-            function(res){
-                console.log(res)
+            function (res) {
                 displayCart(res)
             },
-            function(){
+            function () {
                 alert('error load cart info')
             }
         )
     }
 }
 //-------------------------------------END OF CART HANDLE
+
+
+
+
+/**
+ * 
+ * 
+ * Handle for ORDER
+ * display, input address, confirm 
+ * 
+ * 
+ * 
+ */
+displayOrder = function (cart) {
+    if (cart == null || cart.length == 0) {
+        $("#content").empty()
+        s = '<img src="' + BASEURL + '/public/assets/img/cart-empty.png" class="img-fluid">'
+        s += '<p class="text-secondary mt-3"><i>Chưa có sản phẩm nào</i></p>'
+        $("#content").append(s)
+        $("#content").addClass("bg-light text-center p-4")
+        $("#content").removeClass("row")
+        return
+    }
+    tt = 0
+    total = 20000
+    for (i = 0; i < cart.length; i++) {
+        const data = {
+            'id_p': cart[i].id,
+            'quan': cart[i].quan
+        }
+        $.ajax({
+            type: 'POST',
+            url: BASEURL + '/cart/getInfoByIdProduct',
+            data: data,
+            dataType: 'JSON'
+        }).then(
+            function (res) {
+                ct = '<div class="row cart-detail" id_p="'+res.p.id+'"><div class="col-3">'
+                ct += '<a class="cart_list_product_img" href="' + BASEURL + '/product/infoProduct/' + res.p.id + '">'
+                ct += '<img class="img-fluid border" src="' + res.p.img + '"></a></div>'
+                ct += '<div class="col-9 order-detail-p"><a class="name-product" href="' + BASEURL + '/product/infoProduct/' + res.p.id + '">'
+                ct += res.p.name + '</a><div class="d-flex"><p><span id="quantity">'+res.quan+'</span> x '
+                ct += '<span class="price-product" id="price" price_p="' + res.p.price + '">'+formatPrice(res.p.price)+'₫</span></p>'
+                ct += '<div class="ml-auto mr-2 price-product">' + formatPrice((parseInt(res.quan) * parseInt(res.p.price)).toString())
+                ct += '₫</div></div></div></div>'
+                ct += '<hr>'
+
+                $("#info-cart").append(ct)
+                total += parseInt(res.quan) * parseInt(res.p.price)
+                tt += parseInt(res.quan) * parseInt(res.p.price)
+                $("#tamtinh_c").text(formatPrice(tt.toString()))
+                $("#thanhtien_c").text(formatPrice(total.toString()))
+                $("#tamtinh_c").attr('tien', tt)
+                $("#thanhtien_c").attr('tien', total)
+            },
+            function () {
+                alert('error display')
+            }
+        )
+    }
+}
+loadOrder = function (acc = "") {
+    if (acc == "") {
+        cart = JSON.parse(localStorage.getItem('cart'))
+        displayOrder(cart)
+    } else {
+        $.ajax({
+            type: 'POST',
+            url: BASEURL + '/cart/getCartInfo',
+            dataType: 'JSON'
+        }).then(
+            function (res) {
+                console.log(res)
+                displayOrder(res)
+            },
+            function () {
+                alert('error load order info')
+            }
+        )
+    }
+}
+
+removeAllCD = function(Account){
+    if(Account == ""){
+        localStorage.removeItem('cart')
+    } else {
+        $.ajax({
+            type : "POST",
+            url  : BASEURL + "/cart/removeAllCartDetail"
+        }).then(
+            function(res){
+            },
+            function(){
+                alert('error')
+            }
+        )
+    }
+}
+$(document).ready(function(){
+    $("#btn-tt").click(function(){
+        arr = $(".cart-detail")
+        cd_arr = []
+        total = 20000
+        for(i=0; i<arr.length; i++){
+            quan = arr.eq(i).find('span#quantity').text()
+            price = arr.eq(i).find('span#price').attr('price_p')
+            total += parseInt(quan)*parseInt(price)
+            cd = {
+                'id' : arr.eq(i).attr('id_p'),
+                'quan' : quan,
+                'price' : price
+            }
+            cd_arr.push(cd);
+        }
+        od = {
+            'Account' : $('strong.account_user').text(),
+            'FullName' : $("input#FullName").val(),
+            'Phone' : $('input#Phone').val(),
+            'Address' : $('input#Address').val(),
+            'City' : $('input#City').val(),
+            'Province' : $('input#Province').val(),
+            'Total' : total.toString(),
+            'Cd' : cd_arr
+        }
+
+        if (od.FullName == ""){
+            $(".FullName").addClass("is-invalid")
+            return
+        }
+        else
+            $(".FullName").removeClass("is-invalid")
+
+        if (od.Phone == ""){
+            $(".Phone").addClass("is-invalid")
+            return
+        }
+        else
+            $(".Phone").removeClass("is-invalid")
+
+        if (od.Address == ""){
+            $(".Address").addClass("is-invalid")
+            return
+        }
+        else
+            $(".Address").removeClass("is-invalid")
+
+        if (od.City == ""){
+            $(".City").addClass("is-invalid")
+            return
+        }
+        else
+            $(".City").removeClass("is-invalid")
+
+        if (od.Province == ""){
+            $(".Province").addClass("is-invalid")
+            return
+        }
+        else
+            $(".Province").removeClass("is-invalid")
+        
+        
+        $.ajax({
+            type: 'POST',
+            url: BASEURL+'/order/order',
+            data: od,
+            dataType: 'JSON'
+        }).then(
+            //success
+            function(res){
+                if(res.status){
+                    removeAllCD(od.Account)
+                    s = '<div class="row pr-4 pl-2 pt-2">'
+                    s += '<b class="col">Họ và tên: </b>'
+                    s += '<p class="col">'+od.FullName+'</p></div>'
+                    s += '<div class="row pr-4 pl-2">'
+                    s += '<b class="col">Số điện thoại: </b>'
+                    s += '<p class="col">'+od.Phone+'</p></div>'
+                    s += '<div class="row pr-4 pl-2">'
+                    s += '<b class="col">Địa chỉ: </b>'
+                    s += '<p class="col">'+od.Address+', '+od.Province+', '+od.City+'</p></div>'
+                    s += '<div class="row"><i class="col text-secondary">*Đặt hàng thành công, '
+                    s += 'có điện thoại xác nhận trong 24h tới</i></div>'
+                    $("#info-order").html(s)
+                } else {
+                    alert('fail order')
+                }
+            },
+            //fail
+            function(){
+                alert('error order')
+            }
+        )
+    })
+})
+
+
+
+//-------------------------------------END OF ORDER HANDLE
+
 
 
 
@@ -1310,22 +1498,22 @@ loadCart = function(acc=""){
  * 
  * 
  */
-$(document).ready(function(){
-    $(".addToCart").click(function(){
+$(document).ready(function () {
+    $(".addToCart").click(function () {
         const data = {
-            'account' : $(".account_user").text(),
-            'id_p' : $(this).parents('div.row').attr('id_p'),
-            'quan' : $("input.quantity").val()
+            'account': $(".account_user").text(),
+            'id_p': $(this).parents('div.row').attr('id_p'),
+            'quan': $("input.quantity").val()
         }
-        if($(".account_user").text() != ""){
+        if ($(".account_user").text() != "") {
             $.ajax({
                 type: 'POST',
-                url: BASEURL+'/product/addCart',
+                url: BASEURL + '/product/addCart',
                 data: data,
                 dataType: 'JSON'
             }).then(
-                function(res){
-                    if(res.status == true){
+                function (res) {
+                    if (res.status == true) {
                         $('.alert').remove()
                         s = '<div class="container mt-3 alert alert-success alert-dismissible fade show" role="alert">'
                         s += 'Thêm vào giỏ thành công'
@@ -1337,35 +1525,35 @@ $(document).ready(function(){
                         alert('error')
                     }
                 },
-                function(){
+                function () {
                     alert("error addCart")
                 }
             )
         } else {
             cart = JSON.parse(localStorage.getItem('cart'))
             r = {
-                'id' : data['id_p'], 
-                'quan' : data['quan']
+                'id': data['id_p'],
+                'quan': data['quan']
             }
-            if(cart == null){
+            if (cart == null) {
                 cart = []
                 cart.push(r)
             } else {
                 ck = false
-                for(i=0; i<cart.length; i++){
+                for (i = 0; i < cart.length; i++) {
                     console.log(cart[i])
-                    if(cart[i].id == r.id){
-                        cart[i].quan = parseInt(cart[i].quan)+1
+                    if (cart[i].id == r.id) {
+                        cart[i].quan = parseInt(cart[i].quan) + 1
                         ck = true
                         break
                     }
                 }
-                if(!ck){
+                if (!ck) {
                     cart.push(r)
                 }
             }
             $('.alert').remove()
-            localStorage.setItem('cart',JSON.stringify(cart))
+            localStorage.setItem('cart', JSON.stringify(cart))
             s = '<div class="container mt-3 alert alert-success alert-dismissible fade show" role="alert">'
             s += 'Thêm vào giỏ thành công'
             s += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
@@ -1389,88 +1577,88 @@ $(document).ready(function(){
  * 
  */
 //signup page
-$(document).ready(function() {
-    $(".Password, .conPassword").keyup(function(){
+$(document).ready(function () {
+    $(".Password, .conPassword").keyup(function () {
         Password = $("#Password").val()
         conPassword = $("#conPassword").val()
-        if(Password!=conPassword){
+        if (Password != conPassword) {
             $(".conPasswordError").html("Mật khẩu xác nhận sai!!")
             $(".conPassword").addClass("is-invalid")
         } else {
             $(".conPassword").removeClass("is-invalid")
         }
     })
-    $("input").keydown(function(){
+    $("input").keydown(function () {
         val = $(this).val()
         $(this).removeClass("is-invalid")
     })
-    $('#signup').click(function() {
+    $('#signup').click(function () {
         $(".alert").remove()
         const userData = {
-            'Account' : $("#Account").val(),
-            'Password' : $("#Password").val(),
-            'FullName' : $("#FullName").val(),
-            'Email' : $("#Email").val(),
-            'Phone' : $("#Phone").val(),
-            'Address' : $("#Address").val(),
-            'City' : $("#City").val(),
-            'Province' : $("#Province").val(),
+            'Account': $("#Account").val(),
+            'Password': $("#Password").val(),
+            'FullName': $("#FullName").val(),
+            'Email': $("#Email").val(),
+            'Phone': $("#Phone").val(),
+            'Address': $("#Address").val(),
+            'City': $("#City").val(),
+            'Province': $("#Province").val(),
         }
         conPassword = $("#conPassword").val()
-        if(userData.Account == "")
+        if (userData.Account == "")
             $(".Account").addClass("is-invalid")
         else
             $(".Account").removeClass("is-invalid")
 
-        if(userData.Password == "")
+        if (userData.Password == "")
             $(".Password").addClass("is-invalid")
         else
             $(".Password").removeClass("is-invalid")
-        
-        if(userData.FullName == "")
+
+        if (userData.FullName == "")
             $(".FullName").addClass("is-invalid")
         else
             $(".FullName").removeClass("is-invalid")
-        
-        if(userData.Email == "")
+
+        if (userData.Email == "")
             $(".Email").addClass("is-invalid")
         else
             $(".Email").removeClass("is-invalid")
-        
-        if(userData.Phone == "")
+
+        if (userData.Phone == "")
             $(".Phone").addClass("is-invalid")
         else
             $(".Phone").removeClass("is-invalid")
-            
-        if(userData.Address == "")
+
+        if (userData.Address == "")
             $(".Address").addClass("is-invalid")
         else
             $(".Address").removeClass("is-invalid")
-            
-        if(userData.City == "")
+
+        if (userData.City == "")
             $(".City").addClass("is-invalid")
         else
             $(".City").removeClass("is-invalid")
-        
-        if(userData.Province == "")
+
+        if (userData.Province == "")
             $(".Province").addClass("is-invalid")
         else
             $(".Province").removeClass("is-invalid")
 
-        if(userData.Account != "" && userData.Password != "" && userData.FullName != "" && userData.Address != ""
-        && userData.Phone != "" && userData.City != "" && userData.Province != "" 
-        && userData.Password==conPassword) {
+        if (userData.Account != "" && userData.Password != "" && userData.FullName != "" && userData.Address != ""
+            && userData.Phone != "" && userData.City != "" && userData.Province != ""
+            && userData.Password == conPassword) {
             $.ajax({
                 type: "POST",
-                url: BASEURL+'/user/createAccount',
+                url: BASEURL + '/user/createAccount',
                 data: userData,
-                dataType : 'JSON'
+                dataType: 'JSON'
             }).then(
                 // resolve/success callback
-                function(response) {
-                    if(response.status == true){
+                function (response) {
+                    if (response.status == true) {
                         s = '<div class="alert alert-success text-center" role="alert">'
-                        s += 'Tạo tài khoản thành công!! <a href="'+BASEURL+'/user/login/" class="alert-link">Nhấn để đăng nhập</a>'
+                        s += 'Tạo tài khoản thành công!! <a href="' + BASEURL + '/user/login/" class="alert-link">Nhấn để đăng nhập</a>'
                         s += '</div>'
                         $(".container_s").before(s)
                     } else {
@@ -1478,13 +1666,13 @@ $(document).ready(function() {
                         s += 'Tạo tài khoản không thành công!!'
                         s += '</div>'
                         $(".container_s").before(s)
-                        if(response.AccountError != null) {
+                        if (response.AccountError != null) {
                             $(".Account").addClass("is-invalid")
                             $(".AccountError").html(response.AccountError)
                         } else {
                             $(".Account").removeClass("is-invalid")
                         }
-                        if(response.PhoneError != null) {
+                        if (response.PhoneError != null) {
                             $(".Phone").addClass("is-invalid")
                             $(".PhoneError").html(response.PhoneError)
                         } else {
@@ -1493,52 +1681,52 @@ $(document).ready(function() {
                     }
                 },
                 // reject/failure callback
-                function() {
+                function () {
                     alert('There was some error!');
                 }
             )
         }
     })
     // Login
-    $('#login').click(function() {
+    $('#login').click(function () {
         $(".alert").remove()
         const userData = {
-            'Account' : $("#Account").val(),
-            'Password' : $("#Password").val()
+            'Account': $("#Account").val(),
+            'Password': $("#Password").val()
         }
-        if(userData.Account == "")
+        if (userData.Account == "")
             $(".Account").addClass("is-invalid")
         else
             $(".Account").removeClass("is-invalid")
 
-        if(userData.Password == "")
+        if (userData.Password == "")
             $(".Password").addClass("is-invalid")
         else
             $(".Password").removeClass("is-invalid")
-        
-        if(userData.Account != "" && userData.Password != "") {
+
+        if (userData.Account != "" && userData.Password != "") {
             $.ajax({
                 type: "POST",
-                url: BASEURL+'/user/loginAccount',
+                url: BASEURL + '/user/loginAccount',
                 data: userData,
-                dataType : 'JSON'
+                dataType: 'JSON'
             }).then(
                 // resolve/success callback
-                function(response) {
-                    if(response.status == true){
+                function (response) {
+                    if (response.status == true) {
                         location.href = BASEURL;
                     } else {
                         s = '<div class="alert alert-danger text-center" role="alert">'
                         s += 'Đăng nhập không thành công!!'
                         s += '</div>'
                         $("header").after(s)
-                        if(response.AccountError != null) {
+                        if (response.AccountError != null) {
                             $(".Account").addClass("is-invalid")
                             $(".AccountError").html(response.AccountError)
                         } else {
                             $(".Account").removeClass("is-invalid")
                         }
-                        if(response.PasswordError != null) {
+                        if (response.PasswordError != null) {
                             $(".Password").addClass("is-invalid")
                             $(".PasswordError").html(response.PasswordError)
                         } else {
@@ -1547,7 +1735,7 @@ $(document).ready(function() {
                     }
                 },
                 // reject/failure callback
-                function() {
+                function () {
                     alert('There was some error!');
                 }
             )
@@ -1555,7 +1743,7 @@ $(document).ready(function() {
     })
 
     //Profile
-    $("#stt").click(function(){
+    $("#stt").click(function () {
         $("#ltt").removeAttr('hidden')
         $(".FullName").removeAttr('readonly')
         $(".Email").removeAttr('readonly')
@@ -1564,70 +1752,70 @@ $(document).ready(function() {
         $(".Province").removeAttr('readonly')
     })
 
-    $("#ltt").click(function(){
+    $("#ltt").click(function () {
         $(".alert").remove()
         const userData = {
-            'Account' : $("#Account").text(),
-            'Password' : "",
-            'FullName' : $("#FullName").val(),
-            'Email' : $("#Email").val(),
-            'Phone' : $("#Phone").val(),
-            'Address' : $("#Address").val(),
-            'City' : $("#City").val(),
-            'Province' : $("#Province").val(),
+            'Account': $("#Account").text(),
+            'Password': "",
+            'FullName': $("#FullName").val(),
+            'Email': $("#Email").val(),
+            'Phone': $("#Phone").val(),
+            'Address': $("#Address").val(),
+            'City': $("#City").val(),
+            'Province': $("#Province").val(),
         }
 
-        if(userData.FullName == "")
+        if (userData.FullName == "")
             $(".FullName").addClass("is-invalid")
         else
             $(".FullName").removeClass("is-invalid")
-        
-        if(userData.Email == "")
+
+        if (userData.Email == "")
             $(".Email").addClass("is-invalid")
         else
             $(".Email").removeClass("is-invalid")
-        
-        if(userData.Phone == "")
+
+        if (userData.Phone == "")
             $(".Phone").addClass("is-invalid")
         else
             $(".Phone").removeClass("is-invalid")
-            
-        if(userData.Address == "")
+
+        if (userData.Address == "")
             $(".Address").addClass("is-invalid")
         else
             $(".Address").removeClass("is-invalid")
-            
-        if(userData.City == "")
+
+        if (userData.City == "")
             $(".City").addClass("is-invalid")
         else
             $(".City").removeClass("is-invalid")
-        
-        if(userData.Province == "")
+
+        if (userData.Province == "")
             $(".Province").addClass("is-invalid")
         else
             $(".Province").removeClass("is-invalid")
 
-        if(userData.Account != "" && userData.FullName != "" && userData.Address != ""
-        && userData.Phone != "" && userData.City != "" && userData.Province != "" ) {
+        if (userData.Account != "" && userData.FullName != "" && userData.Address != ""
+            && userData.Phone != "" && userData.City != "" && userData.Province != "") {
             $.ajax({
                 type: "POST",
-                url: BASEURL+'/user/updateUser',
+                url: BASEURL + '/user/updateUser',
                 data: userData,
-                dataType : 'JSON'
+                dataType: 'JSON'
             }).then(
                 // resolve/success callback
-                function(response) {
-                    if(response.status == true){
+                function (response) {
+                    if (response.status == true) {
                         s = '<div class="alert alert-success text-center" role="alert">'
                         s += 'Lưu thông tin tài khoản thành công!!'
                         s += '</div>'
                         $("header").after(s)
-                        $("#ltt").attr('hidden','true')
-                        $(".FullName").attr('readonly','true')
-                        $(".Email").attr('readonly','true')
-                        $(".Address").attr('readonly','true')
-                        $(".City").attr('readonly','true')
-                        $(".Province").attr('readonly','true')
+                        $("#ltt").attr('hidden', 'true')
+                        $(".FullName").attr('readonly', 'true')
+                        $(".Email").attr('readonly', 'true')
+                        $(".Address").attr('readonly', 'true')
+                        $(".City").attr('readonly', 'true')
+                        $(".Province").attr('readonly', 'true')
                     } else {
                         s = '<div class="alert alert-danger text-center" role="alert">'
                         s += 'Lưu thông tin tài khoản không thành công!!'
@@ -1636,54 +1824,54 @@ $(document).ready(function() {
                     }
                 },
                 // reject/failure callback
-                function() {
+                function () {
                     alert('There was some error!');
                 }
             )
         }
     })
-    $('#lmk').click(function() {
+    $('#lmk').click(function () {
         $(".alert").remove()
         const userData = {
-            'Account' : $("#Account").text(),
-            'Password' : $("#oldPassword").val(),
-            'FullName' : $("#FullName").val(),
-            'Email' : $("#Email").val(),
-            'Phone' : $("#Phone").val(),
-            'Address' : $("#Address").val(),
-            'City' : $("#City").val(),
-            'Province' : $("#Province").val(),
+            'Account': $("#Account").text(),
+            'Password': $("#oldPassword").val(),
+            'FullName': $("#FullName").val(),
+            'Email': $("#Email").val(),
+            'Phone': $("#Phone").val(),
+            'Address': $("#Address").val(),
+            'City': $("#City").val(),
+            'Province': $("#Province").val(),
         }
         newPassword = $("#Password").val()
         conPassword = $("#conPassword").val()
 
-        if(conPassword == "")
+        if (conPassword == "")
             $(".conPassword").addClass("is-invalid")
         else
             $(".conPassword").removeClass("is-invalid")
-        
-        if(newPassword == "")
+
+        if (newPassword == "")
             $(".Password").addClass("is-invalid")
         else
             $(".Password").removeClass("is-invalid")
 
-        if(userData.Password == "")
+        if (userData.Password == "")
             $(".oldPassword").addClass("is-invalid")
         else
             $(".oldPassword").removeClass("is-invalid")
-        
-        if(userData.Password != "" && conPassword != "" && newPassword != ""
-        && newPassword == conPassword) {
+
+        if (userData.Password != "" && conPassword != "" && newPassword != ""
+            && newPassword == conPassword) {
             $.ajax({
                 type: "POST",
-                url: BASEURL+'/user/updatePassword/'+newPassword,
+                url: BASEURL + '/user/updatePassword/' + newPassword,
                 data: userData,
-                dataType : 'JSON'
+                dataType: 'JSON'
             }).then(
                 // resolve/success callback
-                function(response) {
+                function (response) {
                     console.log(response)
-                    if(response.status == true){
+                    if (response.status == true) {
                         s = '<div class="alert alert-success text-center" role="alert">'
                         s += 'Lưu mật khẩu mới thành công!!'
                         s += '</div>'
@@ -1693,7 +1881,7 @@ $(document).ready(function() {
                         s += 'Lưu mật khẩu mới không thành công!!'
                         s += '</div>'
                         $(".lmk").before(s)
-                        if(response.PasswordError != null) {
+                        if (response.PasswordError != null) {
                             $(".oldPasswordError").html(response.PasswordError)
                             $(".oldPassword").addClass("is-invalid")
                         } else {
@@ -1702,7 +1890,7 @@ $(document).ready(function() {
                     }
                 },
                 // reject/failure callback
-                function() {
+                function () {
                     alert('There was some error!');
                 }
             )
@@ -1717,55 +1905,55 @@ $(document).ready(function() {
             reader.readAsDataURL(input.files[0]);
         }
     }
-    $("#Img").change(function(){
+    $("#Img").change(function () {
         readURL(this);
         $("#luu").removeAttr('hidden')
     });
-    $("#luu").click(function(){
+    $("#luu").click(function () {
         const userData = {
-            'Account' : $("#Account").text(),
-            'Password' : "",
-            'FullName' : "",
-            'Email' : "",
-            'Phone' : "",
-            'Address' : "",
-            'City' : "",
-            'Province' : "",
-            'Img' : $('#img').attr('src')
+            'Account': $("#Account").text(),
+            'Password': "",
+            'FullName': "",
+            'Email': "",
+            'Phone': "",
+            'Address': "",
+            'City': "",
+            'Province': "",
+            'Img': $('#img').attr('src')
         }
         //console.log(userData)
         $.ajax({
             type: "POST",
-            url: BASEURL+'/user/setImg',
+            url: BASEURL + '/user/setImg',
             data: userData,
-            dataType : 'JSON'
+            dataType: 'JSON'
         }).then(
             // resolve/success callback
-            function(response) {
-                if(response.status) {
-                    $("#luu").attr('hidden','true')
+            function (response) {
+                if (response.status) {
+                    $("#luu").attr('hidden', 'true')
                 } else {
                     alert("error pic")
                 }
             },
             // reject/failure callback
-            function() {
+            function () {
                 alert('There was some error!');
             }
         )
     })
-    $("#xtk").click(function(){
+    $("#xtk").click(function () {
         $.ajax({
             type: "POST",
-            url: BASEURL+'/user/deleteAccount'
+            url: BASEURL + '/user/deleteAccount'
         }).then(
             // resolve/success callback
-            function(response) {
+            function (response) {
                 console.log(response)
-                location.href = BASEURL+'/user/logout_s'
+                location.href = BASEURL + '/user/logout_s'
             },
             // reject/failure callback
-            function() {
+            function () {
                 alert('There was some error!');
             }
         )

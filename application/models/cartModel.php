@@ -31,4 +31,9 @@ class cartModel{
             array($id_c, $id_p));
         return $this->db->rowCount();
     }
+    public function removeAllCartDetail($id_c){
+        $this->db->Query("delete from mp_cart_detail where id_cart=?",
+            array($id_c));
+        return $this->db->rowCount();
+    }
 }

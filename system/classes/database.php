@@ -33,6 +33,19 @@ class database{
         }
     }
 
+    public function startTran(){
+        $this->Query('SET AUTOCOMMIT=0');
+        $this->Query('START TRANSACTION');
+    }
+
+    public function commit(){
+        $this->Query('COMMIT');
+    }
+
+    public function rollback(){
+        $this->Query('ROLLBACK');
+    }
+
     public function rowCount(){
         return $this->result->rowCount();
     }

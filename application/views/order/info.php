@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Home mate</title>
+    <title>Order info</title>
     <?php require_once "../application/views/_shared/css.php"; ?>
 </head>
 
@@ -12,7 +12,7 @@
         <div class="row" id="content">
             <div class="col-lg-6">
                 <h3 class="h4 text-secondary">Địa chỉ nhận hàng</h3>
-                <form>
+                <div id="info-order">
                     <div class="form-group">
                         <label for="FullName" class="ml-2"><strong>Họ và tên</strong></label>
                         <input type="text" id="FullName" class="form-control FullName" placeholder="Nhập họ và tên">
@@ -55,56 +55,51 @@
 
                     <div class="form-group row">
                         <div class="col-sm-6 col-8">
-                            <a class="btn btn-secondary" href="/gio-hang.html">QUAY LẠI GIỎ HÀNG</a>
+                            <a class="btn btn-secondary" href="<?php echo BASEURL ?>/cart/info">QUAY LẠI GIỎ HÀNG</a>
                         </div>
                         <div class="col-sm-6 col-4">
                             <button class="btn btn-success" type="button" id="btn-tt">THANH TOÁN</button>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
             <div class="col-lg-6">
 
                 <div class="card shadow">
                     <h4 class="card-header p-2 pl-4">Giỏ Hàng</h4>
-                    <div class="card-body row">
-                        <div class="col-4 border">
-                            <a class="cart_list_product_img" href="/son-kem-li-black-rouge-air-fit-velvet-tint-ver7.html">
-                                <img src="https://adminbeauty.hvnet.vn/Upload/Files/7a35eebac330689cc5a7c658da0a1533.jpg?width=350&amp;height=391" alt="Son Kem Black Rouge Air Fit Velvet Tint Ver.7" class="img-fluid">
-                            </a>
-                        </div>
-                        <div class="col-8 order-detail-p">
-                            <div>
-                                <a href="/son-kem-li-black-rouge-air-fit-velvet-tint-ver7.html">
-                                    <span class="name-ps">Son Kem Black Rouge Air Fit Velvet Tint Ver.7</span>
-                                </a>
-                            </div>
-                            <div class="quantity">
-                                1 x
-                                <span class="amount">
-                                    <span class="money" style="color: #199427; font-size: 14px !important;">
-                                        115,000₫
-                                    </span>
-                                </span>
-                                <div class="pull-right tt">
-                                    115,000₫
-                                </div>
-                            </div>
-                        </div>
+                    <div class="card-body pb-0" id="info-cart">
+                    </div>
+                    
+                    <div class="pl-4 pr-3">
+                        <p class="d-flex" id="priceTotal">
+                            <span class="mr-auto">Tạm tính: </span>
+                            <i class="text-success"><span id="tamtinh_c" tien=""></span>₫</i>
+                        </p>
+                        <p class="d-flex" id="priceTotal">
+                            <span class="mr-auto">Phí vận chuyển: </span>
+                            <i class="text-success"><span>20,000</span>₫</i>
+                        </p>
+                        <hr>
+                        <p class="d-flex">
+                            <b class="mr-auto">Thành tiền: </b>
+                            <b class="text-danger"><span id="thanhtien_c" tien=""></span>₫</b>
+                        </p>
+                        <p class="text-right text-secondary">
+                            <i><small>* Phương thức thanh toán: Nhận hàng & thanh toán tiền mặt tại nhà</small></i>
+                        </p>
                     </div>
 
-
-
+                </div>
+            </div>
         </div>
-    </div>
-    </div>
-    <?php include "../application/views/_shared/footer.php" ?>
-    <?php require_once "../application/views/_shared/js.php"; ?>
-    <script>
-        $(document).ready(function() {
-            loadCategory()
-        })
-    </script>
+        <?php include "../application/views/_shared/footer.php" ?>
+        <?php require_once "../application/views/_shared/js.php"; ?>
+        <script>
+            $(document).ready(function() {
+                loadCategory()
+                loadOrder('<?php echo $this->getSession('Account') ?>')
+            })
+        </script>
 </body>
 
 </html>

@@ -67,13 +67,13 @@ class BaseController{
     public function formatPrice($price){
         $r = "";
         $c = 0;
-        for($i=0; $i<strlen($price); $i++){
+        for($i=strlen($price)-1; $i>=0; $i--){
             if($c%3==0 && $c!=0){
                 $r.=",";
             }
             $r.=$price[$i];
             $c++;
         }
-        return $r;
+        return strrev($r);
     }
 }

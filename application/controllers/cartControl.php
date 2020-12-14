@@ -51,4 +51,17 @@ class cartControl extends BaseController
 
         echo json_encode($res);
     }
+
+    public function removeAllCartDetail(){
+        $res = array();
+        $account = $this->getSession('Account');
+        $cartModel = $this->model('cartModel');
+        $res['status'] = false;
+        $id_c = $cartModel->getIdCart($account)->id;
+        if($cartModel->removeAllCartDetail($id_c) > 0){
+            $res['status'] = true;
+        }
+
+        echo json_encode($res);
+    }
 }

@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Home mate</title>
+    <title>Cart info</title>
     <?php require_once "../application/views/_shared/css.php"; ?>
 </head>
 
