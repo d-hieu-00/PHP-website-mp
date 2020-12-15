@@ -92,18 +92,6 @@ class productModel
             img=?, short_discription=?, discription=?, id_type=? where id=?", $data_p);
         return $this->db->rowCount();
     }
-    public function updateWarehouseDetail($data){
-        $this->db->Query("update mp_warehouse_detail set quantity=? where id_product=? and id_warehouse=?", $data);
-        return $this->db->rowCount();
-    }
-    public function insertWarehouseDetail($data){
-        $this->db->Query("insert into mp_warehouse_detail(quantity,id_product,id_warehouse) values(?,?,?)", $data);
-        return $this->db->rowCount();
-    }
-    public function deleteWarehouseDetail($data){
-        $this->db->Query("delete from mp_warehouse_detail where id_product=? and id_warehouse=?", $data);
-        return $this->db->rowCount();
-    }
     /**
      * 
      * insert type product
@@ -137,13 +125,5 @@ class productModel
             $ck = true;
         }
         return $ck;
-    }
-    /**
-     * 
-     * delete all warehouse details
-     */
-    public function deleteAllWarehouseDetails($id_p){
-        $this->db->Query("delete from mp_warehouse_detail where id_product=?",array($id_p));
-        return $this->db->rowCount();
     }
 }

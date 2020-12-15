@@ -9,11 +9,6 @@
             if (!is_dir($path)) {
                 $results[] = BASEURL."/public/assets/img/slide/".$value;
             }
-            // get file from child folder
-            // } else if ($value != "." && $value != "..") {
-            //     getDirContents($path, $results);
-            //     $results[] = $path;
-            // }
         }
     
         return $results;

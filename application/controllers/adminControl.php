@@ -571,14 +571,15 @@ class adminControl extends BaseController
         $id_pro = $this->input('id');
         $data_w = $this->input('warehouse');
         $productModel = $this->model('productModel');
+        $warehouseModel = $this->model('warehouseModel');
         $response['status'] = false;
-        if ($productModel->save($data_p)) {
-            $productModel->deleteAllWarehouseDetails($id_pro);
-            foreach ($data_w as $val) {
-                $productModel->insertWarehouseDetail($val);
-            }
-            $response['status'] = true;
+        
+        $productModel->save($data_p);
+        $warehouseModel->deleteAllWarehouseDetails($id_pro);
+        foreach ($data_w as $val) {
+            $warehouseModel->insertWarehouseDetail($val);
         }
+        $response['status'] = true;
         echo json_encode($response);
     }
     /**
@@ -601,13 +602,14 @@ class adminControl extends BaseController
         ];
         $data_w = $this->input('warehouse');
         $productModel = $this->model('productModel');
+        $warehouseModel = $this->model('warehouseModel');
         $response['status'] = false;
         $id = $productModel->insert($data_p);
         if ($id) {
             foreach ($data_w as $val) {
                 $data = [$val[0], $id, $val[1]];
-                if ($productModel->updateWarehouseDetail($data) < 1) {
-                    $productModel->insertWarehouseDetail($data);
+                if ($warehouseModel->updateWarehouseDetail($data) < 1) {
+                    $warehouseModel->insertWarehouseDetail($data);
                 }
             }
             $response['status'] = true;
@@ -631,6 +633,166 @@ class adminControl extends BaseController
             $this->redirect('admin/login');
         }
     }
+    public function getAllOrder(){
+        $orderModel = $this->model('orderModel');
+        $allOrder = $orderModel->getAllOrder();
+        $data = [];
+        $i = 1;
+        foreach ($allOrder as $val) {
+            $row = [];
+            $row[] = $i++;
+            $row[] = '<span class="o-full-name">'
+                . $val->full_name . '</span>';
+            $row[] = '<span class="o-phone">' . $val->phone . '</span>';
+            $row[] = '<span class="o-shipping-fee">' . $this->formatPrice($val->shipping_fee) . '</span>';
+            $row[] = '<span class="o-total-price">' . $this->formatPrice($val->total_price) . '</span>';
+            if ($val->status == 'Chờ xác nhận') {
+                $row[] = '<span class="btn btn-secondary o-status">'.$val->status.'</span>';
+                $row[] = '<button class="btn modify btn-info" id_o="' . $val->id . '"
+                    data-toggle="modal" data-target="#modify-order">Xác nhận</button>';
+                $row[] = '<button class="btn next-status btn-primary" id_o="' . $val->id . '"
+                    disabled>Chuyển</button>';
+            } else if ($val->status == 'Đã xác nhận') {
+                $row[] = '<span class="btn btn-success o-status">'.$val->status.'</span>';
+                $row[] = '<button class="btn modify btn-info" id_o="' . $val->id . '"
+                    disabled>Xác nhận</button>';
+                $row[] = '<button class="btn next-status btn-primary" id_o="' . $val->id . '"
+                    >Chuyển</button>';
+            } else {
+                $row[] = '<span class="btn btn-warning o-status">'.$val->status.'</span>';
+                $row[] = '<button class="btn modify btn-info" id_o="' . $val->id . '"
+                    disabled>Xác nhận</button>';
+                $row[] = '<button class="btn next-status btn-primary" id_o="' . $val->id . '"
+                    >Chuyển</button>';
+            }
+            $row[] = '<button class="btn o-cancel btn-danger" id_o="' . $val->id
+                    . '">Hủy đơn hàng</button>';
+            $row[] = '<span class="o-address" id_o="' . $val->id . '">' . $val->address . '</span>';
+            if ($val->account == null){
+                $row[] = '<span class="o-account" id_o="' . $val->id . '"><i>(none)</i></span>';
+            } else {
+                $row[] = '<span class="o-account" id_o="' . $val->id . '">'.$val->account.'</span>';
+            }
+            $row[] = $val->date_created;
+            $row[] = $val->date_modify;
+            $data[] = $row;
+        }
+
+        echo json_encode(['data' => $data]);
+    }
+
+    public function detailOrder(){
+        $orderModel = $this->model('orderModel');
+        $warehouseModel = $this->model('warehouseModel');
+        $id = $this->input('id_o');
+        $res = array();
+        $res['order'] = $orderModel->getDetailOrder($id);
+
+        $res['od'] = $orderModel->getDetailProductOrder($id);
+        $w = array();
+        for($i=0; $i<count($res['od']); $i++){
+            $w[] = $warehouseModel->detailProduct($res['od'][$i]->id_product);
+        }
+        $res['w'] = $w;
+        echo json_encode($res);
+    }
+
+    public function confirmOrder(){
+        $res = array();
+        $o = $this->input('o');
+        $od = $this->input('od');
+        $orderModel = $this->model('orderModel');
+        $warehouseModel = $this->model('warehouseModel');
+
+        $data = array(
+            $o['shipping_fee'],
+            $o['total_price'],
+            $o['full_name'],
+            $o['address'],
+            $o['city'],
+            $o['province'],
+            $o['id']
+        );
+        $orderModel->updateOrder($data);
+        for($i=0; $i<count($od); $i++){
+            $data_od = array(
+                $od[$i]['id_w'],
+                $od[$i]['quan'],
+                $od[$i]['price'],
+                $o['id'],
+                $od[$i]['id_p']
+            );
+            $orderModel->updateDetailOrder($data_od);
+            $data_w = array(
+                $od[$i]['quan_w'],
+                $od[$i]['id_p'],
+                $od[$i]['id_w']
+            );
+            $warehouseModel->updateWarehouseDetail($data_w);
+        }
+        $orderModel->updateStatusConfirmed($o['id']);
+        $res['status'] = true;
+        echo json_encode($res);
+    }
+
+    public function nextStatus(){
+        $res = array();
+        $orderModel = $this->model('orderModel');
+        $id = $this->input('id');
+        $status = $orderModel->getStatus($id)->status;
+        if($status == "Đã xác nhận"){
+            $orderModel->updateStatusDeliver($id);
+        } else {
+            $orderModel->updateStatusDone($id);
+        }
+        $res['status'] = true;
+        echo json_encode($res);
+    }
+
+    public function cancel(){
+        $res = array();
+        $orderModel = $this->model('orderModel');
+        $id = $this->input('id');
+        $orderModel->updateStatusCancel($id);
+        $res['status'] = true;
+        echo json_encode($res);
+    }
+    // order have cancel
+    public function order_cancel(){
+        if ($this->getSession('Admin')) {
+            $this->view("admin/order", "orderCancel");
+        } else {
+            $this->redirect('admin/login');
+        }
+    }
+    public function getAllOrderCancel(){
+        $orderModel = $this->model('orderModel');
+        $allOrder = $orderModel->getAllOrderCancel();
+        $data = [];
+        $i = 1;
+        foreach ($allOrder as $val) {
+            $row = [];
+            $row[] = $i++;
+            $row[] = '<span class="o-full-name">'
+                . $val->full_name . '</span>';
+            $row[] = '<span class="o-phone">' . $val->phone . '</span>';
+            $row[] = '<span class="o-shipping-fee">' . $this->formatPrice($val->shipping_fee) . '</span>';
+            $row[] = '<span class="o-total-price">' . $this->formatPrice($val->total_price) . '</span>';
+            $row[] = '<button class="btn detail btn-info" id_o="' . $val->id . '"'
+                .'data-toggle="modal" data-target="#detail-order">Chi tiết hóa đơn</button>';
+            if ($val->account == null){
+                $row[] = '<span class="o-account" id_o="' . $val->id . '"><i>(none)</i></span>';
+            } else {
+                $row[] = '<span class="o-account text-center" id_o="' . $val->id . '">'.$val->account.'</span>';
+            }
+            $row[] = '<span class="o-address" id_o="' . $val->id . '">' . $val->address . '</span>';
+            $row[] = $val->date_created;
+            $row[] = $val->date_modify;
+            $data[] = $row;
+        }
+        
+        echo json_encode(['data' => $data]);
+    }
     // invoice
     public function info_invoice()
     {
@@ -639,5 +801,33 @@ class adminControl extends BaseController
         } else {
             $this->redirect('admin/login');
         }
+    }
+    public function getAllInvoice(){
+        $orderModel = $this->model('orderModel');
+        $allOrder = $orderModel->getAllInvoice();
+        $data = [];
+        $i = 1;
+        foreach ($allOrder as $val) {
+            $row = [];
+            $row[] = $i++;
+            $row[] = '<span class="o-full-name">'
+                . $val->full_name . '</span>';
+            $row[] = '<span class="o-phone">' . $val->phone . '</span>';
+            $row[] = '<span class="o-shipping-fee">' . $this->formatPrice($val->shipping_fee) . '</span>';
+            $row[] = '<span class="o-total-price">' . $this->formatPrice($val->total_price) . '</span>';
+            $row[] = '<button class="btn detail btn-info" id_o="' . $val->id . '"'
+                .'data-toggle="modal" data-target="#detail-order">Chi tiết hóa đơn</button>';
+            if ($val->account == null){
+                $row[] = '<span class="o-account" id_o="' . $val->id . '"><i>(none)</i></span>';
+            } else {
+                $row[] = '<span class="o-account text-center" id_o="' . $val->id . '">'.$val->account.'</span>';
+            }
+            $row[] = '<span class="o-address" id_o="' . $val->id . '">' . $val->address . '</span>';
+            $row[] = $val->date_created;
+            $row[] = $val->date_modify;
+            $data[] = $row;
+        }
+
+        echo json_encode(['data' => $data]);
     }
 }

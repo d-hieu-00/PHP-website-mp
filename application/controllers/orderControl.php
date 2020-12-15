@@ -21,7 +21,7 @@ class orderControl extends BaseController{
 
         $orderModel = $this->model('orderModel');
         $r = $orderModel->order($FullName, $Phone, $Address, $City, $Province, $Total, $Cd, $Account);
-        if($r){
+        if($r == true){
             $res['status'] = true;
         } else {
             $res['status'] = false;

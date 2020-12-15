@@ -168,7 +168,7 @@ modifyTable = function (tableID) {
     length.find("select").addClass('form-control ml-2 mr-2')
 }
 
-initTable = function (tableID, dataLink) {
+initTable = function (tableID, dataLink, callback) {
     $(tableID).addClass('nowrap')
     $(tableID).DataTable({
         responsive: true,
@@ -178,7 +178,7 @@ initTable = function (tableID, dataLink) {
             "type": "POST",
             "dataSrc": "data"
         },
-        "initComplete": function (settings, json) {
+        "initComplete": function (settings, json, callback) {
             modifyTable(tableID)
         }
     });
@@ -434,6 +434,7 @@ $(document).ready(function () {
     $(document).on('click', '#warehouse_table .detail', function () {
         id = $(this).attr('id_w')
         initTable("#warehouse_detail_table", "/admin/detailsWarehouse/" + id)
+        
     })
 
     /**
@@ -917,6 +918,8 @@ $(document).ready(function () {
                     $("#product_table").DataTable().ajax.reload()
                     $('#modify-product').modal('toggle')
                     p_modify = null
+                } else {
+                    alert('error to save')
                 }
             },
             // reject/failure callback
@@ -1012,6 +1015,212 @@ $(document).ready(function () {
                 }
             )
         }
+    })
+
+    /**
+     * 
+     * ORDER HANDLE admin site
+     * 
+     * 
+     */
+    // modify order
+    $(document).on('click', '#order_table .modify', function () {
+        o_id = $(this).attr('id_o')
+        $.ajax({
+            type : "POST",
+            url : BASEURL + "/admin/detailOrder",
+            data : {'id_o' : o_id},
+            dataType : 'JSON'
+        }).then(
+            function(res){
+                o = res.order
+                $(".modal-body").attr('id_o',o.id)
+                $("input#Name").val(o.full_name)
+                $("input#Phone").val(o.phone)
+                $("input#shipping-fee").val(o.shipping_fee)
+                $("input#City").val(o.city)
+                $("input#Province").val(o.province)
+                $("input#Address").val(o.address)
+                od = res.od
+                w = res.w
+                $('.order-detail').empty()
+                for(i=0; i<od.length; i++){
+                    s = '<div class="form-group product-detail-order row">'
+                    s += '<label class="col-12"><strong><i class="fas fa-boxes"></i> Tên sản phẩm: </strong>'
+                    s += '<span class="name_product" id_p="'+od[i].id_product+'">'+od[i].name+'</span></label>'
+                    s += '<div class="form-group form-inline col-12"><strong class="col-4">Số lượng: &nbsp</strong>'
+                    s += '<input type="number" class="form-control quantity col-8" value="'+od[i].quantity+'">'
+                    s += '</div><div class="form-group form-inline col-12"><strong class="col-4">Giá: &nbsp</strong>'
+                    s += '<input type="number" class="form-control price col-8" value="'+od[i].price+'">'
+                    s += '</div><div class="form-group form-inline col-12"><strong class="col-4">Kho: &nbsp</strong>'
+                    s += '<select class="form-control Warehouse col-8">'
+                    wd = w[i]
+                    for(j=0; j<wd.length; j++){
+                        s+= '<option value="'+wd[j].id+'" quan="'+wd[j].quantity+'">'+wd[j].display+'</option>'
+                    }
+                    s += '</select></div></div><hr>';
+                    $('.order-detail').append(s)
+                }
+            },
+            function(){
+                alert('error detail order')
+            }
+        )
+    })
+    //confirm order
+    $(document).on('click', '#o-confirm', function () {
+        __w = $(".product-detail-order")
+        od = []
+        o = {}
+        o.id = $(".modal-body").attr('id_o')
+        o.full_name = $("input#Name").val()
+        o.shipping_fee = $("input#shipping-fee").val()
+        o.city = $("input#City").val()
+        o.province = $("input#Province").val()
+        o.address = $("input#Address").val()
+        o.total_price = parseInt(o.shipping_fee)
+        
+        for(i=0; i<__w.length; i++){
+            wd = {}
+            wd.id_p = __w.eq(i).find(".name_product").attr('id_p')
+            wd.quan = __w.eq(i).find("input.quantity").val()
+            wd.price = __w.eq(i).find("input.price").val()
+            wd.id_w = __w.eq(i).find("option:selected").val()
+            wd.quan_w = __w.eq(i).find("option:selected").attr('quan') - wd.quan
+            if(wd.quan_w < 0){
+                alert('Số lượng sản phẩm ' + __w.eq(i).find(".name_product").text() +' quá lớn!!')
+                return
+            }
+            if(wd.price < 0){
+                alert('Giá sản phẩm ' + __w.eq(i).find(".name_product").text() +' bé hơn 0!!')
+                return
+            }
+            o.total_price += wd.quan * wd.price
+            od.push(wd)
+        }
+        
+        const data = {
+            'od' : od,
+            'o' : o
+        }
+        console.log(data)
+        test=data
+        $.ajax({
+            type: "POST",
+            url: BASEURL + "/admin/confirmOrder",
+            data: data,
+            dataType: 'JSON'
+        }).then(
+            function (res) {
+                console.log(res)
+                if(res.status){
+                    $("#order_table").DataTable().ajax.reload()
+                    $("#modify-order").modal('toggle')
+                } else {
+                    alert('error when confirm')
+                }
+            }, 
+            function () {
+                alert('erorr handle confirm')
+            }
+        )
+    })
+    // next status
+    $(document).on('click', '.next-status', function () {
+        id = $(this).attr('id_o') 
+        $.ajax({
+            type : "POST",
+            url : BASEURL + "/admin/nextStatus",
+            data : { 'id' : id },
+            dataType : 'JSON'
+        }).then(
+            function (res) {
+                console.log(res)
+                if(res.status){
+                    $("#order_table").DataTable().ajax.reload()
+                } else {
+                    alert('error handle next status')
+                }
+            },
+            function () {
+                alert('error when handle')
+            }
+        )
+    })
+    // cancel
+    $(document).on('click', '.o-cancel', function () {
+        id = $(this).attr('id_o') 
+        $.ajax({
+            type : "POST",
+            url : BASEURL + "/admin/cancel",
+            data : { 'id' : id },
+            dataType : 'JSON'
+        }).then(
+            function (res) {
+                console.log(res)
+                if(res.status){
+                    $("#order_table").DataTable().ajax.reload()
+                } else {
+                    alert('error handle next status')
+                }
+            },
+            function () {
+                alert('error when handle')
+            }
+        )
+    })
+     /**
+     * 
+     * INVOICE HANDLE admin site
+     * 
+     * 
+     */
+    // detail invoice
+    $(document).on('click', '#invoice_table .detail', function () {
+        o_id = $(this).attr('id_o')
+        $.ajax({
+            type : "POST",
+            url : BASEURL + "/admin/detailOrder",
+            data : {'id_o' : o_id},
+            dataType : 'JSON'
+        }).then(
+            function(res){
+                console.log(res)
+                o = res.order
+                $(".modal-body").attr('id_o',o.id)
+                $("input#Name").val(o.full_name)
+                $("input#Phone").val(o.phone)
+                $("input#shipping-fee").val(o.shipping_fee)
+                $("input#City").val(o.city)
+                $("input#Province").val(o.province)
+                $("input#Address").val(o.address)
+                od = res.od
+                w = res.w
+                $('.order-detail').empty()
+                for(i=0; i<od.length; i++){
+                    s = '<div class="form-group product-detail-order row">'
+                    s += '<label class="col-12"><strong><i class="fas fa-boxes"></i> Tên sản phẩm: </strong>'
+                    s += '<span class="name_product" id_p="'+od[i].id_product+'">'+od[i].name+'</span></label>'
+                    s += '<div class="form-group form-inline col-12"><strong class="col-4">Số lượng: &nbsp</strong>'
+                    s += '<input type="number" class="form-control quantity col-8" value="'+od[i].quantity+'" disabled>'
+                    s += '</div><div class="form-group form-inline col-12"><strong class="col-4">Giá: &nbsp</strong>'
+                    s += '<input type="number" class="form-control price col-8" value="'+od[i].price+'" disabled>'
+                    s += '</div><div class="form-group form-inline col-12"><strong class="col-4">Kho: &nbsp</strong>'
+                    s += '<select class="form-control Warehouse col-8" disabled>'
+                    wd = w[i]
+                    for(j=0; j<wd.length; j++){
+                        if (od[i].id_warehouse == wd[j].id){
+                            s+= '<option selected value="'+wd[j].id+'" quan="'+wd[j].quantity+'">'+wd[j].name+'</option>'
+                        }
+                    }
+                    s += '</select></div></div><hr>';
+                    $('.order-detail').append(s)
+                }
+            },
+            function(){
+                alert('error detail order')
+            }
+        )
     })
 })
 

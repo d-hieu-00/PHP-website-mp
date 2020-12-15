@@ -147,7 +147,7 @@
                                     <th>Tên sản phẩm</th>
                                     <th>Thương hiệu</th>
                                     <th>Số lượng</th>
-                                    <th>Ngày nhập mới</th>
+                                    <!-- <th>Ngày nhập mới</th> -->
                                 </tr>
                             </thead>
                             <tbody>

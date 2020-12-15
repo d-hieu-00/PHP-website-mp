@@ -11,9 +11,6 @@
 
             <!-- Sidebar - Brand -->
             <div class="d-flex align-items-center justify-content-center">
-                <!-- <a class="mt-2 mb-2" href="<?php echo BASEURL ?>">
-        <img id="logo" class="w-100 pr-md-5 pl-md-5" src="<?php echo BASEURL; ?>/public/assets/img/favicon.png" alt="banner">
-    </a> -->
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?php echo BASEURL ?>">
                     <div class="sidebar-brand-icon">
                         <img id="logo" width="50px" src="<?php echo BASEURL; ?>/public/assets/img/favicon.png" alt="banner">
@@ -89,6 +86,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Chỉnh sửa đơn đặt hàng:</h6>
                         <a class="collapse-item" href="<?php echo BASEURL ?>/admin/info_order">Thông tin đơn đặt hàng</a>
+                        <a class="collapse-item" href="<?php echo BASEURL ?>/admin/order_cancel">Thông tin đơn bị hủy</a>
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Xem hóa đơn:</h6>
                         <a class="collapse-item" href="<?php echo BASEURL ?>/admin/info_invoice">Thông tin hóa đơn</a>
