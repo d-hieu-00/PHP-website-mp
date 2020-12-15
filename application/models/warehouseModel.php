@@ -100,7 +100,11 @@ class warehouseModel
         $this->db->Query("delete from mp_warehouse_detail where id_product=? and id_warehouse=?", $data);
         return $this->db->rowCount();
     }
-    
+    public function restoreWarehouse($data){
+        $this->db->Query("update mp_warehouse_detail set quantity=quantity+? where id_product=? and id_warehouse=?",
+                $data);
+        return $this->db->rowCount();
+    }
     /**
      * 
      * delete all warehouse details

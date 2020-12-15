@@ -60,6 +60,83 @@
 </div>
 <!-- /.container-fluid -->
 
+
+
+<!-- detail order cancel -->
+<div class="modal fade" id="detail-order" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông tin hóa đơn</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id_o="">
+                <div class="row">
+                <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Name">
+                        <i class="fas fa-file-signature"></i>
+                        <strong>Tên khách hàng</strong>
+                    </label>
+                    <input type="text" id="Name" name="Name" class="form-control Name" placeholder="Tên khách hàng" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="Phone">
+                        <i class="fas fa-phone"></i>
+                        <strong>Số điện thoại</strong>
+                    </label>
+                    <input type="text" id="Phone" name="Phone" class="form-control Phone" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="Shipping-fee">
+                        <i class="fas fa-dollar-sign"></i>
+                        <strong>Phí vận chuyển</strong>
+                    </label>
+                    <input type="number" id="shipping-fee" name="Shipping-fee" class="form-control Shipping-fee" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="city">
+                        <i class="fas fa-city"></i>
+                        <strong>Tỉnh/ thành phố</strong>
+                    </label>
+                    <input type="text" id="City" name="City" class="form-control City" placeholder="Tỉnh/ thành phố" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="Province">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <strong>Huyện</strong>
+                    </label>
+                    <input type="text" id="Province" name="Province" class="form-control Province" placeholder="Huyện" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="Address">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>Địa chỉ chi tiết</strong>
+                    </label>
+                    <input type="text" id="Address" name="Address" class="form-control Address" placeholder="Địa chỉ chi tiết" disabled>
+                </div>
+                </div>
+
+                <div class="col-md-6 order-detail">
+                    
+                </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./end detail order cancel -->
 <?php include "../application/views/admin/_assets/footer.php" ?>
 
 <script>

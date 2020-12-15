@@ -112,4 +112,26 @@ class orderModel{
         $this->db->Query('select status from mp_order where id=?', array($id));
         return $this->db->fetch();
     }
+
+    public function earnMonth(){
+        $this->db->Query('select if(sum(total_price)=null,0,sum(total_price)) r 
+            from mp_order where status="Hoàn thành" and month(date_modify)=month(sysdate())');
+        return $this->db->fetch()->r;
+    }
+
+    public function earnYear(){
+        $this->db->Query('select if(sum(total_price)=null,0,sum(total_price)) r 
+            from mp_order where status="Hoàn thành" and year(date_modify)=year(sysdate())');
+        return $this->db->fetch()->r;
+    }
+
+    public function pending(){
+        $this->db->Query('select count(id) r from mp_order where status="Chờ xác nhận"');
+        return $this->db->fetch()->r;
+    }
+
+    public function shipping(){
+        $this->db->Query('select count(id) r from mp_order where status="Đang giao"');
+        return $this->db->fetch()->r;
+    }
 }

@@ -7,7 +7,13 @@ class adminControl extends BaseController
     public function index()
     {
         if ($this->getSession('Admin')) {
-            $this->view("admin", "index");
+            $data = [];
+            $orderModel = $this->model('orderModel');
+            $data['earn-month'] = $orderModel->earnMonth();
+            $data['earn-anual'] = $orderModel->earnYear();
+            $data['pending'] = $orderModel->pending();
+            $data['shipping'] = $orderModel->shipping();
+            $this->view("admin", "index", $data);
         } else {
             $this->redirect('admin/login');
         }
@@ -754,6 +760,19 @@ class adminControl extends BaseController
         $orderModel = $this->model('orderModel');
         $id = $this->input('id');
         $orderModel->updateStatusCancel($id);
+        $status = $orderModel->getStatus($id)->status;
+        if($status != "Chờ xác nhận"){
+            $od = $orderModel->getDetailProductOrder($id);
+            $warehouseModel = $this->model('warehouseModel');
+            foreach($od as $val) {
+                $data = [
+                    $val->quantity,
+                    $val->id_product,
+                    $val->id_warehouse
+                ];
+                $warehouseModel->restoreWarehouse($data);
+            }
+        }
         $res['status'] = true;
         echo json_encode($res);
     }

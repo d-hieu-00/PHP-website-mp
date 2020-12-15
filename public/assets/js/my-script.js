@@ -1222,6 +1222,59 @@ $(document).ready(function () {
             }
         )
     })
+     /**
+     * 
+     * ORDER CANCEL HANDLE admin site
+     * 
+     * 
+     */
+    // detail order cancel
+    $(document).on('click', '#order_cancel_table .detail', function () {
+        o_id = $(this).attr('id_o')
+        $.ajax({
+            type : "POST",
+            url : BASEURL + "/admin/detailOrder",
+            data : {'id_o' : o_id},
+            dataType : 'JSON'
+        }).then(
+            function(res){
+                console.log(res)
+                o = res.order
+                $(".modal-body").attr('id_o',o.id)
+                $("input#Name").val(o.full_name)
+                $("input#Phone").val(o.phone)
+                $("input#shipping-fee").val(o.shipping_fee)
+                $("input#City").val(o.city)
+                $("input#Province").val(o.province)
+                $("input#Address").val(o.address)
+                od = res.od
+                w = res.w
+                $('.order-detail').empty()
+                for(i=0; i<od.length; i++){
+                    s = '<div class="form-group product-detail-order row">'
+                    s += '<label class="col-12"><strong><i class="fas fa-boxes"></i> Tên sản phẩm: </strong>'
+                    s += '<span class="name_product" id_p="'+od[i].id_product+'">'+od[i].name+'</span></label>'
+                    s += '<div class="form-group form-inline col-12"><strong class="col-4">Số lượng: &nbsp</strong>'
+                    s += '<input type="number" class="form-control quantity col-8" value="'+od[i].quantity+'" disabled>'
+                    s += '</div><div class="form-group form-inline col-12"><strong class="col-4">Giá: &nbsp</strong>'
+                    s += '<input type="number" class="form-control price col-8" value="'+od[i].price+'" disabled>'
+                    s += '</div><div class="form-group form-inline col-12"><strong class="col-4">Kho: &nbsp</strong>'
+                    s += '<select class="form-control Warehouse col-8" disabled>'
+                    wd = w[i]
+                    for(j=0; j<wd.length; j++){
+                        if (od[i].id_warehouse == wd[j].id){
+                            s+= '<option selected value="'+wd[j].id+'" quan="'+wd[j].quantity+'">'+wd[j].name+'</option>'
+                        }
+                    }
+                    s += '</select></div></div><hr>';
+                    $('.order-detail').append(s)
+                }
+            },
+            function(){
+                alert('error detail order')
+            }
+        )
+    })
 })
 
 /*!
