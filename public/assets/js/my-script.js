@@ -1176,7 +1176,7 @@ $(document).ready(function () {
      * 
      */
     // detail invoice
-    $(document).on('click', '#invoice_table .detail', function () {
+    $(document).on('click', '#invoice_table, #order_table .detail', function () {
         o_id = $(this).attr('id_o')
         $.ajax({
             type : "POST",
@@ -1185,7 +1185,6 @@ $(document).ready(function () {
             dataType : 'JSON'
         }).then(
             function(res){
-                console.log(res)
                 o = res.order
                 $(".modal-body").attr('id_o',o.id)
                 $("input#Name").val(o.full_name)
@@ -1238,7 +1237,6 @@ $(document).ready(function () {
             dataType : 'JSON'
         }).then(
             function(res){
-                console.log(res)
                 o = res.order
                 $(".modal-body").attr('id_o',o.id)
                 $("input#Name").val(o.full_name)
@@ -1436,7 +1434,7 @@ $(document).ready(function () {
                 }
             }
             localStorage.setItem('cart', JSON.stringify(cart))
-            displayCart(account)
+            loadCart(account)
         } else {
             //remove cart detail
             cd = $(this)
@@ -1452,7 +1450,7 @@ $(document).ready(function () {
                 function (res) {
                     console.log(res)
                     if (res.status) {
-                        displayCart(account)
+                        loadCart(account)
                     } else {
                         alert('error removecd')
                     }
@@ -1842,7 +1840,7 @@ $(document).ready(function () {
         val = $(this).val()
         $(this).removeClass("is-invalid")
     })
-    $('#signup').click(function () {
+    $(document).on('click', '#signup', function () {
         $(".alert").remove()
         const userData = {
             'Account': $("#Account").val(),
