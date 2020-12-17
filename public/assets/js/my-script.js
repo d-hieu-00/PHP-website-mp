@@ -1423,18 +1423,6 @@ $(document).ready(function () {
             )
         }
     })
-    removeCD = function (CD) {
-        CD.parents('.cart_product').remove()
-        total = 0
-        arr = $(".total_price")
-        for (i = 0; i < arr.length; i++) {
-            total += parseInt(arr.eq(i).attr('total_p'))
-        }
-        $("#tamtinh_c").text(formatPrice(total.toString()))
-        $("#thanhtien_c").text(formatPrice(total.toString()))
-        $("#tamtinh_c").attr('tien', total)
-        $("#thanhtien_c").attr('tien', total)
-    }
     $(document).on('click', '.xoa_cart_p', function (e) {
         e.preventDefault()
         id = $(this).attr('id_p')
@@ -1448,7 +1436,7 @@ $(document).ready(function () {
                 }
             }
             localStorage.setItem('cart', JSON.stringify(cart))
-            removeCD($(this))
+            displayCart(account)
         } else {
             //remove cart detail
             cd = $(this)
@@ -1464,7 +1452,7 @@ $(document).ready(function () {
                 function (res) {
                     console.log(res)
                     if (res.status) {
-                        removeCD(cd)
+                        displayCart(account)
                     } else {
                         alert('error removecd')
                     }
