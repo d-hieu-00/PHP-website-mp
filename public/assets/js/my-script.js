@@ -1472,6 +1472,7 @@ displayCart = function (cart) {
         $("#content").removeClass("row")
     } else {
         $("#quantity_sp").text(cart.length)
+        $("#body_cart").empty()
         total = 0
         for (i = 0; i < cart.length; i++) {
             const data = {
