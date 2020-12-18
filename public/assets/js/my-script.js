@@ -480,6 +480,7 @@ $(document).ready(function () {
             }).then(
                 //success
                 function (response) {
+                    $(".alert").remove()
                     if (response.status == true) {
                         s = '<div class="alert alert-success text-center" role="alert">'
                         s += 'Thêm kho hàng thành công thành công!!'
@@ -496,7 +497,6 @@ $(document).ready(function () {
                         s += '</div>'
                         $("#admin-navbar").after(s)
                     }
-                    console.log(response)
                 },
                 //error
                 function () {
@@ -628,6 +628,7 @@ $(document).ready(function () {
             }).then(
                 //success
                 function (response) {
+                    $(".alert").remove()
                     if (response.status == true) {
                         s = '<div class="alert alert-success text-center" role="alert">'
                         s += 'Thêm loại sản phẩm thành công thành công!!'
@@ -787,6 +788,28 @@ $(document).ready(function () {
                 $("input#Short-Description").val(response.data['short_discription'])
                 $("textarea#Description").val(response.data['discription'])
                 TypeProduct = response.data['id_type']
+                $.ajax({
+                    type: "POST",
+                    url: BASEURL + "/admin/getTypeProductForTagSelect",
+                    dataType: 'JSON'
+                }).then(
+                    // resolve/success callback
+                    function (response) {
+                        if (response.status) {
+                            $("select.Type-product option").remove()
+                            s = ""
+                            for (i = 0; i < response.data.length; i++) {
+                                s += '<option value="' + response.data[i][0] + '">' + response.data[i][1] + '</option>'
+                            }
+                            $("select.Type-product").append(s)
+                            $("select.Type-product option[value='" + TypeProduct + "'").attr('selected', 'true')
+                        }
+                    },
+                    // reject/failure callback
+                    function () {
+                        alert('There was some error tp!');
+                    }
+                )
             },
             // reject/failure callback
             function () {
@@ -794,28 +817,6 @@ $(document).ready(function () {
             }
         )
 
-        $.ajax({
-            type: "POST",
-            url: BASEURL + "/admin/getTypeProductForTagSelect",
-            dataType: 'JSON'
-        }).then(
-            // resolve/success callback
-            function (response) {
-                if (response.status) {
-                    $("select.Type-product option").remove()
-                    s = ""
-                    for (i = 0; i < response.data.length; i++) {
-                        s += '<option value="' + response.data[i][0] + '">' + response.data[i][1] + '</option>'
-                    }
-                    $("select.Type-product").append(s)
-                    $("select.Type-product option[value='" + TypeProduct + "'").attr('selected', 'true')
-                }
-            },
-            // reject/failure callback
-            function () {
-                alert('There was some error tp!');
-            }
-        )
         Warehouse = null
         $.ajax({
             type: "POST",
@@ -1034,7 +1035,7 @@ $(document).ready(function () {
         }).then(
             function(res){
                 o = res.order
-                $(".modal-body").attr('id_o',o.id)
+                $("#modify-order .modal-body").attr('id_o',o.id)
                 $("input#Name").val(o.full_name)
                 $("input#Phone").val(o.phone)
                 $("input#shipping-fee").val(o.shipping_fee)
@@ -1043,7 +1044,7 @@ $(document).ready(function () {
                 $("input#Address").val(o.address)
                 od = res.od
                 w = res.w
-                $('.order-detail').empty()
+                $('#modify-order .order-detail').empty()
                 for(i=0; i<od.length; i++){
                     s = '<div class="form-group product-detail-order row">'
                     s += '<label class="col-12"><strong><i class="fas fa-boxes"></i> Tên sản phẩm: </strong>'
@@ -1072,7 +1073,7 @@ $(document).ready(function () {
         __w = $(".product-detail-order")
         od = []
         o = {}
-        o.id = $(".modal-body").attr('id_o')
+        o.id = $("#modify-order .modal-body").attr('id_o')
         o.full_name = $("input#Name").val()
         o.shipping_fee = $("input#shipping-fee").val()
         o.city = $("input#City").val()
@@ -1176,7 +1177,7 @@ $(document).ready(function () {
      * 
      */
     // detail invoice
-    $(document).on('click', '#invoice_table, #order_table .detail', function () {
+    $(document).on('click', '#order_table .detail', function () {
         o_id = $(this).attr('id_o')
         $.ajax({
             type : "POST",
@@ -1186,16 +1187,16 @@ $(document).ready(function () {
         }).then(
             function(res){
                 o = res.order
-                $(".modal-body").attr('id_o',o.id)
-                $("input#Name").val(o.full_name)
-                $("input#Phone").val(o.phone)
-                $("input#shipping-fee").val(o.shipping_fee)
-                $("input#City").val(o.city)
-                $("input#Province").val(o.province)
-                $("input#Address").val(o.address)
+                $("#detail-order .modal-body").attr('id_o',o.id)
+                $("input#Name_m").val(o.full_name)
+                $("input#Phone_m").val(o.phone)
+                $("input#shipping-fee_m").val(o.shipping_fee)
+                $("input#City_m").val(o.city)
+                $("input#Province_m").val(o.province)
+                $("input#Address_m").val(o.address)
                 od = res.od
                 w = res.w
-                $('.order-detail').empty()
+                $('#detail-order .order-detail').empty()
                 for(i=0; i<od.length; i++){
                     s = '<div class="form-group product-detail-order row">'
                     s += '<label class="col-12"><strong><i class="fas fa-boxes"></i> Tên sản phẩm: </strong>'
@@ -1213,7 +1214,7 @@ $(document).ready(function () {
                         }
                     }
                     s += '</select></div></div><hr>';
-                    $('.order-detail').append(s)
+                    $('#detail-order .order-detail').append(s)
                 }
             },
             function(){
@@ -1228,7 +1229,7 @@ $(document).ready(function () {
      * 
      */
     // detail order cancel
-    $(document).on('click', '#order_cancel_table .detail', function () {
+    $(document).on('click', '#invoice_table .detail, #order_cancel_table .detail', function () {
         o_id = $(this).attr('id_o')
         $.ajax({
             type : "POST",
@@ -1905,6 +1906,7 @@ $(document).ready(function () {
             }).then(
                 // resolve/success callback
                 function (response) {
+                    $(".alert").remove()
                     if (response.status == true) {
                         s = '<div class="alert alert-success text-center" role="alert">'
                         s += 'Tạo tài khoản thành công!! <a href="' + BASEURL + '/user/login/" class="alert-link">Nhấn để đăng nhập</a>'
@@ -1962,6 +1964,7 @@ $(document).ready(function () {
             }).then(
                 // resolve/success callback
                 function (response) {
+                    $(".alert").remove()
                     if (response.status == true) {
                         location.href = BASEURL;
                     } else {
@@ -2054,6 +2057,7 @@ $(document).ready(function () {
             }).then(
                 // resolve/success callback
                 function (response) {
+                    $(".alert").remove()
                     if (response.status == true) {
                         s = '<div class="alert alert-success text-center" role="alert">'
                         s += 'Lưu thông tin tài khoản thành công!!'
@@ -2119,7 +2123,7 @@ $(document).ready(function () {
             }).then(
                 // resolve/success callback
                 function (response) {
-                    console.log(response)
+                    $(".alert").remove()
                     if (response.status == true) {
                         s = '<div class="alert alert-success text-center" role="alert">'
                         s += 'Lưu mật khẩu mới thành công!!'

@@ -451,11 +451,6 @@ class adminControl extends BaseController
             }
             $row[] = '<span class="p-short-discription" id_p="' . $val->id . '">' . $val->short_discription . '</span>';
             $row[] = '<span class="p-discription" id_p="' . $val->id . '">' . $val->discription . '</span>';
-            if ($val->img != null) {
-                $row[] = '<img id="img" width="100px" src = "' . $val->img . '"id_p="' . $val->id . '">';
-            } else {
-                $row[] = '<img id="img" width="100px" src="../public/assets/img/product.png" id_p="' . $val->id . '">';
-            }
             $row[] = $val->date_created;
             $data[] = $row;
         }
@@ -660,14 +655,14 @@ class adminControl extends BaseController
                     disabled>Chuyển</button>';
             } else if ($val->status == 'Đã xác nhận') {
                 $row[] = '<span class="btn btn-success o-status">'.$val->status.'</span>';
-                $row[] = '<button class="btn modify btn-info" id_o="' . $val->id . '"
-                    disabled>Xác nhận</button>';
+                $row[] = '<button class="btn detail btn-info" id_o="' . $val->id . '"
+                    data-toggle="modal" data-target="#detail-order">Chi tiết đơn hàng</button>';
                 $row[] = '<button class="btn next-status btn-primary" id_o="' . $val->id . '"
                     >Chuyển</button>';
             } else {
                 $row[] = '<span class="btn btn-warning o-status">'.$val->status.'</span>';
-                $row[] = '<button class="btn modify btn-info" id_o="' . $val->id . '"
-                    disabled>Xác nhận</button>';
+                $row[] = '<button class="btn detail btn-info" id_o="' . $val->id . '"
+                    data-toggle="modal" data-target="#detail-order">Chi tiết đơn hàng</button>';
                 $row[] = '<button class="btn next-status btn-primary" id_o="' . $val->id . '"
                     >Chuyển</button>';
             }
@@ -759,7 +754,6 @@ class adminControl extends BaseController
         $res = array();
         $orderModel = $this->model('orderModel');
         $id = $this->input('id');
-        $orderModel->updateStatusCancel($id);
         $status = $orderModel->getStatus($id)->status;
         if($status != "Chờ xác nhận"){
             $od = $orderModel->getDetailProductOrder($id);
@@ -773,6 +767,7 @@ class adminControl extends BaseController
                 $warehouseModel->restoreWarehouse($data);
             }
         }
+        $orderModel->updateStatusCancel($id);
         $res['status'] = true;
         echo json_encode($res);
     }

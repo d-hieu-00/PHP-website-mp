@@ -25,9 +25,9 @@
                     <input type="text" class="form-control find" placeholder="Tìm kiếm theo cột..." tb_id="product_table">
 
                     <select class="form-control ml-2">
-                        <option selected value="1">Tên loại sản phẩm</option>
-                        <option value="2">Số lượng sản phẩm</option>
-                        <option value="3">Danh mục</option>
+                        <option selected value="1">Tên sản phẩm</option>
+                        <option value="3">Thương hiệu</option>
+                        <option value="2">Loại sản phẩm</option>
                     </select>
                 </div>
             </div>
@@ -49,7 +49,7 @@
                         <th>Sửa</th>
                         <th>Mô tả ngắn</th>
                         <th>Mô tả chi tiết</th>
-                        <th>Hình</th>
+                        <!-- <th>Hình</th> -->
                         <th>Ngày tạo</th>
                     </tr>
                 </thead>
