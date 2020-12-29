@@ -46,7 +46,15 @@
   </div>
   <?php include "../application/views/_shared/footer.php" ?>
   <?php require_once "../application/views/_shared/js.php"; ?>
-  <!-- <script src= "<?php echo BASEURL ?>/public/assets/js/user.js"></script> -->
+  <script>
+    $(document).ready(function() {
+      $("#Password").keyup(function(e) {
+        if (e.keyCode == 13) {
+          $("#login").trigger('click')
+        }
+      })
+    })
+  </script>
 </body>
 
 </html>

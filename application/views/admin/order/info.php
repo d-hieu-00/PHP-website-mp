@@ -1,21 +1,21 @@
 <?php include "../application/views/admin/_assets/header.php" ?>
 <!-- Topbar -->
-<div class="container-fluid bg-white mb-4 text-center shadow">
+<div class="container-fluid bg-white mb-4 text-center shadow not-print">
     <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4">
         <!-- Sidebar Toggle (Topbar) -->
         <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
             <i class="fa fa-bars"></i>
         </button>
         <!-- Topbar info -->
-        <div class="sidebar-heading">
-            Thông tin đơn đặt hàng
+        <div class="sidebar-heading text-warning text-lg">
+            <b>Thông tin đơn đặt hàng</b>
         </div>
     </nav>
 </div>
 <!-- Begin Page Content -->
 <div class="container-fluid mt-4">
 
-<div class="card shadow mb-4">
+<div class="card shadow mb-4 not-print">
         <div class="card-header">
             <div class="row">
                 <h6 class="col-md-6 d-flex align-items-center font-weight-bold text-primary">Tất cả đơn đặt hàng</h6>
@@ -64,7 +64,7 @@
 
 
 <!-- Modal modify order -->
-<div class="modal fade" id="modify-order" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade not-print" id="modify-order" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -141,12 +141,16 @@
 <!-- end modify modal -->
 
 
+
+
+
+<?php include "../application/views/admin/_assets/footer.php" ?>
 <!-- detail order -->
 <div class="modal fade" id="detail-order" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Thông tin đơn hàng</h5>
+                <h5 class="modal-title">Thông tin đơn hàng ID: </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -209,16 +213,13 @@
                 </div>
 
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer not-print">
+                <button type="button" class="btn btn-primary" onclick="print()">In đơn đặt hàng</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>
             </div>
         </div>
     </div>
 </div>
-
-
-<?php include "../application/views/admin/_assets/footer.php" ?>
-
 <script>
     $(document).ready(function() {
         loadPage("#orderPage")

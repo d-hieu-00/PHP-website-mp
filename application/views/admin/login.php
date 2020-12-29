@@ -6,7 +6,7 @@
 </head>
 
 <body>
-  <div class="d-flex align-items-center container-login pt-md-5 pb-md-5">
+  <div class="d-flex align-items-center container-login h-100">
     <div class="container container_s card pd-2 col-md-3">
       <form action="<?php echo BASEURL; ?>/admin/login" method="POST">
         <div class="col-12 col-md text-center">
@@ -36,4 +36,24 @@
     </form>
   </div>
   </div>
-  <?php include "../application/views/admin/_assets/footer.php" ?>
+  </div>
+  <footer class="fixed-bottom text-light">
+    <div class="container my-auto">
+      <div class="copyright text-center my-auto">
+        <span>Copyright © Home mate - Admin 2020</span>
+      </div>
+    </div>
+  </footer>
+  </div>
+  </div>
+
+  <?php require_once "../application/views/_shared/js.php"; ?>
+  <script>
+        $(document).ready(function () {
+            $("#Password").keyup(function (e) {
+                if (e.keyCode == 13) {
+                    $("#login_admin").trigger('click')
+                }
+            })
+        })
+    </script>

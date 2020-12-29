@@ -14,6 +14,7 @@ class userControl extends BaseController{
             $this->view("user","login");
         }
     }
+
     public function profile(){
         if($this->getSession('Account')){
             $userPro = [
@@ -32,6 +33,52 @@ class userControl extends BaseController{
             $this->redirect("/user/login");
         }
     }
+
+    public function getAddressInfo(){
+        $userModel = $this->model('userModel');
+        $response = $userModel->getProfile($this->getSession('Account'));
+        echo json_encode($response);
+    }
+
+    public function getOrder(){
+        $userModel = $this->model('userModel');
+        $id = $userModel->getIdUser($this->getSession('Account'));
+        $orders = $userModel->getOrder($id);
+        $i = 1;
+        $data = [];
+        foreach ($orders as $val) {
+            $row = [];
+            $row[] = $i++;
+            $row[] = '<span class="o-full-name">'
+                . $val->full_name . '</span>';
+            $row[] = '<span class="o-phone">' . $val->phone . '</span>';
+            $row[] = '<span class="o-shipping-fee">' . $this->formatPrice($val->shipping_fee) . '</span>';
+            $row[] = '<span class="o-total-price">' . $this->formatPrice($val->total_price) . '</span>';
+            if ($val->status == 'Chờ xác nhận') {
+                $row[] = '<span class="btn btn-secondary o-status">'.$val->status.'</span>';
+            } else if ($val->status == 'Đã xác nhận') {
+                $row[] = '<span class="btn btn-success o-status">'.$val->status.'</span>';
+            } else if ($val->status == 'Đang giao') {
+                $row[] = '<span class="btn btn-warning o-status">'.$val->status.'</span>';
+            } else if ($val->status == 'Đã hủy') {
+                $row[] = '<span class="btn btn-danger o-status">'.$val->status.'</span>';
+            } else {
+                $row[] = '<span class="btn btn-success o-status">'.$val->status.'</span>';
+            }
+            $row[] = '<span class="o-address" id_o="' . $val->id . '">' . $val->address . '</span>';
+            if ($val->account == null){
+                $row[] = '<span class="o-account" id_o="' . $val->id . '"><i>(none)</i></span>';
+            } else {
+                $row[] = '<span class="o-account" id_o="' . $val->id . '">'.$val->account.'</span>';
+            }
+            $row[] = $val->date_created;
+            $row[] = $val->date_modify;
+            $data[] = $row;
+        }
+
+        echo json_encode(['data' => $data]);
+    }
+
     public function logout($msg="Bạn đã đăng xuất thành công"){
         $this->unsetSession('Account');
         $this->view("user","login",array("msg" => $msg));

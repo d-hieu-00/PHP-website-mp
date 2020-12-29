@@ -7,8 +7,8 @@
             <i class="fa fa-bars"></i>
         </button>
         <!-- Topbar info -->
-        <div class="sidebar-heading">
-            Thêm loại sản phẩm mới
+        <div class="sidebar-heading text-warning text-lg">
+            <b>Thêm loại sản phẩm mới</b>
         </div>
     </nav>
 </div>

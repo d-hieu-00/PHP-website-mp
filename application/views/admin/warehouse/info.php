@@ -7,8 +7,8 @@
             <i class="fa fa-bars"></i>
         </button>
         <!-- Topbar info -->
-        <div class="sidebar-heading">
-            Thông tin kho hàng
+        <div class="sidebar-heading text-warning text-lg">
+            <b>Thông tin kho hàng</b>
         </div>
     </nav>
 </div>

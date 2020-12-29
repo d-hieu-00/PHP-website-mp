@@ -94,6 +94,10 @@ class userModel{
         $this->city = $obj->city;
         $this->province = $obj->province;
     }
+    public function getProfile($Account){
+        $this->db->Query("select * from view_user where account=?", array($Account));
+        return $this->db->fetch();
+    }
     /**
      * 
      * get id user by account
@@ -182,6 +186,13 @@ class userModel{
             $this->city,
             $this->province
         );
+    }
+
+    public function getOrder($id){
+        $this->db->Query("select o.id, o.full_name, o.phone, o.shipping_fee, o.total_price, o.status, 
+        CONCAT(o.address,', ',o.province,', ',o.city) address, u.account, o.date_created, o.date_modify 
+        FROM mp_order o left join mp_user u on o.id_user=u.id where u.id = ?", array($id));
+        return $this->db->fetchAll();
     }
 }
 

@@ -69,7 +69,7 @@
                     <h4 class="card-header p-2 pl-4">Giỏ Hàng</h4>
                     <div class="card-body pb-0" id="info-cart">
                     </div>
-                    
+
                     <div class="pl-4 pr-3">
                         <p class="d-flex" id="priceTotal">
                             <span class="mr-auto">Tạm tính: </span>
@@ -98,6 +98,11 @@
             $(document).ready(function() {
                 loadCategory()
                 loadOrder('<?php echo $this->getSession('Account') ?>')
+                <?php
+                if ($this->getSession('Account')) {
+                    echo "loadAddress()";
+                }
+                ?>
             })
         </script>
 </body>

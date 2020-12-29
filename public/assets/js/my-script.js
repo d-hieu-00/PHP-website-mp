@@ -15,7 +15,7 @@ $(document).ready(function () {
         e.preventDefault()
     })
     $(document).on("click", "button#sreach-product", function () {
-        arr = $(".product")
+        arr = $("#bodyy .product")
         arr.attr("show", "show")
         arr.removeAttr("hidden")
         s = $("input#sreach").val().toLowerCase();
@@ -33,9 +33,8 @@ $(document).ready(function () {
     })
 })
 
-paging = function (pa = 1) {
+paging = function (pa = 1, arr = $("#bodyy .product[show='show']")) {
     bd = $("#bodyy")
-    arr = $(".product[show='show']")
     pag = $("#pagination")
     l = arr.length
     ck = false
@@ -87,6 +86,29 @@ paging = function (pa = 1) {
         }
     }
 }
+
+loadImgAllProduct = function(){
+    arr = $('.img_p')
+    for (i = 0; i < arr.length; i++) {
+        id = arr.eq(i).attr('id_p')
+        t = arr.eq(i)
+        $.ajax({
+            type: "POST",
+            url: BASEURL + "/product/GetImageProduct",
+            data: { 'id': id },
+            dataType: 'JSON'
+        }).then(
+            function (res) {
+                $(".img_p[id_p='" + res.id + "']").attr('src', res.img)
+            },
+            function () {
+                //alert("error img")
+                console.log('er')
+            }
+        )
+    }
+}
+
 loadProduct = function () {
     $.ajax({
         type: "POST",
@@ -99,14 +121,36 @@ loadProduct = function () {
                 $("#bodyy").append(response[i])
             }
             paging()
+            loadImgAllProduct()
         },
         // reject/failure callback
         function () {
             alert('There was some error!');
         }
     )
-
 }
+
+loadTrendingProduct = function () {
+    $.ajax({
+        type: "POST",
+        url: BASEURL + "/product/getTrendingProduct",
+        dataType: 'JSON'
+    }).then(
+        // resolve/success callback
+        function (response) {
+            for (i = 0; i < response.length; i++) {
+                $("#trending").append(response[i])
+            }
+            paging()
+            loadImgAllProduct()
+        },
+        // reject/failure callback
+        function () {
+            alert('There was some error!');
+        }
+    )
+}
+
 loadCategory = function () {
     $.ajax({
         type: "POST",
@@ -133,6 +177,40 @@ loadCategory = function () {
         }
     )
 }
+
+sortProductASC = function(){
+    arr = $("#bodyy .product[show='show']")
+    arr_t = $("#bodyy .product[show='show']")
+    len = arr.length
+    arr = arr.sort(function(a,b){
+        val_a = $(a).find("p.price-product").attr('price')
+        val_b = $(b).find("p.price-product").attr('price')
+        return val_a - val_b
+    })
+    $("#bodyy").empty()
+    for(i=0; i<len; i++){
+        $("#bodyy").append(arr.eq(i))
+    }
+    paging()
+}
+sortProductDESC = function(){
+    arr = $("#bodyy .product[show='show']")
+    arr_t = $("#bodyy .product[show='show']")
+    len = arr.length
+    arr = arr.sort(function(a,b){
+        val_a = $(a).find("p.price-product").attr('price')
+        val_b = $(b).find("p.price-product").attr('price')
+        return val_b - val_a
+    })
+    $("#bodyy").empty()
+    for(i=0; i<len; i++){
+        $("#bodyy").append(arr.eq(i))
+    }
+    paging()
+}
+$(document).on('click', 'a.sort', function(e){
+    e.preventDefault()
+})
 //-------------------------------------END OF HOME SITE
 
 
@@ -184,6 +262,27 @@ initTable = function (tableID, dataLink, callback) {
     });
 
 }
+
+initTableDisplay = function (tableID, dataLink, callback) {
+    $(tableID).addClass('nowrap')
+    $(tableID).DataTable({
+        responsive: true,
+        "searching": false,
+        "lengthChange": false,
+        "info": false,
+        "destroy": true,
+        "ajax": {
+            "url": BASEURL + dataLink,
+            "type": "POST",
+            "dataSrc": "data"
+        },
+        "initComplete": function (settings, json, callback) {
+            modifyTable(tableID)
+        }
+    });
+
+}
+
 loadInsertP = function () {
 
     $.ajax({
@@ -1050,7 +1149,7 @@ $(document).ready(function () {
                     s += '<label class="col-12"><strong><i class="fas fa-boxes"></i> Tên sản phẩm: </strong>'
                     s += '<span class="name_product" id_p="'+od[i].id_product+'">'+od[i].name+'</span></label>'
                     s += '<div class="form-group form-inline col-12"><strong class="col-4">Số lượng: &nbsp</strong>'
-                    s += '<input type="number" class="form-control quantity col-8" value="'+od[i].quantity+'">'
+                    s += '<input type="number" class="form-control quantity col-8" value="'+od[i].quantity+'" min="1">'
                     s += '</div><div class="form-group form-inline col-12"><strong class="col-4">Giá: &nbsp</strong>'
                     s += '<input type="number" class="form-control price col-8" value="'+od[i].price+'">'
                     s += '</div><div class="form-group form-inline col-12"><strong class="col-4">Kho: &nbsp</strong>'
@@ -1176,9 +1275,10 @@ $(document).ready(function () {
      * 
      * 
      */
-    // detail invoice
+    // detail order
     $(document).on('click', '#order_table .detail', function () {
         o_id = $(this).attr('id_o')
+        $("#detail-order h5").text('Thông tin đơn hàng ID: ' + o_id)
         $.ajax({
             type : "POST",
             url : BASEURL + "/admin/detailOrder",
@@ -1228,7 +1328,7 @@ $(document).ready(function () {
      * 
      * 
      */
-    // detail order cancel
+    // detail order cancel, invoice
     $(document).on('click', '#invoice_table .detail, #order_cancel_table .detail', function () {
         o_id = $(this).attr('id_o')
         $.ajax({
@@ -1487,6 +1587,30 @@ displayCart = function (cart) {
                 dataType: 'JSON'
             }).then(
                 function (res) {
+                    if(res.quan > res.p.quantity){
+                        res.quan = res.p.quantity
+                        const data = {
+                            'id_p': res.p.id,
+                            'quan': res.p.quantity
+                        }
+                        $.ajax({
+                            type: 'POST',
+                            url: BASEURL + '/cart/updateQuantity',
+                            data: data,
+                            dataType: 'JSON'
+                        }).then(
+                            function (res) {
+                                if (res.status) {
+                                    // updateCD(input)
+                                } else {
+                                    alert('error updatecd')
+                                }
+                            },
+                            function () {
+                                alert('some error update cartdetail')
+                            }
+                        )
+                    }
                     ct = '<hr>'
                     ct += '<div class="row mt-1 cart_product"><div class="col-lg-6 col-md-6"><div class="row ml-2">'
                     ct += '<div class="col-4 p-0"><a href="' + BASEURL + '/product/infoProduct/' + res.p.id + '">'
@@ -1497,7 +1621,7 @@ displayCart = function (cart) {
                     ct += '<p class="price-product mt-2 mb-2 price_p" price_p="' + res.p.price + '">' + formatPrice(res.p.price) + ' ₫</p></div>'
                     ct += '<div class="col-lg-2 col-md-2">'
                     ct += '<input type="number" class="form-control quantity-p" id_p="' + res.p.id + '"'
-                    ct += 'value="' + parseInt(res.quan) + '" min="1"></div>'
+                    ct += 'value="' + parseInt(res.quan) + '" min="1" max="' + res.p.quantity + '"></div>'
                     ct += '<div class="col-lg-2 col-md-2">'
                     ct += '<p class="price-product mt-2 mb-2 total_price" total_p="'
                     ct += (parseInt(res.quan) * parseInt(res.p.price)) + '">'
@@ -1618,7 +1742,24 @@ loadOrder = function (acc = "") {
         )
     }
 }
-
+loadAddress = function(){
+    $.ajax({
+        type: 'POST',
+        url: BASEURL + '/user/getAddressInfo',
+        dataType: 'JSON'
+    }).then(
+        function (res) {
+            $("#FullName").val(res.fullName)
+            $("#Phone").val(res.phone)
+            $("#Address").val(res.address)
+            $("#City").val(res.city)
+            $("#Province").val(res.province)
+        },
+        function () {
+            alert('error load address info')
+        }
+    )
+}
 removeAllCD = function(Account){
     if(Account == ""){
         localStorage.removeItem('cart')

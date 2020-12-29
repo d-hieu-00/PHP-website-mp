@@ -1,3 +1,4 @@
+<div style="min-height: calc(100vh - 600px);"></div>
 <footer class="site-footer">
     
 <div class="container py-5 mt-3">

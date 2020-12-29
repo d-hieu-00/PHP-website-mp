@@ -25,6 +25,30 @@ class productModel
         on w.id=wd.id_warehouse group by wd.id_product, mp.id");
         return $this->db->fetchAll();
     }
+
+    public function GetAllForDisplay()
+    {
+        $this->db->Query("select mp.id, mp.name, mp.brand, mp.color, mp.price, mp.img, mp.short_discription, mp.discription,
+        tp.id type_id, tp.name type_name, sum(wd.quantity) quantity, mp.status, mp.date_created, mp.date_modify
+        FROM ((mp_product mp join mp_type_product tp on mp.id_type=tp.id) left join mp_warehouse_detail wd 
+        on mp.id = wd.id_product) left join (select id from mp_warehouse where status ='ACTIVE') w 
+        on w.id=wd.id_warehouse where tp.status='ACTIVE' and mp.status='ACTIVE' 
+        group by wd.id_product, mp.id");
+        return $this->db->fetchAll();
+    }
+
+    public function getTrending(){
+        
+        $this->db->Query("select mp.id, mp.name, mp.brand, mp.color, mp.price, mp.img, mp.short_discription, mp.discription,
+            p.quantity quantity, mp.status, mp.date_created, mp.date_modify
+            from mp_product mp join (select p.id, sum(od.quantity) quantity_sold, sum(wd.quantity) quantity
+            FROM((mp_product p join(mp_warehouse_detail wd join(
+            select id from mp_warehouse w where w.status = 'ACTIVE') w on w.id = wd.id_warehouse) 
+            on p.id = wd.id_product) left join mp_order_detail od on p.id = od.id_product) join mp_order o 
+            on od.id_order = o.id WHERE month(o.date_modify)= month(sysdate()) 
+            GROUP by p.id order by quantity_sold desc LIMIT 5) p on p.id = mp.id");
+        return $this->db->fetchAll();
+    }
     /**
      * 
      * 
@@ -49,7 +73,8 @@ class productModel
         tp.id type_id, tp.name type_name, sum(wd.quantity) quantity, mp.status, mp.date_created, mp.date_modify
         FROM ((mp_product mp join mp_type_product tp on mp.id_type=tp.id) left join mp_warehouse_detail wd 
         on mp.id = wd.id_product) left join (select id from mp_warehouse where status ='ACTIVE') w 
-        on w.id=wd.id_warehouse where tp.id=? group by wd.id_product, mp.id",array($id));
+        on w.id=wd.id_warehouse where tp.id=? and tp.status='ACTIVE' and mp.status='ACTIVE'
+        group by wd.id_product, mp.id",array($id));
         return $this->db->fetchAll();
     }
     /**

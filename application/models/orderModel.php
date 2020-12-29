@@ -42,6 +42,17 @@ class orderModel{
         $this->db->commit();
     }
 
+    public function getTrending(){
+        $this->db->Query("select p.id, p.name, sum(wd.quantity) quantity, sum(od.quantity) quantity_sold, 
+                count(DISTINCT o.id) num_order 
+                FROM((mp_product p join(mp_warehouse_detail wd join(
+                select id from mp_warehouse w where w.status = 'ACTIVE') w on w.id = wd.id_warehouse) 
+                on p.id = wd.id_product) left join mp_order_detail od on p.id = od.id_product) join mp_order o 
+                on od.id_order = o.id 
+                WHERE month(o.date_modify)= month(sysdate()) GROUP by p.id order by quantity_sold desc");
+        return $this->db->fetchAll();
+    }
+
     public function getAllOrder(){
         $this->db->Query("select o.id, o.full_name, o.phone, o.shipping_fee, o.total_price, o.status, 
                 CONCAT(o.address,', ',o.province,', ',o.city) address, u.account, o.date_created, o.date_modify 

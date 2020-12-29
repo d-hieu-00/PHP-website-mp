@@ -22,6 +22,16 @@ class typeProductModel
         group by p.id_type, tp.id");
         return $this->db->fetchAll();
     }
+
+    public function GetAllForDisplay()
+    {
+        $this->db->Query("select tp.id, tp.name, count(p.id_type) quantity, c.id id_category,
+        c.name name_category, tp.status, tp.date_created
+        from (mp_type_product tp left join mp_product p on tp.id = p.id_type)
+        join mp_category c on tp.id_category = c.id where tp.status='ACTIVE' 
+        group by p.id_type, tp.id");
+        return $this->db->fetchAll();
+    }
     /**
      * 
      * get one type product
@@ -82,7 +92,7 @@ class typeProductModel
     {
         $this->db->Query("select tp.id, tp.name
         from mp_type_product tp
-        where tp.id_category = ?", array($id_category));
+        where tp.id_category = ? and tp.status='ACTIVE'", array($id_category));
         return $this->db->fetchAll();
     }
 }

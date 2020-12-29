@@ -6,8 +6,8 @@
 </head>
 
 <body>
-    <div id="wrapper">
-        <ul class="navbar-nav my-bg-gradient-primary sidebar sidebar-dark accordion">
+    <div id="wrapper" class="not-print">
+        <ul class="navbar-nav my-bg-gradient-primary sidebar sidebar-dark accordion not-print">
 
             <!-- Sidebar - Brand -->
             <div class="d-flex align-items-center justify-content-center">
@@ -107,5 +107,5 @@
         </ul>
 
 
-        <div id="content-wrapper" class="d-flex flex-column">
-            <div id="content">
+        <div id="content-wrapper" class="d-flex flex-column not-print">
+            <div id="content" class="not-print">

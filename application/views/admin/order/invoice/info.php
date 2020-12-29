@@ -7,8 +7,8 @@
             <i class="fa fa-bars"></i>
         </button>
         <!-- Topbar info -->
-        <div class="sidebar-heading">
-            Thông tin hóa đơn
+        <div class="sidebar-heading text-warning text-lg">
+            <b>Thông tin hóa đơn</b>
         </div>
     </nav>
 </div>
@@ -60,6 +60,8 @@
 </div>
 <!-- /.container-fluid -->
 
+
+<?php include "../application/views/admin/_assets/footer.php" ?>
 
 <!-- detail invoice -->
 <div class="modal fade" id="detail-order" tabindex="-1" role="dialog" aria-hidden="true">
@@ -129,14 +131,13 @@
                 </div>
 
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer not-print">
+                <button type="button" class="btn btn-primary" onclick="print()">In đơn đặt hàng</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>
             </div>
         </div>
     </div>
 </div>
-
-<?php include "../application/views/admin/_assets/footer.php" ?>
 
 <script>
     $(document).ready(function() {

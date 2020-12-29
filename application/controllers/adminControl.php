@@ -18,6 +18,24 @@ class adminControl extends BaseController
             $this->redirect('admin/login');
         }
     }
+    public function getTrending(){
+        $orderModel = $this->model('orderModel');
+        $trend = $orderModel->getTrending();
+        $i = 1;
+        $data = [];
+        foreach ($trend as $val) {
+            $row = [];
+            $row[] = '<sapn>' . $i++ . '</span>';
+            $row[] = '<sapn>' . $val->name . '</span>';
+            $row[] = '<sapn>' . $val->quantity . '</span>';
+            $row[] = '<sapn>' . $val->quantity_sold . '</span>';
+            $row[] = '<sapn>' . $val->num_order . '</span>';
+            
+            $data[] = $row;
+        }
+
+        echo json_encode(['data' => $data]);
+    }
     public function login()
     {
         if (isset($_POST['Password'])) {
@@ -495,7 +513,7 @@ class adminControl extends BaseController
         $response = array();
         $TypeProductModel = $this->model('TypeProductModel');
         $response['status'] = true;
-        $allTP = $TypeProductModel->getAll();
+        $allTP = $TypeProductModel->GetAllForDisplay();
         $data = array();
         foreach ($allTP as $val) {
             $row = array();

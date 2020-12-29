@@ -30,7 +30,8 @@
                 <p class="text-secondary m-1"><?php echo $data[0]->short_discription?></p>
                 <hr>
                 <div class="form form-inline">
-                    <input class="form-control quantity mr-3" type="number" min="1" value="1">
+                    <input class="form-control quantity mr-3" type="number" min="1" value="1" 
+                            max="<?php echo $data[0]->quantity?>">
                     <button class="btn btn-success addToCart">
                     <i class="fa fa-shopping-cart d-inline" aria-hidden="true"></i>
                     Thêm vào giỏ
